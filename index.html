@@ -2,476 +2,433 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Tavla & Batak</title>
+
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
+*{box-sizing:border-box}
 body{
-font-family:Arial,Helvetica,sans-serif;
-background:#071018;
-color:#f5f5f5;
-min-height:100vh
+ margin:0;
+ font-family:Arial,Helvetica,sans-serif;
+ background:#071018;
+ color:#fff;
 }
 button{
-font:inherit;
-cursor:pointer
+ cursor:pointer;
+ font:inherit;
 }
 header{
-background:#101c27;
-border-bottom:1px solid #263746;
-padding:16px 20px;
-display:flex;
-align-items:center;
-justify-content:space-between;
-gap:20px;
-position:sticky;
-top:0;
-z-index:20
+ background:#101b25;
+ border-bottom:1px solid #30414d;
+ padding:15px;
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:15px;
+ position:sticky;
+ top:0;
+ z-index:20;
 }
 .logo{
-font-size:24px;
-font-weight:800;
-color:#e5b94b
+ color:#e5b94b;
+ font-size:24px;
+ font-weight:bold;
 }
 .logo small{
-display:block;
-font-size:11px;
-color:#9eabb5;
-margin-top:3px
+ display:block;
+ color:#9daab3;
+ font-size:11px;
+ margin-top:3px;
 }
 nav{
-display:flex;
-gap:8px;
-flex-wrap:wrap
+ display:flex;
+ gap:7px;
+ flex-wrap:wrap;
 }
-nav button{
-background:#172633;
-border:1px solid #304453;
-color:#fff;
-padding:10px 15px;
-border-radius:9px
+nav button,.secondary{
+ background:#182733;
+ border:1px solid #38505e;
+ color:white;
+ padding:10px 15px;
+ border-radius:8px;
 }
-nav button:hover{
-background:#213746
+nav button:hover,.secondary:hover{
+ background:#243b49;
 }
 main{
-max-width:1200px;
-margin:auto;
-padding:28px 18px
+ max-width:1200px;
+ margin:auto;
+ padding:25px 15px;
 }
 .screen{display:none}
 .screen.active{display:block}
+
 .hero{
-background:linear-gradient(135deg,#102b25,#14202b);
-border:1px solid #29433c;
-border-radius:18px;
-padding:45px 30px;
-text-align:center;
-margin-bottom:24px
+ background:linear-gradient(135deg,#123526,#152331);
+ border:1px solid #315044;
+ border-radius:18px;
+ padding:45px 20px;
+ text-align:center;
 }
 .hero h1{
-font-size:42px;
-margin-bottom:12px
+ font-size:42px;
+ margin:0 0 12px;
 }
 .hero p{
-color:#b9c5cc;
-font-size:17px;
-margin-bottom:25px
+ color:#b9c6cc;
+ font-size:17px;
 }
 .primary{
-background:#e5b94b;
-color:#17120a;
-border:0;
-padding:13px 20px;
-border-radius:9px;
-font-weight:800
-}
-.secondary{
-background:#172633;
-color:#fff;
-border:1px solid #385060;
-padding:13px 20px;
-border-radius:9px
+ background:#e5b94b;
+ color:#17120a;
+ border:0;
+ padding:12px 18px;
+ border-radius:8px;
+ font-weight:bold;
 }
 .actions{
-display:flex;
-justify-content:center;
-gap:10px;
-flex-wrap:wrap
+ display:flex;
+ justify-content:center;
+ gap:10px;
+ flex-wrap:wrap;
+ margin-top:22px;
 }
-.game-grid{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:18px
+.games{
+ display:grid;
+ grid-template-columns:repeat(3,1fr);
+ gap:15px;
+ margin-top:20px;
 }
-.game-card{
-background:#101c27;
-border:1px solid #293b49;
-border-radius:15px;
-padding:24px
+.game{
+ background:#101b25;
+ border:1px solid #2b3d49;
+ border-radius:14px;
+ padding:22px;
 }
-.game-card h2{
-margin-bottom:9px
+.game p{
+ color:#a8b4bc;
+ line-height:1.5;
 }
-.game-card p{
-color:#9eabb5;
-line-height:1.5;
-margin-bottom:17px
+.top{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:10px;
+ flex-wrap:wrap;
+ margin-bottom:15px;
+}
+.top h1{margin:0}
+.status{
+ color:#aebbc3;
+}
+
+.panel{
+ background:#101b25;
+ border:1px solid #2c404d;
+ border-radius:15px;
+ padding:15px;
 }
 
 /* TAVLA */
-.game-top{
-display:flex;
-justify-content:space-between;
-align-items:center;
-gap:15px;
-margin-bottom:16px;
-flex-wrap:wrap
-}
-.game-title h1{
-font-size:28px
-}
-.game-title p{
-color:#96a6b1;
-margin-top:4px
-}
-.game-panel{
-background:#101c27;
-border:1px solid #2c404e;
-border-radius:16px;
-padding:15px
-}
-.tavla-layout{
-display:grid;
-grid-template-columns:1fr 220px;
-gap:15px
+.tavlaLayout{
+ display:grid;
+ grid-template-columns:1fr 220px;
+ gap:15px;
 }
 .board{
-position:relative;
-height:600px;
-background:#6b3e20;
-border:10px solid #3b2416;
-border-radius:8px;
-overflow:hidden;
-box-shadow:0 10px 35px #0008
+ position:relative;
+ height:600px;
+ background:#704321;
+ border:10px solid #352014;
+ border-radius:8px;
+ overflow:hidden;
 }
-.board-center{
-position:absolute;
-left:50%;
-top:0;
-bottom:0;
-width:8px;
-background:#3b2416;
-transform:translateX(-50%);
-z-index:1
+.board:after{
+ content:"";
+ position:absolute;
+ left:50%;
+ top:0;
+ bottom:0;
+ width:8px;
+ background:#351f14;
+ transform:translateX(-50%);
 }
-.point{
-position:absolute;
-width:11.5%;
-height:47%;
-display:flex;
-align-items:center;
-flex-direction:column;
-z-index:2
+.tri{
+ position:absolute;
+ width:12.5%;
+ height:50%;
+ z-index:1;
 }
-.point.top{top:1%}
-.point.bottom{bottom:1%;justify-content:flex-end}
-.point:nth-child(2){left:1%}
-.point:nth-child(3){left:13.5%}
-.point:nth-child(4){left:26%}
-.point:nth-child(5){left:38.5%}
-.point:nth-child(6){left:51%}
-.point:nth-child(7){left:63.5%}
-.point:nth-child(8){left:76%}
-.point:nth-child(9){left:88.5%}
-.point:nth-child(10){left:1%}
-.point:nth-child(11){left:13.5%}
-.point:nth-child(12){left:26%}
-.point:nth-child(13){left:38.5%}
-.point:nth-child(14){left:51%}
-.point:nth-child(15){left:63.5%}
-.point:nth-child(16){left:76%}
-.point:nth-child(17){left:88.5%}
-.triangle{
-width:0;
-height:0;
-border-left:28px solid transparent;
-border-right:28px solid transparent
+.tri:nth-child(1){left:0;top:0}
+.tri:nth-child(2){left:12.5%;top:0}
+.tri:nth-child(3){left:25%;top:0}
+.tri:nth-child(4){left:37.5%;top:0}
+.tri:nth-child(5){left:50%;top:0}
+.tri:nth-child(6){left:62.5%;top:0}
+.tri:nth-child(7){left:75%;top:0}
+.tri:nth-child(8){left:87.5%;top:0}
+.tri:nth-child(9){left:0;bottom:0}
+.tri:nth-child(10){left:12.5%;bottom:0}
+.tri:nth-child(11){left:25%;bottom:0}
+.tri:nth-child(12){left:37.5%;bottom:0}
+.tri:nth-child(13){left:50%;bottom:0}
+.tri:nth-child(14){left:62.5%;bottom:0}
+.tri:nth-child(15){left:75%;bottom:0}
+.tri:nth-child(16){left:87.5%;bottom:0}
+
+.tri:before{
+ content:"";
+ position:absolute;
+ left:50%;
+ transform:translateX(-50%);
+ width:0;
+ height:0;
+ border-left:28px solid transparent;
+ border-right:28px solid transparent;
 }
-.top .triangle{
-border-top:210px solid #c99145
+.tri:nth-child(-n+8):before{
+ top:0;
+ border-top:250px solid #b77c3c;
 }
-.bottom .triangle{
-border-bottom:210px solid #7e2920
+.tri:nth-child(n+9):before{
+ bottom:0;
+ border-bottom:250px solid #8e3329;
 }
-.checkers{
-position:absolute;
-top:0;
-bottom:0;
-left:0;
-right:0;
-pointer-events:none
+.tri:nth-child(even):before{filter:brightness(.72)}
+
+.piece{
+ position:absolute;
+ width:43px;
+ height:43px;
+ border-radius:50%;
+ border:2px solid #222;
+ box-shadow:0 2px 5px #000;
+ z-index:5;
+ transform:translateX(-50%);
 }
-.checker{
-width:42px;
-height:42px;
-border-radius:50%;
-border:2px solid #222;
-box-shadow:0 2px 5px #0009;
-position:absolute;
-transform:translateX(-50%);
-left:50%
+.youPiece{
+ background:linear-gradient(#fff,#aaa);
 }
-.checker.you{
-background:linear-gradient(#f3f3f3,#b9b9b9);
-border-color:#777
+.botPiece{
+ background:linear-gradient(#333,#050505);
+ border-color:#aaa;
 }
-.checker.bot{
-background:linear-gradient(#292929,#050505);
-border-color:#aaa
+.tpoint{
+ position:absolute;
+ width:12.5%;
+ height:50%;
+ z-index:8;
 }
-.tavla-side{
-display:flex;
-flex-direction:column;
-gap:12px
+.tpoint:nth-of-type(1){left:0;top:0}
+.tpoint:nth-of-type(2){left:12.5%;top:0}
+.tpoint:nth-of-type(3){left:25%;top:0}
+.tpoint:nth-of-type(4){left:37.5%;top:0}
+.tpoint:nth-of-type(5){left:50%;top:0}
+.tpoint:nth-of-type(6){left:62.5%;top:0}
+.tpoint:nth-of-type(7){left:75%;top:0}
+.tpoint:nth-of-type(8){left:87.5%;top:0}
+.tpoint:nth-of-type(9){left:0;bottom:0}
+.tpoint:nth-of-type(10){left:12.5%;bottom:0}
+.tpoint:nth-of-type(11){left:25%;bottom:0}
+.tpoint:nth-of-type(12){left:37.5%;bottom:0}
+.tpoint:nth-of-type(13){left:50%;bottom:0}
+.tpoint:nth-of-type(14){left:62.5%;bottom:0}
+.tpoint:nth-of-type(15){left:75%;bottom:0}
+.tpoint:nth-of-type(16){left:87.5%;bottom:0}
+
+.side{
+ display:flex;
+ flex-direction:column;
+ gap:12px;
 }
-.info-box{
-background:#0b151d;
-border:1px solid #293b49;
-border-radius:12px;
-padding:14px
+.box{
+ background:#0b151d;
+ border:1px solid #2b3c48;
+ border-radius:10px;
+ padding:14px;
 }
-.info-box h3{
-color:#e5b94b;
-margin-bottom:8px
+.box h3{
+ color:#e5b94b;
+ margin:0 0 10px;
 }
 .dice{
-display:flex;
-gap:8px;
-margin:10px 0;
-min-height:55px
+ display:flex;
+ gap:8px;
+ min-height:55px;
 }
 .die{
-width:52px;
-height:52px;
-background:#f5f5f5;
-color:#111;
-border-radius:9px;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:29px;
-font-weight:900
+ width:52px;
+ height:52px;
+ border-radius:9px;
+ background:white;
+ color:#111;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ font-size:28px;
+ font-weight:bold;
 }
-.roll{
-width:100%;
-padding:12px;
-background:#e5b94b;
-border:0;
-border-radius:8px;
-font-weight:800
+.full{
+ width:100%;
 }
 .message{
-background:#162632;
-border-radius:8px;
-padding:10px;
-color:#d9e1e5;
-line-height:1.4
+ color:#c7d1d6;
+ line-height:1.4;
 }
 
 /* BATAK */
-.batak-table{
-background:radial-gradient(circle,#155a40,#073124);
-border:10px solid #382719;
-border-radius:18px;
-min-height:650px;
-position:relative;
-overflow:hidden;
-padding:30px
+.batak{
+ min-height:620px;
+ background:radial-gradient(circle,#14583f,#06291e);
+ border:10px solid #382719;
+ border-radius:18px;
+ position:relative;
+ padding:20px;
 }
 .seat{
-position:absolute;
-background:#101c27dd;
-border:1px solid #405563;
-border-radius:10px;
-padding:10px 15px;
-text-align:center;
-min-width:130px
+ position:absolute;
+ background:#101b25e8;
+ border:1px solid #536773;
+ border-radius:9px;
+ padding:9px 14px;
+ min-width:110px;
+ text-align:center;
+ z-index:4;
 }
-.seat.top{top:12px;left:50%;transform:translateX(-50%)}
-.seat.left{left:12px;top:50%;transform:translateY(-50%)}
-.seat.right{right:12px;top:50%;transform:translateY(-50%)}
-.seat.bottom{bottom:12px;left:50%;transform:translateX(-50%)}
 .seat.active{
-border-color:#e5b94b;
-box-shadow:0 0 15px #e5b94b55
+ border-color:#e5b94b;
+ box-shadow:0 0 15px #e5b94b55;
 }
-.table-center{
-position:absolute;
-left:50%;
-top:50%;
-transform:translate(-50%,-50%);
-width:310px;
-min-height:180px;
-background:#0a3929aa;
-border:1px solid #43836b;
-border-radius:18px;
-padding:15px;
-text-align:center
+.s0{top:10px;left:50%;transform:translateX(-50%)}
+.s1{left:10px;top:50%;transform:translateY(-50%)}
+.s2{right:10px;top:50%;transform:translateY(-50%)}
+.s3{bottom:10px;left:50%;transform:translateX(-50%)}
+
+.tableCenter{
+ position:absolute;
+ width:300px;
+ min-height:190px;
+ left:50%;
+ top:50%;
+ transform:translate(-50%,-50%);
+ border:1px solid #4b8a72;
+ background:#083523aa;
+ border-radius:18px;
+ padding:15px;
+ text-align:center;
 }
 .played{
-display:flex;
-justify-content:center;
-gap:8px;
-flex-wrap:wrap;
-margin-top:15px
-}
-.card{
-width:65px;
-height:92px;
-background:#fff;
-color:#151515;
-border-radius:8px;
-border:2px solid #ddd;
-display:flex;
-flex-direction:column;
-justify-content:space-between;
-padding:6px;
-font-weight:800;
-user-select:none;
-box-shadow:0 3px 7px #0007;
-transition:.15s;
-position:relative
-}
-.card.red{color:#d51f2c}
-.card:hover{
-transform:translateY(-7px)
-}
-.card.disabled{
-opacity:.35;
-cursor:not-allowed;
-transform:none
-}
-.card .big{
-font-size:25px;
-text-align:center;
-margin:auto
-}
-.card .corner{
-font-size:13px;
-line-height:1
+ display:flex;
+ justify-content:center;
+ gap:7px;
+ margin-top:15px;
 }
 .hand{
-display:flex;
-justify-content:center;
-align-items:flex-end;
-gap:5px;
-flex-wrap:wrap;
-padding:15px;
-background:#0b151d;
-border-radius:12px;
-min-height:125px;
-margin-top:15px
+ margin-top:15px;
+ background:#0b151d;
+ border-radius:12px;
+ min-height:125px;
+ padding:12px;
+ display:flex;
+ justify-content:center;
+ align-items:flex-end;
+ gap:5px;
+ flex-wrap:wrap;
 }
-.hand .card{
-margin-left:-4px
+.card{
+ width:62px;
+ height:91px;
+ background:#fff;
+ color:#111;
+ border-radius:8px;
+ border:2px solid #ddd;
+ box-shadow:0 3px 7px #0008;
+ padding:5px;
+ display:flex;
+ flex-direction:column;
+ justify-content:space-between;
+ user-select:none;
 }
-.hand .card:first-child{
-margin-left:0
+.card.red{color:#d21d2a}
+.card:hover{transform:translateY(-5px)}
+.card.disabled{
+ opacity:.35;
+ transform:none;
 }
-.batak-controls{
-display:flex;
-justify-content:center;
-gap:8px;
-flex-wrap:wrap;
-margin-top:12px
+.cardBig{
+ text-align:center;
+ font-size:27px;
+ margin:auto;
 }
-.trump-btn,.bid-btn{
-padding:10px 16px;
-border-radius:8px;
-border:1px solid #4b6170;
-background:#172633;
-color:#fff
+.cardSmall{font-size:12px}
+.controls{
+ display:flex;
+ justify-content:center;
+ gap:7px;
+ flex-wrap:wrap;
+ margin-top:12px;
 }
-.trump-btn.red,.bid-btn.red{color:#ff5260}
-.trump-btn:hover,.bid-btn:hover{
-background:#263d4c
+.controls button{
+ background:#182733;
+ color:white;
+ border:1px solid #49606e;
+ padding:9px 13px;
+ border-radius:8px;
 }
-.status{
-background:#0b151d;
-border:1px solid #293b49;
-padding:12px;
-border-radius:9px;
-margin-bottom:12px
-}
-.scoreboard{
-display:flex;
-gap:10px;
-flex-wrap:wrap;
-margin-top:12px
+.controls button:hover{background:#29404e}
+.scores{
+ display:flex;
+ gap:8px;
+ flex-wrap:wrap;
+ margin-top:12px;
 }
 .score{
-background:#0b151d;
-border:1px solid #293b49;
-border-radius:8px;
-padding:8px 12px
+ background:#0b151d;
+ border:1px solid #2d404c;
+ border-radius:7px;
+ padding:8px 12px;
 }
 
-/* MODAL */
 .modal{
-position:fixed;
-inset:0;
-background:#000b;
-display:none;
-align-items:center;
-justify-content:center;
-z-index:100
+ position:fixed;
+ inset:0;
+ background:#000b;
+ display:none;
+ align-items:center;
+ justify-content:center;
+ z-index:100;
 }
 .modal.open{display:flex}
-.modal-box{
-background:#101c27;
-border:1px solid #425665;
-border-radius:16px;
-padding:25px;
-width:min(500px,92vw);
-text-align:center
+.modalBox{
+ width:min(500px,92%);
+ background:#101b25;
+ border:1px solid #465d6a;
+ border-radius:15px;
+ padding:25px;
+ text-align:center;
 }
-.modal-box h2{
-margin-bottom:12px
-}
-.modal-box p{
-color:#aebbc3;
-margin-bottom:18px
-}
-.modal-buttons{
-display:flex;
-gap:8px;
-justify-content:center;
-flex-wrap:wrap
+.modalBox h2{margin-top:0}
+.modalButtons{
+ display:flex;
+ justify-content:center;
+ gap:8px;
+ flex-wrap:wrap;
 }
 
 @media(max-width:900px){
-.game-grid{grid-template-columns:1fr}
-.tavla-layout{grid-template-columns:1fr}
-.board{height:520px}
-.tavla-side{display:grid;grid-template-columns:1fr 1fr}
+ .games{grid-template-columns:1fr}
+ .tavlaLayout{grid-template-columns:1fr}
 }
 @media(max-width:600px){
-header{flex-direction:column;align-items:stretch}
-nav{justify-content:center}
-.hero h1{font-size:30px}
-main{padding:15px 10px}
-.board{height:430px;border-width:6px}
-.triangle{border-left-width:20px;border-right-width:20px}
-.top .triangle{border-top-width:170px}
-.bottom .triangle{border-bottom-width:170px}
-.checker{width:32px;height:32px}
-.tavla-side{display:flex}
-.batak-table{min-height:570px;padding:10px}
-.table-center{width:220px}
-.seat{min-width:90px;padding:7px;font-size:12px}
-.card{width:48px;height:70px}
-.card .big{font-size:19px}
+ header{flex-direction:column}
+ .hero h1{font-size:30px}
+ .board{height:440px;border-width:6px}
+ .tri:nth-child(-n+8):before{border-top-width:180px;border-left-width:20px;border-right-width:20px}
+ .tri:nth-child(n+9):before{border-bottom-width:180px;border-left-width:20px;border-right-width:20px}
+ .piece{width:31px;height:31px}
+ .tableCenter{width:220px}
+ .card{width:48px;height:70px}
+ .cardBig{font-size:19px}
 }
 </style>
 </head>
@@ -481,13 +438,14 @@ main{padding:15px 10px}
 <header>
 <div class="logo">
 Tavla & Batak
-<small>Gerçek kurallarla bilgisayara karşı</small>
+<small>Bilgisayara karşı gerçek oyun</small>
 </div>
 
 <nav>
-<button data-screen="home">Ana Sayfa</button>
-<button data-screen="tavla">🎲 Tavla</button>
-<button data-screen="batak">🃏 Batak</button>
+<button id="homeBtn">Ana Sayfa</button>
+<button id="tavlaBtn">🎲 Tavla</button>
+<button id="batakBtn">🃏 Batak</button>
+<button id="pairBtn">👥 Eşli Batak</button>
 </nav>
 </header>
 
@@ -496,41 +454,41 @@ Tavla & Batak
 <section id="home" class="screen active">
 <div class="hero">
 <h1>Tavla & Batak</h1>
-<p>Gerçek oyun kurallarına göre hazırlanmış, bilgisayara karşı oynayabileceğin Türkçe oyunlar.</p>
+<p>Türkçe arayüzlü, bilgisayara karşı oynanabilen tavla ve batak oyunları.</p>
 
 <div class="actions">
-<button class="primary" data-screen="tavla">🎲 Tavla Oyna</button>
-<button class="secondary" data-screen="batak">🃏 Batak Oyna</button>
+<button class="primary" id="heroTavla">🎲 Tavla Oyna</button>
+<button class="secondary" id="heroBatak">🃏 İhaleli Batak</button>
 </div>
 </div>
 
-<div class="game-grid">
+<div class="games">
 
-<div class="game-card">
+<div class="game">
 <h2>🎲 Tavla</h2>
 <p>
-15 pul, zar, çift zar, kapı alma, kırma,
-bar, yeniden giriş ve toplama kurallarıyla tavla.
+15 pul, zar, çift zar, kapı, kırma,
+bar, bar'dan giriş ve toplama.
 </p>
-<button class="primary" data-screen="tavla">Tavlaya Gir</button>
+<button class="primary" id="cardTavla">Tavla Oyna</button>
 </div>
 
-<div class="game-card">
+<div class="game">
 <h2>🃏 İhaleli Batak</h2>
 <p>
-4 oyunculu, 13 kartlı, ihale ve koz seçimi bulunan
-bilgisayara karşı batak.
+4 oyuncu, 13 kart, ihale, pas,
+koz seçimi ve bilgisayar oyuncuları.
 </p>
-<button class="primary" data-mode="single">İhaleli Batak</button>
+<button class="primary" id="cardBatak">İhaleli Batak</button>
 </div>
 
-<div class="game-card">
+<div class="game">
 <h2>👥 Eşli İhaleli Batak</h2>
 <p>
-2'ye 2 eşli oyun. İhale kazanıldığında eşinin eli
-açılır ve iki eli yönetebilirsin.
+2'ye 2 eşli oyun. İhaleyi sen aldığında
+eşinin eli de açılır.
 </p>
-<button class="primary" data-mode="pair">Eşli Batak</button>
+<button class="primary" id="cardPair">Eşli Batak</button>
 </div>
 
 </div>
@@ -538,420 +496,436 @@ açılır ve iki eli yönetebilirsin.
 
 <section id="tavla" class="screen">
 
-<div class="game-top">
-<div class="game-title">
+<div class="top">
+<div>
 <h1>🎲 Tavla</h1>
-<p id="tavlaStatus">Yeni oyun hazır.</p>
+<div class="status" id="tStatus">Senin sıran.</div>
+</div>
+<button class="primary" id="newTavla">Yeni Oyun</button>
 </div>
 
-<button id="newTavla" class="primary">Yeni Oyun</button>
-</div>
+<div class="tavlaLayout">
 
-<div class="tavla-layout">
-
-<div class="game-panel">
-
+<div class="panel">
 <div id="board" class="board">
-<div class="board-center"></div>
 
-<div class="point top"><div class="triangle"></div></div>
-<div class="point top"><div class="triangle"></div></div>
-<div class="point top"><div class="triangle"></div></div>
-<div class="point top"><div class="triangle"></div></div>
-<div class="point top"><div class="triangle"></div></div>
-<div class="point top"><div class="triangle"></div></div>
-<div class="point top"><div class="triangle"></div></div>
-<div class="point top"><div class="triangle"></div></div>
+<div class="tri"></div><div class="tri"></div>
+<div class="tri"></div><div class="tri"></div>
+<div class="tri"></div><div class="tri"></div>
+<div class="tri"></div><div class="tri"></div>
+<div class="tri"></div><div class="tri"></div>
+<div class="tri"></div><div class="tri"></div>
+<div class="tri"></div><div class="tri"></div>
+<div class="tri"></div><div class="tri"></div>
 
-<div class="point bottom"><div class="triangle"></div></div>
-<div class="point bottom"><div class="triangle"></div></div>
-<div class="point bottom"><div class="triangle"></div></div>
-<div class="point bottom"><div class="triangle"></div></div>
-<div class="point bottom"><div class="triangle"></div></div>
-<div class="point bottom"><div class="triangle"></div></div>
-<div class="point bottom"><div class="triangle"></div></div>
-<div class="point bottom"><div class="triangle"></div></div>
+<div id="pieces"></div>
 
-<div id="checkers" class="checkers"></div>
+<div class="tpoint" data-point="0"></div>
+<div class="tpoint" data-point="1"></div>
+<div class="tpoint" data-point="2"></div>
+<div class="tpoint" data-point="3"></div>
+<div class="tpoint" data-point="4"></div>
+<div class="tpoint" data-point="5"></div>
+<div class="tpoint" data-point="6"></div>
+<div class="tpoint" data-point="7"></div>
+<div class="tpoint" data-point="8"></div>
+<div class="tpoint" data-point="9"></div>
+<div class="tpoint" data-point="10"></div>
+<div class="tpoint" data-point="11"></div>
+<div class="tpoint" data-point="12"></div>
+<div class="tpoint" data-point="13"></div>
+<div class="tpoint" data-point="14"></div>
+<div class="tpoint" data-point="15"></div>
+
+</div>
 </div>
 
-</div>
+<div class="side">
 
-<div class="tavla-side">
-
-<div class="info-box">
+<div class="box">
 <h3>Zarlar</h3>
 <div id="dice" class="dice"></div>
-<button id="rollDice" class="roll">🎲 Zar At</button>
+<button class="primary full" id="roll">🎲 Zar At</button>
 </div>
 
-<div class="info-box">
-<h3>Oyun Bilgisi</h3>
-<div id="tavlaMessage" class="message">
+<div class="box">
+<h3>Durum</h3>
+<div class="message" id="tMessage">
 Zar atarak başla.
 </div>
 </div>
 
-<div class="info-box">
+<div class="box">
 <h3>Bar</h3>
-<p>Sen: <b id="youBar">0</b></p>
-<p>Rakip: <b id="botBar">0</b></p>
+<div>Sen: <b id="barYou">0</b></div>
+<div>Rakip: <b id="barBot">0</b></div>
 </div>
 
-<div class="info-box">
+<div class="box">
 <h3>Toplanan</h3>
-<p>Sen: <b id="youOff">0</b></p>
-<p>Rakip: <b id="botOff">0</b></p>
+<div>Sen: <b id="offYou">0</b></div>
+<div>Rakip: <b id="offBot">0</b></div>
 </div>
 
 </div>
 </div>
-
 </section>
 
 <section id="batak" class="screen">
 
-<div class="game-top">
-<div class="game-title">
-<h1 id="batakTitle">🃏 Batak</h1>
-<p id="batakStatus">Oyun türünü seç.</p>
+<div class="top">
+<div>
+<h1 id="bTitle">🃏 İhaleli Batak</h1>
+<div class="status" id="bStatus">Yeni oyun.</div>
+</div>
+<button class="primary" id="newBatak">Yeni Oyun</button>
 </div>
 
-<button id="newBatak" class="primary">Yeni Oyun</button>
-</div>
-
-<div id="batakGame" class="game-panel">
+<div class="panel">
 
 <div class="status">
-<b>Oyun:</b> <span id="modeText">-</span>
+İhale: <b id="bidInfo">-</b>
 &nbsp; | &nbsp;
-<b>İhale:</b> <span id="bidText">-</span>
+Koz: <b id="trumpInfo">-</b>
 &nbsp; | &nbsp;
-<b>Koz:</b> <span id="trumpText">-</span>
+El: <b id="trickInfo">0 / 13</b>
 </div>
 
-<div class="batak-table">
+<div class="batak">
 
-<div id="seat1" class="seat top">Rakip 1</div>
-<div id="seat2" class="seat left">Rakip 2</div>
-<div id="seat3" class="seat right">Rakip 3</div>
-<div id="seat4" class="seat bottom">Sen</div>
+<div class="seat s0" id="seat0">Rakip 1</div>
+<div class="seat s1" id="seat1">Rakip 2</div>
+<div class="seat s2" id="seat2">Rakip 3</div>
+<div class="seat s3" id="seat3">Sen</div>
 
-<div class="table-center">
+<div class="tableCenter">
 <b>Ortadaki Kartlar</b>
-<div id="played" class="played"></div>
-<div id="centerMessage" style="margin-top:12px;color:#b8c8c0">
+<div class="played" id="played"></div>
+<div id="centerText" style="margin-top:15px;color:#b9c8c1">
 İhale başlayacak.
 </div>
 </div>
 
 </div>
 
-<div id="playerHand" class="hand"></div>
+<div class="hand" id="hand"></div>
 
-<div id="batakControls" class="batak-controls"></div>
+<div class="controls" id="controls"></div>
 
-<div id="scores" class="scoreboard"></div>
+<div class="scores" id="scores"></div>
 
 </div>
-
 </section>
 
 </main>
 
-<div id="modal" class="modal">
-<div class="modal-box">
+<div class="modal" id="modal">
+<div class="modalBox">
 <h2 id="modalTitle"></h2>
 <p id="modalText"></p>
-<div id="modalButtons" class="modal-buttons"></div>
+<div class="modalButtons" id="modalButtons"></div>
 </div>
 </div>
 
 <script>
 "use strict";
 
-document.addEventListener("DOMContentLoaded",function(){
+/* =========================================================
+   TEMEL
+========================================================= */
 
 const $=id=>document.getElementById(id);
 
-const SUITS=["♠","♥","♦","♣"];
-const RANKS=[
- {n:"2",v:2},
- {n:"3",v:3},
- {n:"4",v:4},
- {n:"5",v:5},
- {n:"6",v:6},
- {n:"7",v:7},
- {n:"8",v:8},
- {n:"9",v:9},
- {n:"10",v:10},
- {n:"J",v:11},
- {n:"Q",v:12},
- {n:"K",v:13},
- {n:"A",v:14}
-];
-
-function shuffle(a){
- for(let i=a.length-1;i>0;i--){
-  const j=Math.floor(Math.random()*(i+1));
-  [a[i],a[j]]=[a[j],a[i]];
- }
- return a;
-}
-
-function makeDeck(){
- const d=[];
- for(const s of SUITS){
-  for(const r of RANKS){
-   d.push({
-    suit:s,
-    rank:r.n,
-    value:r.v,
-    id:s+r.n
-   });
-  }
- }
- return shuffle(d);
-}
-
-function cardHTML(card){
- const red=card.suit==="♥"||card.suit==="♦";
- return `
- <div class="card ${red?"red":""}" data-card="${card.id}" draggable="true">
-   <span class="corner">${card.rank}${card.suit}</span>
-   <span class="big">${card.suit}</span>
-   <span class="corner">${card.rank}${card.suit}</span>
- </div>`;
-}
-
-function showScreen(name){
+function screen(id){
  document.querySelectorAll(".screen").forEach(x=>x.classList.remove("active"));
- const el=$(name);
- if(el)el.classList.add("active");
+ $(id).classList.add("active");
  window.scrollTo(0,0);
 }
 
-document.querySelectorAll("[data-screen]").forEach(btn=>{
- btn.addEventListener("click",()=>{
-  const target=btn.dataset.screen;
-  showScreen(target);
-  if(target==="tavla" && !tavla.started)newTavla();
-  if(target==="batak" && !batak.started)startBatak("single");
- });
-});
+/* =========================================================
+   MENÜ
+========================================================= */
 
-document.querySelectorAll("[data-mode]").forEach(btn=>{
- btn.addEventListener("click",()=>{
-  showScreen("batak");
-  startBatak(btn.dataset.mode);
- });
-});
+$("homeBtn").onclick=()=>screen("home");
+
+$("tavlaBtn").onclick=()=>{
+ screen("tavla");
+ newTavla();
+};
+
+$("heroTavla").onclick=()=>{
+ screen("tavla");
+ newTavla();
+};
+
+$("cardTavla").onclick=()=>{
+ screen("tavla");
+ newTavla();
+};
+
+$("batakBtn").onclick=()=>{
+ screen("batak");
+ startBatak("single");
+};
+
+$("heroBatak").onclick=()=>{
+ screen("batak");
+ startBatak("single");
+};
+
+$("cardBatak").onclick=()=>{
+ screen("batak");
+ startBatak("single");
+};
+
+$("pairBtn").onclick=()=>{
+ screen("batak");
+ startBatak("pair");
+};
+
+$("cardPair").onclick=()=>{
+ screen("batak");
+ startBatak("pair");
+};
 
 /* =========================================================
    TAVLA
 ========================================================= */
 
 const tavla={
- started:false,
  board:[],
  barYou:0,
  barBot:0,
  offYou:0,
  offBot:0,
  dice:[],
- remaining:[],
  turn:"you",
  rolled:false,
  busy:false,
+ selected:null,
  gameOver:false
 };
 
-function initialTavla(){
- const b=Array(24).fill(0);
-
- // Kullanıcı 15 pul
- b[0]=2;
- b[11]=5;
- b[16]=3;
- b[18]=5;
-
- // Bot 15 pul
- b[23]=-2;
- b[12]=-5;
- b[7]=-3;
- b[5]=-5;
-
- return b;
-}
-
 function newTavla(){
- tavla.started=true;
- tavla.board=initialTavla();
+
+ tavla.board=Array(24).fill(0);
+
+ /* Standart başlangıç dizilişi */
+ tavla.board[0]=2;
+ tavla.board[11]=5;
+ tavla.board[16]=3;
+ tavla.board[18]=5;
+
+ tavla.board[23]=-2;
+ tavla.board[12]=-5;
+ tavla.board[7]=-3;
+ tavla.board[5]=-5;
+
  tavla.barYou=0;
  tavla.barBot=0;
  tavla.offYou=0;
  tavla.offBot=0;
  tavla.dice=[];
- tavla.remaining=[];
  tavla.turn="you";
  tavla.rolled=false;
  tavla.busy=false;
+ tavla.selected=null;
  tavla.gameOver=false;
 
- $("tavlaStatus").textContent="Senin sıran. Zar at.";
- $("tavlaMessage").textContent="Zar atarak başla.";
- renderTavla();
+ $("tStatus").textContent="Senin sıran.";
+ $("tMessage").textContent="Zar atarak başla.";
+
+ drawTavla();
 }
 
-function pointPosition(i,count){
- let top=i<12;
- let col=top?i:23-i;
- let left=(col*12.5)+6.25;
+function drawTavla(){
 
- let index=Math.min(count-1,4);
- let y;
+ $("pieces").innerHTML="";
 
- if(top)y=20+(index*43);
- else y=560-(index*43);
+ for(let p=0;p<24;p++){
 
- return {left,y,top};
-}
+  let count=tavla.board[p];
 
-function renderTavla(){
- const c=$("checkers");
- c.innerHTML="";
+  if(count===0)continue;
 
- for(let i=0;i<24;i++){
-  const n=tavla.board[i];
-  if(!n)continue;
+  let bot=count<0;
+  let n=Math.abs(count);
 
-  const amount=Math.abs(n);
+  for(let i=0;i<n;i++){
 
-  for(let k=0;k<amount;k++){
-   const p=pointPosition(i,k+1);
-   const el=document.createElement("div");
+   let el=document.createElement("div");
 
-   el.className="checker "+(n>0?"you":"bot");
-   el.style.left=p.left+"%";
-   el.style.top=p.top+"px";
-   el.title=(n>0?"Sen":"Rakip")+" - "+(i+1)+". kapı";
+   el.className="piece "+(bot?"botPiece":"youPiece");
 
-   c.appendChild(el);
+   let col=p<12?p:23-p;
+   let left=(col+.5)*12.5;
+
+   el.style.left=left+"%";
+
+   if(p<12){
+    el.style.top=(12+i*43)+"px";
+   }else{
+    el.style.bottom=(12+i*43)+"px";
+   }
+
+   $("pieces").appendChild(el);
   }
  }
 
- $("youBar").textContent=tavla.barYou;
- $("botBar").textContent=tavla.barBot;
- $("youOff").textContent=tavla.offYou;
- $("botOff").textContent=tavla.offBot;
+ $("barYou").textContent=tavla.barYou;
+ $("barBot").textContent=tavla.barBot;
+ $("offYou").textContent=tavla.offYou;
+ $("offBot").textContent=tavla.offBot;
 
- const dice=$("dice");
- dice.innerHTML="";
+ $("dice").innerHTML="";
 
  tavla.dice.forEach(d=>{
-  const x=document.createElement("div");
+  let x=document.createElement("div");
   x.className="die";
   x.textContent=d;
-  dice.appendChild(x);
+  $("dice").appendChild(x);
  });
 
- $("rollDice").disabled=
-   tavla.turn!=="you" ||
-   tavla.rolled ||
-   tavla.gameOver ||
-   tavla.busy;
-
- $("rollDice").style.opacity=$("rollDice").disabled?".45":"1";
+ $("roll").disabled=
+  tavla.turn!=="you"||
+  tavla.rolled||
+  tavla.busy||
+  tavla.gameOver;
 }
 
-function rollDice(){
- if(tavla.turn!=="you"||tavla.rolled||tavla.busy||tavla.gameOver)return;
+function rollTavla(){
 
- const a=Math.floor(Math.random()*6)+1;
- const b=Math.floor(Math.random()*6)+1;
+ if(tavla.turn!=="you"||
+    tavla.rolled||
+    tavla.busy||
+    tavla.gameOver)return;
+
+ let a=1+Math.floor(Math.random()*6);
+ let b=1+Math.floor(Math.random()*6);
 
  tavla.dice=a===b?[a,a,a,a]:[a,b];
-
- tavla.remaining=[...tavla.dice];
  tavla.rolled=true;
 
- $("tavlaMessage").textContent=
+ $("tMessage").textContent=
   "Zarlar: "+a+" - "+b+
-  ". Hareket etmek için taşının bulunduğu kapıya tıkla.";
+  ". Hareket ettirmek istediğin pula tıkla.";
 
- renderTavla();
+ drawTavla();
 }
 
-function canLand(player,target){
- if(target<0||target>23)return false;
+$("roll").onclick=rollTavla;
+$("newTavla").onclick=newTavla;
 
- const v=tavla.board[target];
+function homeYou(){
+ if(tavla.barYou>0)return false;
 
- if(player==="you"){
-  return v>=-1;
+ for(let i=6;i<24;i++){
+  if(tavla.board[i]>0)return false;
  }
 
- return v<=1;
-}
-
-function allHome(player){
- if(player==="you"){
-  if(tavla.barYou>0)return false;
-  for(let i=6;i<24;i++){
-   if(tavla.board[i]>0)return false;
-  }
-  return true;
- }
-
- if(tavla.barBot>0)return false;
- for(let i=0;i<18;i++){
-  if(tavla.board[i]<0)return false;
- }
  return true;
 }
 
-function legalMove(player,from,distance){
- if(distance<=0)return false;
+function homeBot(){
+ if(tavla.barBot>0)return false;
 
- if(player==="you"){
+ for(let i=0;i<18;i++){
+  if(tavla.board[i]<0)return false;
+ }
 
-  if(tavla.barYou>0){
-   if(from!==-1)return false;
+ return true;
+}
 
-   const target=distance-1;
-   return canLand("you",target);
+function legalYou(from,d){
+
+ if(d<=0)return false;
+
+ if(tavla.barYou>0){
+  if(from!==-1)return false;
+
+  let target=d-1;
+  return tavla.board[target]>=-1;
+ }
+
+ if(from<0||from>23)return false;
+ if(tavla.board[from]<=0)return false;
+
+ let target=from+d;
+
+ if(target<24){
+  return tavla.board[target]>=-1;
+ }
+
+ if(!homeYou())return false;
+
+ if(target===24)return true;
+
+ for(let i=23;i>=18;i--){
+  if(tavla.board[i]>0){
+   return from===i;
+  }
+ }
+
+ return true;
+}
+
+function moveYou(from,d){
+
+ if(!legalYou(from,d))return false;
+
+ let target;
+
+ if(from===-1){
+  tavla.barYou--;
+  target=d-1;
+ }else{
+  tavla.board[from]--;
+  target=from+d;
+ }
+
+ if(target>=24){
+  tavla.offYou++;
+ }else{
+
+  if(tavla.board[target]===-1){
+   tavla.board[target]=0;
+   tavla.barBot++;
   }
 
-  if(from<0||from>23||tavla.board[from]<=0)return false;
+  tavla.board[target]++;
+ }
 
-  const target=from+distance;
+ let index=tavla.dice.indexOf(d);
 
-  if(target<24)return canLand("you",target);
+ if(index>=0)tavla.dice.splice(index,1);
 
-  if(!allHome("you"))return false;
-
-  if(target===24)return true;
-
-  for(let i=23;i>=18;i--){
-   if(tavla.board[i]>0)return from===i;
-  }
-
+ if(tavla.offYou>=15){
+  finishTavla(true);
   return true;
  }
 
+ return true;
+}
+
+function legalBot(from,d){
+
+ if(d<=0)return false;
+
  if(tavla.barBot>0){
   if(from!==-1)return false;
-  const target=24-distance;
-  return canLand("bot",target);
+  return tavla.board[24-d]<=1;
  }
 
- if(from<0||from>23||tavla.board[from]>=0)return false;
+ if(from<0||from>23)return false;
+ if(tavla.board[from]>=0)return false;
 
- const target=from-distance;
+ let target=from-d;
 
- if(target>=0)return canLand("bot",target);
+ if(target>=0){
+  return tavla.board[target]<=1;
+ }
 
- if(!allHome("bot"))return false;
+ if(!homeBot())return false;
 
  if(target===-1)return true;
 
@@ -962,558 +936,501 @@ function legalMove(player,from,distance){
  return true;
 }
 
-function availableMoves(player){
- const moves=[];
+function moveBot(from,d){
 
- for(const d of tavla.remaining){
+ if(!legalBot(from,d))return false;
 
-  if(player==="you"&&tavla.barYou>0){
-   if(legalMove("you",-1,d)){
-    moves.push({from:-1,d});
-   }
-   continue;
-  }
+ let target;
 
-  if(player==="bot"&&tavla.barBot>0){
-   if(legalMove("bot",-1,d)){
-    moves.push({from:-1,d});
-   }
-   continue;
-  }
-
-  for(let i=0;i<24;i++){
-   if(legalMove(player,i,d)){
-    moves.push({from:i,d});
-   }
-  }
+ if(from===-1){
+  tavla.barBot--;
+  target=24-d;
+ }else{
+  tavla.board[from]++;
+  target=from-d;
  }
 
- return moves;
-}
-
-function removeDie(d){
- const i=tavla.remaining.indexOf(d);
- if(i>=0)tavla.remaining.splice(i,1);
-}
-
-function moveTavla(player,from,d){
- if(!legalMove(player,from,d))return false;
-
- if(player==="you"){
-
-  let target;
-
-  if(from===-1){
-   tavla.barYou--;
-   target=d-1;
-  }else{
-   tavla.board[from]--;
-   target=from+d;
-  }
-
-  if(target>=24){
-   tavla.offYou++;
-  }else{
-   if(tavla.board[target]===-1){
-    tavla.board[target]=0;
-    tavla.barBot++;
-   }
-   tavla.board[target]++;
-  }
-
+ if(target<0){
+  tavla.offBot++;
  }else{
 
-  let target;
-
-  if(from===-1){
-   tavla.barBot--;
-   target=24-d;
-  }else{
-   tavla.board[from]++;
-   target=from-d;
+  if(tavla.board[target]===1){
+   tavla.board[target]=0;
+   tavla.barYou++;
   }
 
-  if(target<0){
-   tavla.offBot++;
-  }else{
-   if(tavla.board[target]===1){
-    tavla.board[target]=0;
-    tavla.barYou++;
-   }
-   tavla.board[target]--;
-  }
+  tavla.board[target]--;
  }
 
- removeDie(d);
-
- if(tavla.offYou>=15){
-  endTavla("Kazandın! 🎉");
-  return true;
- }
+ let index=tavla.dice.indexOf(d);
+ if(index>=0)tavla.dice.splice(index,1);
 
  if(tavla.offBot>=15){
-  endTavla("Rakip kazandı.");
+  finishTavla(false);
   return true;
  }
 
  return true;
 }
 
-function clickTavlaPoint(i){
- if(tavla.turn!=="you"||!tavla.rolled||tavla.busy||tavla.gameOver)return;
+function possibleYou(){
 
- let possible=[];
+ let result=[];
 
- for(const d of tavla.remaining){
-  if(legalMove("you",i,d)){
-   possible.push(d);
+ for(let d of tavla.dice){
+
+  if(tavla.barYou>0){
+   if(legalYou(-1,d)){
+    result.push({from:-1,d});
+   }
+   continue;
+  }
+
+  for(let i=0;i<24;i++){
+   if(legalYou(i,d)){
+    result.push({from:i,d});
+   }
   }
  }
 
- if(!possible.length)return;
+ return result;
+}
 
- moveTavla("you",i,possible[0]);
+function possibleBot(){
 
- if(tavla.remaining.length===0){
-  finishYouTurn();
- }else{
-  const moves=availableMoves("you");
+ let result=[];
 
-  if(!moves.length){
-   finishYouTurn();
-  }else{
-   $("tavlaMessage").textContent=
-    "Hamleni yaptın. Kalan zar: "+tavla.remaining.join(", ");
-   renderTavla();
+ for(let d of tavla.dice){
+
+  if(tavla.barBot>0){
+   if(legalBot(-1,d)){
+    result.push({from:-1,d});
+   }
+   continue;
   }
+
+  for(let i=0;i<24;i++){
+   if(legalBot(i,d)){
+    result.push({from:i,d});
+   }
+  }
+ }
+
+ return result;
 }
 
-function finishYouTurn(){
- tavla.rolled=false;
- tavla.remaining=[];
- tavla.turn="bot";
- $("tavlaStatus").textContent="Rakibin sırası...";
- $("tavlaMessage").textContent="Rakip düşünüyor...";
- renderTavla();
+document.querySelectorAll(".tpoint").forEach(el=>{
 
- setTimeout(botTavlaTurn,650);
-}
+ el.onclick=()=>{
 
-function botTavlaTurn(){
- if(tavla.gameOver)return;
+  if(tavla.turn!=="you"||
+     !tavla.rolled||
+     tavla.busy||
+     tavla.gameOver)return;
 
- tavla.busy=true;
- renderTavla();
+  let point=Number(el.dataset.point);
 
- const a=Math.floor(Math.random()*6)+1;
- const b=Math.floor(Math.random()*6)+1;
+  let choices=tavla.dice.filter(d=>legalYou(point,d));
 
- tavla.remaining=a===b?[a,a,a,a]:[a,b];
+  if(!choices.length)return;
 
- $("tavlaMessage").textContent=
-  "Rakip zar attı: "+a+" - "+b;
+  moveYou(point,choices[0]);
 
- function step(){
+  drawTavla();
 
-  if(tavla.gameOver){
-   tavla.busy=false;
+  if(tavla.gameOver)return;
+
+  if(tavla.dice.length===0){
+   endYouTurn();
    return;
   }
 
-  const moves=availableMoves("bot");
-
-  if(!moves.length){
-   tavla.remaining=[];
-   tavla.busy=false;
-   tavla.turn="you";
-   tavla.rolled=false;
-   $("tavlaStatus").textContent="Senin sıran.";
-   $("tavlaMessage").textContent="Rakip oynayamadı. Zar at.";
-   renderTavla();
+  if(!possibleYou().length){
+   endYouTurn();
    return;
   }
 
-  // Bot en yüksek kapıdan ilerlemeye çalışır.
-  moves.sort((x,y)=>{
-   const ax=x.from<0?24-x.d:x.from-x.d;
-   const ay=y.from<0?24-y.d:y.from-y.d;
-   return ay-ax;
-  });
+  $("tMessage").textContent=
+   "Kalan zar: "+tavla.dice.join(", ");
 
-  const m=moves[0];
-
-  moveTavla("bot",m.from,m.d);
-
-  renderTavla();
-
-  if(tavla.remaining.length){
-   setTimeout(step,400);
-  }else{
-   tavla.busy=false;
-   tavla.turn="you";
-   tavla.rolled=false;
-   $("tavlaStatus").textContent="Senin sıran.";
-   $("tavlaMessage").textContent="Zar at.";
-   renderTavla();
-  }
- }
-
- step();
-}
-
-function endTavla(text){
- tavla.gameOver=true;
- tavla.busy=false;
- tavla.remaining=[];
- tavla.rolled=false;
-
- $("tavlaStatus").textContent=text;
- $("tavlaMessage").textContent=text;
- renderTavla();
-
- setTimeout(()=>{
-  openModal(
-   "Tavla",
-   text,
-   [{text:"Yeni Oyun",fn:()=>{
-    closeModal();
-    newTavla();
-   }}]
-  );
- },200);
-}
-
-/* Tahta tıklaması */
-$("board").addEventListener("click",function(e){
- if(!tavla.rolled||tavla.turn!=="you")return;
-
- const rect=this.getBoundingClientRect();
- const x=e.clientX-rect.left;
- const y=e.clientY-rect.top;
-
- let col=Math.floor((x/rect.width)*8);
-
- if(x>rect.width/2)col=Math.floor(((x-rect.width/2)/(rect.width/2))*8)+8;
-
- let point;
-
- if(y<rect.height/2){
-  point=col;
- }else{
-  point=23-col;
- }
-
- clickTavlaPoint(point);
+  drawTavla();
+ };
 });
 
-$("rollDice").addEventListener("click",rollDice);
-$("newTavla").addEventListener("click",newTavla);
+function endYouTurn(){
+
+ tavla.dice=[];
+ tavla.rolled=false;
+ tavla.turn="bot";
+ tavla.busy=true;
+
+ $("tStatus").textContent="Rakip oynuyor...";
+ $("tMessage").textContent="Rakip düşünüyor.";
+
+ drawTavla();
+
+ setTimeout(botTurn,700);
+}
+
+function botTurn(){
+
+ if(tavla.gameOver)return;
+
+ let a=1+Math.floor(Math.random()*6);
+ let b=1+Math.floor(Math.random()*6);
+
+ tavla.dice=a===b?[a,a,a,a]:[a,b];
+
+ function play(){
+
+  if(tavla.gameOver)return;
+
+  let moves=possibleBot();
+
+  if(!moves.length){
+
+   tavla.dice=[];
+   tavla.busy=false;
+   tavla.rolled=false;
+   tavla.turn="you";
+
+   $("tStatus").textContent="Senin sıran.";
+   $("tMessage").textContent="Rakip oynayamadı. Zar at.";
+
+   drawTavla();
+   return;
+  }
+
+  /* Rakip basit ama yasal hamle seçer */
+  let move=moves[Math.floor(Math.random()*moves.length)];
+
+  moveBot(move.from,move.d);
+
+  drawTavla();
+
+  if(tavla.gameOver)return;
+
+  if(tavla.dice.length){
+   setTimeout(play,400);
+  }else{
+
+   tavla.busy=false;
+   tavla.rolled=false;
+   tavla.turn="you";
+
+   $("tStatus").textContent="Senin sıran.";
+   $("tMessage").textContent="Zar at.";
+
+   drawTavla();
+  }
+ }
+
+ play();
+}
+
+function finishTavla(you){
+
+ tavla.gameOver=true;
+ tavla.busy=false;
+ tavla.dice=[];
+ tavla.rolled=false;
+
+ drawTavla();
+
+ let text=you?
+  "Tebrikler! Tavlayı kazandın. 🎉":
+  "Rakip tavlayı kazandı.";
+
+ $("tStatus").textContent=text;
+ $("tMessage").textContent=text;
+
+ setTimeout(()=>{
+  modal(
+   "Tavla Bitti",
+   text,
+   "Yeni Oyun",
+   ()=>{
+    closeModal();
+    newTavla();
+   }
+  );
+ },300);
+}
 
 /* =========================================================
    BATAK
 ========================================================= */
 
+const suits=["♠","♥","♦","♣"];
+
+const ranks=[
+ ["2",2],["3",3],["4",4],["5",5],["6",6],
+ ["7",7],["8",8],["9",9],["10",10],
+ ["J",11],["Q",12],["K",13],["A",14]
+];
+
 const batak={
- started:false,
  mode:"single",
  players:[],
  deck:[],
- trump:null,
  bidder:-1,
  bid:0,
  currentBid:0,
- biddingOrder:[],
  bidIndex:0,
- phase:"idle",
- leader:0,
+ phase:"bid",
+ trump:null,
  turn:0,
+ leader:0,
  trick:[],
  trickNo:0,
- scores:[0,0,0,0],
- roundWins:[0,0,0,0],
- selected:null,
- dragCard:null
+ wins:[0,0,0,0],
+ scores:[0,0,0,0]
 };
 
+function deck(){
+
+ let d=[];
+
+ suits.forEach(s=>{
+  ranks.forEach(r=>{
+   d.push({
+    suit:s,
+    rank:r[0],
+    value:r[1],
+    id:s+r[0]
+   });
+  });
+ });
+
+ for(let i=d.length-1;i>0;i--){
+  let j=Math.floor(Math.random()*(i+1));
+  [d[i],d[j]]=[d[j],d[i]];
+ }
+
+ return d;
+}
+
+function sortCards(h){
+
+ h.sort((a,b)=>{
+  let s=suits.indexOf(a.suit)-suits.indexOf(b.suit);
+  return s||a.value-b.value;
+ });
+}
+
 function startBatak(mode){
- batak.started=true;
+
  batak.mode=mode;
- batak.deck=makeDeck();
+ batak.deck=deck();
  batak.players=[
-  {name:"Rakip 1",hand:[],score:0},
-  {name:"Rakip 2",hand:[],score:0},
-  {name:"Rakip 3",hand:[],score:0},
-  {name:"Sen",hand:[],score:0}
+  {name:"Rakip 1",hand:[]},
+  {name:"Rakip 2",hand:[]},
+  {name:"Rakip 3",hand:[]},
+  {name:"Sen",hand:[]}
  ];
-
- batak.trump=null;
- batak.bidder=-1;
- batak.bid=0;
- batak.currentBid=0;
- batak.bidIndex=0;
- batak.phase="bidding";
- batak.trick=[];
- batak.trickNo=0;
- batak.roundWins=[0,0,0,0];
- batak.scores=[0,0,0,0];
-
- for(const p of batak.players)p.hand=[];
 
  for(let i=0;i<52;i++){
   batak.players[i%4].hand.push(batak.deck[i]);
  }
 
- batak.players.forEach(p=>sortHand(p.hand));
+ batak.players.forEach(p=>sortCards(p.hand));
 
- batak.biddingOrder=[0,1,2,3];
+ batak.bidder=-1;
+ batak.bid=0;
+ batak.currentBid=0;
+ batak.bidIndex=0;
+ batak.phase="bid";
+ batak.trump=null;
+ batak.turn=0;
+ batak.leader=0;
+ batak.trick=[];
+ batak.trickNo=0;
+ batak.wins=[0,0,0,0];
 
- $("batakTitle").textContent=
-  mode==="pair"?"👥 Eşli İhaleli Batak":"🃏 İhaleli Batak";
+ $("bTitle").textContent=
+  mode==="pair"?
+  "👥 Eşli İhaleli Batak":
+  "🃏 İhaleli Batak";
 
- $("modeText").textContent=
-  mode==="pair"?"Eşli İhaleli Batak":"İhaleli Batak";
+ $("bStatus").textContent=
+  "İhale başladı. Rakip 1 düşünüyor.";
 
- $("bidText").textContent="-";
- $("trumpText").textContent="-";
-
- $("batakStatus").textContent=
-  "İhale başladı. Sıra Rakip 1'de.";
-
- $("centerMessage").textContent=
+ $("centerText").textContent=
   "İhale devam ediyor.";
 
- renderBatak();
- nextBidder();
+ drawBatak();
+ setTimeout(botBid,700);
 }
 
-function sortHand(hand){
- hand.sort((a,b)=>{
-  const s=SUITS.indexOf(a.suit)-SUITS.indexOf(b.suit);
-  if(s)return s;
-  return a.value-b.value;
- });
+function cardHTML(c){
+
+ let red=c.suit==="♥"||c.suit==="♦";
+
+ return `
+ <div class="card ${red?"red":""}" data-id="${c.id}">
+  <span class="cardSmall">${c.rank}${c.suit}</span>
+  <span class="cardBig">${c.suit}</span>
+  <span class="cardSmall">${c.rank}${c.suit}</span>
+ </div>`;
 }
 
-function renderBatak(){
- if(!batak.started)return;
+function drawBatak(){
 
- const names=[
-  batak.players[0].name,
-  batak.players[1].name,
-  batak.players[2].name,
-  batak.players[3].name
- ];
+ $("seat0").textContent=batak.players[0].name;
+ $("seat1").textContent=batak.players[1].name;
+ $("seat2").textContent=batak.players[2].name;
+ $("seat3").textContent=batak.players[3].name;
 
- $("seat1").textContent=names[0];
- $("seat2").textContent=names[1];
- $("seat3").textContent=names[2];
- $("seat4").textContent=names[3];
-
- document.querySelectorAll(".seat").forEach((el,i)=>{
-  el.classList.toggle("active",
-   batak.phase!=="finished" && i===batak.turn
+ [0,1,2,3].forEach(i=>{
+  $("seat"+i).classList.toggle(
+   "active",
+   batak.phase==="playing"&&batak.turn===i
   );
  });
 
- $("bidText").textContent=
-  batak.bid>0 ? batak.bid+" / "+batak.currentBid : "Henüz yok";
+ $("bidInfo").textContent=
+  batak.bid?
+  batak.bid+" / "+batak.currentBid:
+  "Henüz yok";
 
- $("trumpText").textContent=batak.trump||"-";
+ $("trumpInfo").textContent=batak.trump||"-";
+ $("trickInfo").textContent=
+  batak.trickNo+" / 13";
 
- const played=$("played");
- played.innerHTML="";
+ $("played").innerHTML="";
 
  batak.trick.forEach(x=>{
-  const wrap=document.createElement("div");
-  wrap.innerHTML=cardHTML(x.card);
-  const card=wrap.firstElementChild;
-  card.draggable=false;
-  wrap.appendChild(document.createElement("div"));
-  played.appendChild(card);
+  $("played").insertAdjacentHTML(
+   "beforeend",
+   cardHTML(x.card)
+  );
  });
 
- const hand=$("playerHand");
- hand.innerHTML="";
+ drawHand();
+ drawControls();
+ drawScores();
+}
 
- if(batak.mode==="pair" &&
-    batak.bidder===0 &&
-    batak.phase==="playing"){
-  // İhaleyi kullanıcı aldıysa partneri de açılır.
-  renderPlayerHand(hand,0);
-  renderPlayerHand(hand,2);
- }else{
-  renderPlayerHand(hand,3);
+function drawHand(){
+
+ let h=$("hand");
+ h.innerHTML="";
+
+ let indexes=[3];
+
+ if(
+  batak.mode==="pair"&&
+  batak.bidder===3&&
+  batak.phase==="playing"
+ ){
+  indexes=[3,2];
  }
 
- renderControls();
- renderScores();
-}
+ indexes.forEach(index=>{
 
-function renderPlayerHand(container,index){
- const title=document.createElement("div");
- title.style.width="100%";
- title.style.color="#e5b94b";
- title.style.marginBottom="4px";
- title.textContent=
-  index===3 ? "Senin Elin" : "Eşinin Eli";
- container.appendChild(title);
+  let title=document.createElement("div");
+  title.style.width="100%";
+  title.style.color="#e5b94b";
+  title.textContent=
+   index===3?"Senin Elin":"Eşinin Eli";
+  h.appendChild(title);
 
- batak.players[index].hand.forEach(card=>{
-  const wrap=document.createElement("div");
-  wrap.innerHTML=cardHTML(card);
-  const el=wrap.firstElementChild;
+  batak.players[index].hand.forEach(card=>{
 
-  const playable=
-   batak.phase==="playing" &&
-   (batak.turn===3 || (batak.mode==="pair" && batak.bidder===3 && index===2));
+   let wrap=document.createElement("div");
+   wrap.innerHTML=cardHTML(card);
 
-  if(!playable)el.classList.add("disabled");
+   let el=wrap.firstElementChild;
 
-  el.dataset.owner=index;
+   let can=
+    batak.phase==="playing"&&
+    (
+     batak.turn===3&&index===3||
+     batak.mode==="pair"&&
+     batak.bidder===3&&
+     batak.turn===2&&
+     index===2
+    );
 
-  if(playable){
-   el.addEventListener("click",()=>{
-    playCard(index,card.id);
-   });
+   if(!can)el.classList.add("disabled");
 
-   el.addEventListener("dragstart",()=>{
-    batak.dragCard=card.id;
-   });
+   if(can){
+    el.onclick=()=>{
+     playCard(index,card.id);
+    };
+   }
 
-   el.addEventListener("dragover",e=>e.preventDefault());
-
-   el.addEventListener("drop",e=>{
-    e.preventDefault();
-    reorderHand(index,batak.dragCard,card.id);
-   });
-  }
-
-  container.appendChild(el);
+   h.appendChild(el);
+  });
  });
 }
 
-function reorderHand(index,fromId,toId){
- const h=batak.players[index].hand;
- const a=h.findIndex(c=>c.id===fromId);
- const b=h.findIndex(c=>c.id===toId);
+function drawControls(){
 
- if(a<0||b<0)return;
-
- const [c]=h.splice(a,1);
- h.splice(b,0,c);
-
- renderBatak();
-}
-
-function renderControls(){
- const c=$("batakControls");
+ let c=$("controls");
  c.innerHTML="";
 
- if(batak.phase==="bidding"){
-  const min=batak.mode==="pair"?8:4;
+ if(batak.phase==="bid"&&batak.turn===3){
 
-  const max=13;
+  let min=batak.mode==="pair"?8:4;
 
-  for(let v=min;v<=max;v++){
-   if(v>batak.currentBid+1)continue;
+  for(let n=min;n<=13;n++){
 
-   const b=document.createElement("button");
-   b.className="bid-btn";
-   b.textContent=v;
-   b.addEventListener("click",()=>makeBid(v));
+   if(n<=batak.currentBid)continue;
+
+   let b=document.createElement("button");
+   b.textContent=n;
+   b.onclick=()=>humanBid(n);
    c.appendChild(b);
   }
 
-  const pass=document.createElement("button");
-  pass.className="bid-btn";
+  let pass=document.createElement("button");
   pass.textContent="Pas";
-  pass.addEventListener("click",()=>makeBid(null));
+  pass.onclick=()=>humanBid(null);
   c.appendChild(pass);
  }
 
- if(batak.phase==="trump"){
-  SUITS.forEach(s=>{
-   const b=document.createElement("button");
-   b.className="trump-btn "+
-    ((s==="♥"||s==="♦")?"red":"");
-   b.textContent=s+" "+
+ if(batak.phase==="trump"&&batak.bidder===3){
+
+  suits.forEach(s=>{
+   let b=document.createElement("button");
+   b.textContent=
+    s+" "+
     ({ "♠":"Maça","♥":"Kupa","♦":"Karo","♣":"Sinek"}[s]);
 
-   b.addEventListener("click",()=>{
-    chooseTrump(s);
-   });
+   b.onclick=()=>chooseTrump(s);
 
    c.appendChild(b);
   });
  }
 }
 
-function renderScores(){
- const s=$("scores");
- s.innerHTML="";
+function drawScores(){
+
+ $("scores").innerHTML="";
 
  batak.players.forEach((p,i)=>{
-  const d=document.createElement("div");
+
+  let d=document.createElement("div");
   d.className="score";
 
-  let label=p.name;
+  let name=p.name;
 
   if(batak.mode==="pair"){
-   label=i===0||i===2?"Biz":"Rakip";
+   name=(i===0||i===2)?"Biz":"Rakip";
   }
 
-  d.textContent=label+" : "+batak.scores[i];
-  s.appendChild(d);
+  d.textContent=name+" : "+batak.scores[i];
+  $("scores").appendChild(d);
  });
 }
 
-function nextBidder(){
- if(batak.phase!=="bidding")return;
+function humanBid(value){
 
- if(batak.bidIndex>=4){
-
-  if(batak.bidder===-1){
-   // Herkes pas: zorunlu minimum ihale
-   batak.bidder=0;
-   batak.bid=batak.mode==="pair"?8:4;
-  }
-
-  if(batak.bidder===3){
-   batak.phase="trump";
-   $("batakStatus").textContent=
-    "İhaleyi sen kazandın. Koz seç.";
-   $("centerMessage").textContent=
-    "Koz seçmek için aşağıdaki renklerden birine bas.";
-   renderBatak();
-  }else{
-   // Bot koz seçer.
-   botChooseTrump();
-  }
-
-  return;
- }
-
- batak.turn=batak.biddingOrder[batak.bidIndex];
-
- if(batak.turn===3){
-  $("batakStatus").textContent=
-   "Sıra sende. İhale ver veya Pas.";
- }else{
-  $("batakStatus").textContent=
-   "Sıra "+batak.players[batak.turn].name+"...";
-  setTimeout(botBid,600);
- }
-
- renderBatak();
-}
-
-function makeBid(value){
- if(batak.phase!=="bidding"||batak.turn!==3)return;
+ if(batak.phase!=="bid"||batak.turn!==3)return;
 
  if(value!==null){
-  const min=batak.mode==="pair"?8:4;
 
-  if(value<min)return;
   if(value<=batak.currentBid)return;
 
   batak.currentBid=value;
@@ -1522,37 +1439,42 @@ function makeBid(value){
  }
 
  batak.bidIndex++;
- nextBidder();
+
+ nextBid();
 }
 
 function botBid(){
- if(batak.phase!=="bidding")return;
 
- const p=batak.players[batak.turn];
- const min=batak.mode==="pair"?8:4;
+ if(batak.phase!=="bid")return;
+ if(batak.turn===3)return;
 
- let strength=0;
+ let p=batak.players[batak.turn];
+ let min=batak.mode==="pair"?8:4;
 
- SUITS.forEach(s=>{
-  const cards=p.hand.filter(c=>c.suit===s);
-  strength=Math.max(
-   strength,
-   cards.length+
-   cards.filter(c=>c.value>=11).length
-  );
+ let best=0;
+
+ suits.forEach(s=>{
+  let h=p.hand.filter(c=>c.suit===s);
+  let score=h.length+
+   h.filter(c=>c.value>=11).length;
+
+  if(score>best)best=score;
  });
 
  let bid=null;
 
- if(strength>=8){
-  const wanted=Math.min(13,
-   Math.max(min,
+ if(best>=8){
+
+  let value=Math.min(
+   13,
+   Math.max(
+    min,
     batak.currentBid+1,
-    Math.min(13,Math.floor(strength+2))
+    Math.floor(best)
    )
   );
 
-  if(wanted>batak.currentBid)bid=wanted;
+  if(value>batak.currentBid)bid=value;
  }
 
  if(bid!==null){
@@ -1562,134 +1484,181 @@ function botBid(){
  }
 
  batak.bidIndex++;
- nextBidder();
+
+ nextBid();
 }
 
-function botChooseTrump(){
- const p=batak.players[batak.bidder];
+function nextBid(){
 
- let best=SUITS[0];
+ if(batak.bidIndex>=4){
+
+  if(batak.bidder===-1){
+   batak.bidder=0;
+   batak.bid=batak.mode==="pair"?8:4;
+  }
+
+  if(batak.bidder===3){
+
+   batak.phase="trump";
+   batak.turn=3;
+
+   $("bStatus").textContent=
+    "İhaleyi sen kazandın. Koz seç.";
+
+   drawBatak();
+   return;
+  }
+
+  botTrump();
+  return;
+ }
+
+ batak.turn=batak.bidIndex;
+
+ if(batak.turn===3){
+
+  $("bStatus").textContent=
+   "Sıra sende. İhale ver veya Pas.";
+
+  drawBatak();
+
+ }else{
+
+  $("bStatus").textContent=
+   batak.players[batak.turn].name+
+   " ihale düşünüyor.";
+
+  drawBatak();
+
+  setTimeout(botBid,650);
+ }
+}
+
+function botTrump(){
+
+ let p=batak.players[batak.bidder];
+ let best=suits[0];
  let score=-1;
 
- SUITS.forEach(s=>{
-  const cards=p.hand.filter(c=>c.suit===s);
-  const x=cards.length+
-   cards.filter(c=>c.value>=11).length*0.7;
+ suits.forEach(s=>{
+  let h=p.hand.filter(c=>c.suit===s);
 
-  if(x>score){
-   score=x;
+  let value=h.length+
+   h.filter(c=>c.value>=11).length;
+
+  if(value>score){
+   score=value;
    best=s;
   }
  });
 
  batak.trump=best;
- batak.phase="playing";
+ beginPlaying();
+}
 
+function chooseTrump(s){
+
+ if(batak.phase!=="trump"||
+    batak.bidder!==3)return;
+
+ batak.trump=s;
+ beginPlaying();
+}
+
+function beginPlaying(){
+
+ batak.phase="playing";
  batak.leader=batak.bidder;
  batak.turn=batak.leader;
+ batak.trick=[];
+ batak.trickNo=0;
+ batak.wins=[0,0,0,0];
 
- $("batakStatus").textContent=
-  batak.players[batak.bidder].name+
-  " ihaleyi aldı. Koz: "+best;
+ $("bStatus").textContent=
+  "Koz: "+batak.trump+
+  ". Oyun başladı.";
 
- $("centerMessage").textContent=
-  "Koz: "+best;
+ $("centerText").textContent=
+  "Koz: "+batak.trump;
 
- renderBatak();
+ drawBatak();
 
  if(batak.turn!==3){
   setTimeout(botPlay,700);
  }
 }
 
-function chooseTrump(s){
- if(batak.phase!=="trump"||batak.bidder!==3)return;
+function legalCards(index){
 
- batak.trump=s;
- batak.phase="playing";
- batak.leader=3;
- batak.turn=3;
+ let h=batak.players[index].hand;
 
- $("batakStatus").textContent=
-  "Koz "+s+". İlk kartı sen oyna.";
+ if(!batak.trick.length)return [...h];
 
- $("centerMessage").textContent=
-  "Koz: "+s;
+ let lead=batak.trick[0].card.suit;
 
- renderBatak();
+ let same=h.filter(c=>c.suit===lead);
+
+ if(same.length)return same;
+
+ let trump=h.filter(c=>c.suit===batak.trump);
+
+ if(trump.length)return trump;
+
+ return [...h];
 }
 
-function sameSuit(card,suit){
- return card.suit===suit;
-}
+function beats(a,b){
 
-function cardBeats(a,b,lead,trump){
- if(a.suit===b.suit)return a.value>b.value;
- if(a.suit===trump && b.suit!==trump)return true;
- if(a.suit!==trump && b.suit===trump)return false;
+ let lead=batak.trick[0].card.suit;
+
+ if(a.suit===b.suit)
+  return a.value>b.value;
+
+ if(a.suit===batak.trump&&
+    b.suit!==batak.trump)
+  return true;
+
+ if(a.suit!==batak.trump&&
+    b.suit===batak.trump)
+  return false;
+
  return a.suit===lead;
 }
 
-function currentWinner(trick){
- if(!trick.length)return null;
+function winner(){
 
- const lead=trick[0].card.suit;
- let best=trick[0];
+ let best=batak.trick[0];
 
- for(let i=1;i<trick.length;i++){
-  if(cardBeats(
-   trick[i].card,
-   best.card,
-   lead,
-   batak.trump
+ for(let i=1;i<batak.trick.length;i++){
+  if(beats(
+   batak.trick[i].card,
+   best.card
   )){
-   best=trick[i];
+   best=batak.trick[i];
   }
  }
 
  return best;
 }
 
-function legalCards(index){
- const hand=batak.players[index].hand;
-
- if(!batak.trick.length)return [...hand];
-
- const lead=batak.trick[0].card.suit;
- const same=hand.filter(c=>c.suit===lead);
-
- if(same.length)return same;
-
- // Koz varsa ve elde koz varsa, koz oynayabilir.
- const tr=hand.filter(c=>c.suit===batak.trump);
-
- if(tr.length)return tr;
-
- return [...hand];
-}
-
 function playCard(index,id){
+
  if(batak.phase!=="playing")return;
 
- const allowed=
-  (index===3 && batak.turn===3) ||
-  (batak.mode==="pair" &&
-   batak.bidder===3 &&
-   index===2 &&
-   batak.turn===2);
+ if(batak.turn!==index)return;
 
- if(!allowed)return;
-
- const hand=batak.players[index].hand;
- const card=hand.find(c=>c.id===id);
+ let hand=batak.players[index].hand;
+ let card=hand.find(c=>c.id===id);
 
  if(!card)return;
 
- const legal=legalCards(index);
+ let legal=legalCards(index);
 
  if(!legal.some(c=>c.id===id)){
-  $("batakStatus").textContent=
+
+  $("bStatus").textContent=
    "Bu kartı oynayamazsın. Açılan renge uymalısın.";
+
   return;
  }
 
@@ -1700,69 +1669,74 @@ function playCard(index,id){
   card:card
  });
 
- renderBatak();
+ drawBatak();
 
  if(batak.trick.length===4){
+
   setTimeout(finishTrick,700);
+
  }else{
-  nextPlayingTurn();
+
+  nextPlayer();
  }
 }
 
-function nextPlayingTurn(){
- const current=batak.turn;
+function nextPlayer(){
 
- let next=(current+1)%4;
+ let n=(batak.turn+1)%4;
 
- // Eşli modda kullanıcı ihaleyi aldıysa
- // kendi eli ve eşinin eli kullanıcı tarafından oynanır.
- if(batak.mode==="pair" && batak.bidder===3){
-  if(next===2){
-   batak.turn=2;
-   $("batakStatus").textContent="Eşinin elinden kart seç.";
-   renderBatak();
-   return;
-  }
+ if(
+  batak.mode==="pair"&&
+  batak.bidder===3&&
+  n===2
+ ){
+  batak.turn=2;
+  $("bStatus").textContent=
+   "Eşinin elinden kart oyna.";
+  drawBatak();
+  return;
  }
 
- batak.turn=next;
+ batak.turn=n;
 
- if(batak.turn===3){
-  $("batakStatus").textContent="Sıra sende.";
-  renderBatak();
+ if(n===3){
+
+  $("bStatus").textContent="Sıra sende.";
+  drawBatak();
+
  }else{
-  $("batakStatus").textContent=
-   batak.players[batak.turn].name+" oynuyor...";
-  renderBatak();
-  setTimeout(botPlay,650);
+
+  $("bStatus").textContent=
+   batak.players[n].name+" oynuyor.";
+
+  drawBatak();
+
+  setTimeout(botPlay,550);
  }
 }
 
 function botPlay(){
+
  if(batak.phase!=="playing")return;
  if(batak.turn===3)return;
 
- const index=batak.turn;
- const legal=legalCards(index);
+ let index=batak.turn;
+ let legal=legalCards(index);
 
  if(!legal.length)return;
 
  let card;
 
  if(!batak.trick.length){
-  // Yüksek kartla başlamak yerine kontrollü oynama
-  card=legal[Math.floor(Math.random()*legal.length)];
- }else{
-  const winner=currentWinner(batak.trick);
 
-  const winning=legal.filter(c=>
-   cardBeats(
-    c,
-    winner.card,
-    batak.trick[0].card.suit,
-    batak.trump
-   )
-  );
+  legal.sort((a,b)=>b.value-a.value);
+  card=legal[legal.length-1];
+
+ }else{
+
+  let w=winner();
+
+  let winning=legal.filter(c=>beats(c,w.card));
 
   if(winning.length){
    winning.sort((a,b)=>a.value-b.value);
@@ -1777,147 +1751,148 @@ function botPlay(){
 }
 
 function finishTrick(){
- const winner=currentWinner(batak.trick);
 
- if(!winner)return;
+ if(batak.trick.length!==4)return;
 
- batak.roundWins[winner.player]++;
+ let w=winner();
 
- $("centerMessage").textContent=
-  batak.players[winner.player].name+
+ batak.wins[w.player]++;
+
+ $("centerText").textContent=
+  batak.players[w.player].name+
   " eli aldı.";
 
- batak.leader=winner.player;
  batak.trick=[];
+ batak.trickNo++;
 
- if(batak.trickNo>=12){
-  batak.trickNo=13;
-  finishRound();
+ batak.leader=w.player;
+ batak.turn=w.player;
+
+ drawBatak();
+
+ if(batak.trickNo>=13){
+
+  setTimeout(finishBatak,700);
   return;
  }
 
- batak.trickNo++;
-
- batak.turn=batak.leader;
-
- renderBatak();
-
  setTimeout(()=>{
+
   if(batak.turn===3){
-   $("batakStatus").textContent="Sıra sende.";
-   renderBatak();
+
+   $("bStatus").textContent="Sıra sende.";
+   drawBatak();
+
   }else{
-   $("batakStatus").textContent=
-    batak.players[batak.turn].name+" başlıyor...";
-   renderBatak();
-   botPlay();
+
+   $("bStatus").textContent=
+    batak.players[batak.turn].name+
+    " başlıyor.";
+
+   drawBatak();
+
+   setTimeout(botPlay,500);
   }
+
  },500);
 }
 
-function finishRound(){
+function finishBatak(){
+
  batak.phase="finished";
 
- const bidder=batak.bidder;
- const required=batak.bid;
+ let bidder=batak.bidder;
+ let required=batak.bid;
 
  if(batak.mode==="pair"){
-  const teamWins=
-   batak.roundWins[0]+batak.roundWins[2];
 
-  const oppWins=
-   batak.roundWins[1]+batak.roundWins[3];
+  let ours=batak.wins[0]+batak.wins[2];
+  let theirs=batak.wins[1]+batak.wins[3];
 
-  if(teamWins>=required){
-   batak.scores[0]+=teamWins;
-   batak.scores[2]=batak.scores[0];
+  if(ours>=required){
+   batak.scores[0]+=ours;
   }else{
    batak.scores[0]-=required;
-   batak.scores[2]=batak.scores[0];
   }
 
-  if(oppWins>=required){
-   batak.scores[1]+=oppWins;
-   batak.scores[3]=batak.scores[1];
+  if(theirs>=required){
+   batak.scores[1]+=theirs;
   }else{
    batak.scores[1]-=required;
-   batak.scores[3]=batak.scores[1];
   }
+
+  batak.scores[2]=batak.scores[0];
+  batak.scores[3]=batak.scores[1];
 
  }else{
 
   for(let i=0;i<4;i++){
+
    if(i===bidder){
-    if(batak.roundWins[i]>=required)
-     batak.scores[i]+=batak.roundWins[i];
+
+    if(batak.wins[i]>=required)
+     batak.scores[i]+=batak.wins[i];
     else
      batak.scores[i]-=required;
+
    }else{
-    if(batak.roundWins[i]>=1)
-     batak.scores[i]+=batak.roundWins[i];
+
+    if(batak.wins[i]>=1)
+     batak.scores[i]+=batak.wins[i];
     else
      batak.scores[i]-=1;
    }
   }
  }
 
- renderBatak();
+ drawBatak();
 
  let text;
 
  if(batak.mode==="pair"){
-  const ours=batak.scores[0];
-  const opp=batak.scores[1];
 
-  if(ours>opp)text="Bu eli biz aldık! 🎉";
-  else if(opp>ours)text="Rakip takım eli aldı.";
-  else text="El berabere.";
+  text=
+   batak.scores[0]>batak.scores[1]?
+   "Biz eli aldık! 🎉":
+   batak.scores[1]>batak.scores[0]?
+   "Rakip takım eli aldı.":
+   "El berabere.";
+
  }else{
-  text="El tamamlandı.";
+
+  text="13 el tamamlandı.";
  }
 
- $("batakStatus").textContent=text;
- $("centerMessage").textContent=
-  "13 el tamamlandı.";
+ $("bStatus").textContent=text;
 
- openModal(
+ modal(
   "Batak Eli Bitti",
   text,
-  [
-   {
-    text:"Yeni El",
-    fn:()=>{
-     closeModal();
-     startBatak(batak.mode);
-    }
-   }
-  ]
+  "Yeni El",
+  ()=>{
+   closeModal();
+   startBatak(batak.mode);
+  }
  );
 }
-
-/* Yeni Batak */
-$("newBatak").addEventListener("click",()=>{
- startBatak(batak.mode||"single");
-});
 
 /* =========================================================
    MODAL
 ========================================================= */
 
-function openModal(title,text,buttons){
+function modal(title,text,button,fn){
+
  $("modalTitle").textContent=title;
  $("modalText").textContent=text;
 
- const box=$("modalButtons");
- box.innerHTML="";
+ $("modalButtons").innerHTML="";
 
- buttons.forEach(x=>{
-  const b=document.createElement("button");
-  b.className="primary";
-  b.textContent=x.text;
-  b.addEventListener("click",x.fn);
-  box.appendChild(b);
- });
+ let b=document.createElement("button");
+ b.className="primary";
+ b.textContent=button;
+ b.onclick=fn;
+
+ $("modalButtons").appendChild(b);
 
  $("modal").classList.add("open");
 }
@@ -1930,9 +1905,10 @@ function closeModal(){
    İLK AÇILIŞ
 ========================================================= */
 
-showScreen("home");
+newTavla();
+startBatak("single");
+screen("home");
 
-});
 </script>
 
 </body>
