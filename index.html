@@ -3,19 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#10151f">
-    <meta name="description" content="Tavla ve Batak - Türkçe online oyun platformu">
+
     <title>Tavla & Batak | Türkçe Oyun Platformu</title>
+
+    <meta
+        name="description"
+        content="Tavla ve Batak oyunlarını oynayabileceğiniz Türkçe oyun platformu."
+    >
+
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
 <header class="site-header">
+
     <div class="header-inner">
 
         <a href="#" class="logo" onclick="showHome(); return false;">
             <span class="logo-icon">🎲</span>
+
             <span>
                 <strong>Tavla & Batak</strong>
                 <small>Türkçe Oyun Platformu</small>
@@ -23,487 +30,705 @@
         </a>
 
         <nav class="main-nav">
-            <button onclick="showHome()">Ana Sayfa</button>
-            <button onclick="openTavla()">🎲 Tavla</button>
-            <button onclick="openBatak()">🃏 Batak</button>
-            <button onclick="openSalon()">👥 Oyun Salonu</button>
+
+            <button onclick="showHome()">
+                Ana Sayfa
+            </button>
+
+            <button onclick="openTavla()">
+                🎲 Tavla
+            </button>
+
+            <button onclick="openBatak()">
+                🃏 Batak
+            </button>
+
+            <button onclick="openSalon()">
+                👥 Oyun Salonu
+            </button>
+
         </nav>
 
     </div>
+
 </header>
 
 
 <main>
 
-    <!-- ================= ANA SAYFA ================= -->
+<!-- =========================================================
+     ANA SAYFA
+========================================================= -->
 
-    <section id="homeScreen" class="screen active">
+<section id="homeScreen" class="screen active">
 
-        <div class="hero">
+    <div class="hero">
 
-            <div class="hero-content">
+        <div class="hero-content">
 
-                <div class="hero-badge">
-                    🇹🇷 Türkçe Oyun Platformu
-                </div>
-
-                <h1>
-                    Tavla ve Batak<br>
-                    <span>tek yerde.</span>
-                </h1>
-
-                <p>
-                    Klasik oyunların keyfini çıkar.
-                    Tavla veya Batak'ı seç, masaya otur ve oyuna başla.
-                </p>
-
-                <div class="hero-buttons">
-                    <button class="primary-button" onclick="openTavla()">
-                        🎲 Tavla Oyna
-                    </button>
-
-                    <button class="secondary-button" onclick="openBatak()">
-                        🃏 Batak Oyna
-                    </button>
-                </div>
-
+            <div class="hero-badge">
+                🇹🇷 TÜRKÇE OYUN PLATFORMU
             </div>
 
-            <div class="hero-art">
-
-                <div class="floating-dice dice-one">⚄</div>
-                <div class="floating-dice dice-two">⚂</div>
-
-                <div class="table-preview">
-
-                    <div class="preview-title">
-                        <span>🎲</span>
-                        TAVLA
-                    </div>
-
-                    <div class="mini-board">
-
-                        <div class="mini-point"></div>
-                        <div class="mini-point"></div>
-                        <div class="mini-point"></div>
-                        <div class="mini-point"></div>
-                        <div class="mini-point"></div>
-                        <div class="mini-point"></div>
-
-                        <div class="mini-checkers">
-                            <i></i>
-                            <i></i>
-                            <i></i>
-                        </div>
-
-                    </div>
-
-                    <div class="preview-dice">
-                        <span>⚄</span>
-                        <span>⚂</span>
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <div class="games-section">
-
-            <div class="section-heading">
-                <span>OYUNLAR</span>
-                <h2>Hangi oyunu oynayacaksın?</h2>
-                <p>Bir oyun seç ve masaya otur.</p>
-            </div>
-
-
-            <div class="game-grid">
-
-                <!-- TAVLA -->
-
-                <article class="game-card tavla-card">
-
-                    <div class="game-image tavla-image">
-
-                        <div class="game-icon-large">🎲</div>
-
-                        <div class="card-dice">
-                            ⚄
-                        </div>
-
-                    </div>
-
-                    <div class="game-card-content">
-
-                        <span class="game-label">KLASİK OYUN</span>
-
-                        <h3>Tavla</h3>
-
-                        <p>
-                            Klasik tavla deneyimi.
-                            Zarını at, pullarını hareket ettir
-                            ve rakibini yen.
-                        </p>
-
-                        <button class="game-button" onclick="openTavla()">
-                            Tavla Oyna
-                            <span>→</span>
-                        </button>
-
-                    </div>
-
-                </article>
-
-
-                <!-- BATAK -->
-
-                <article class="game-card batak-card">
-
-                    <div class="game-image batak-image">
-
-                        <div class="game-icon-large">🃏</div>
-
-                        <div class="playing-cards">
-                            <span>♠</span>
-                            <span>♥</span>
-                            <span>♦</span>
-                        </div>
-
-                    </div>
-
-                    <div class="game-card-content">
-
-                        <span class="game-label">4 KİŞİLİK</span>
-
-                        <h3>Batak</h3>
-
-                        <p>
-                            Kartlarını al, ihaleni yap,
-                            kozu belirle ve rakiplerinden
-                            daha fazla el toplamaya çalış.
-                        </p>
-
-                        <button class="game-button" onclick="openBatak()">
-                            Batak Oyna
-                            <span>→</span>
-                        </button>
-
-                    </div>
-
-                </article>
-
-            </div>
-
-        </div>
-
-
-        <section class="features">
-
-            <div class="feature">
-                <div class="feature-icon">📱</div>
-                <div>
-                    <strong>Her cihazda</strong>
-                    <span>Telefon, tablet ve bilgisayarda oynayın.</span>
-                </div>
-            </div>
-
-            <div class="feature">
-                <div class="feature-icon">🎮</div>
-                <div>
-                    <strong>Gerçek oyun</strong>
-                    <span>Tavla ve Batak oyunlarını gerçekten oynayın.</span>
-                </div>
-            </div>
-
-            <div class="feature">
-                <div class="feature-icon">🔒</div>
-                <div>
-                    <strong>Güvenli oyun</strong>
-                    <span>Oyun kuralları sistem tarafından kontrol edilir.</span>
-                </div>
-            </div>
-
-        </section>
-
-    </section>
-
-
-    <!-- ================= TAVLA ================= -->
-
-    <section id="tavlaScreen" class="screen game-screen">
-
-        <div class="game-top">
-
-            <button class="back-button" onclick="showHome()">
-                ← Ana Sayfa
-            </button>
-
-            <div>
-                <span class="game-title-icon">🎲</span>
-                <h2>Tavla</h2>
-                <small>Klasik tavla</small>
-            </div>
-
-            <button class="new-game-button" id="newTavla">
-                Yeni Oyun
-            </button>
-
-        </div>
-
-
-        <div class="tavla-layout">
-
-            <div class="player-panel">
-
-                <div class="player-avatar">👤</div>
-
-                <div>
-                    <strong>Sen</strong>
-                    <span>Oyuncu</span>
-                </div>
-
-                <div class="player-score">
-                    0
-                </div>
-
-            </div>
-
-
-            <div class="tavla-table">
-
-                <div class="board-header">
-                    <span>Rakip</span>
-                    <span id="turnLabel">Zar atma sırası</span>
-                    <span>Sen</span>
-                </div>
-
-
-                <div id="backgammonBoard" class="backgammon-board">
-
-                    <!-- JavaScript buraya tavla tahtasını oluşturacak -->
-
-                </div>
-
-
-                <div class="dice-area">
-
-                    <div id="diceBox" class="dice-box">
-                        <span>⚄</span>
-                        <span>⚂</span>
-                    </div>
-
-                    <button id="rollDice" class="roll-button">
-                        🎲 Zar At
-                    </button>
-
-                </div>
-
-
-                <div class="game-message" id="gameMessage">
-                    Oyuna başlamak için zar at.
-                </div>
-
-            </div>
-
-
-            <div class="side-info">
-
-                <div class="info-box">
-                    <span>Rakibin pulları</span>
-                    <strong id="barBot">0</strong>
-                </div>
-
-                <div class="info-box">
-                    <span>Senin pulların</span>
-                    <strong id="barYou">0</strong>
-                </div>
-
-                <div class="info-box">
-                    <span>Toplanan</span>
-                    <strong id="offYou">0</strong>
-                </div>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- ================= BATAK ================= -->
-
-    <section id="batakScreen" class="screen game-screen">
-
-        <div class="game-top">
-
-            <button class="back-button" onclick="showHome()">
-                ← Ana Sayfa
-            </button>
-
-            <div>
-                <span class="game-title-icon">🃏</span>
-                <h2>Batak</h2>
-                <small>4 kişilik Batak</small>
-            </div>
-
-            <button class="new-game-button" id="newBatak">
-                Yeni Oyun
-            </button>
-
-        </div>
-
-
-        <div class="batak-table">
-
-            <div class="batak-player player-top">
-                <div class="avatar">🤖</div>
-                <strong>Rakip 1</strong>
-                <span>Bot</span>
-            </div>
-
-
-            <div class="batak-player player-left">
-                <div class="avatar">🤖</div>
-                <strong>Rakip 2</strong>
-                <span>Bot</span>
-            </div>
-
-
-            <div class="batak-player player-right">
-                <div class="avatar">🤖</div>
-                <strong>Rakip 3</strong>
-                <span>Bot</span>
-            </div>
-
-
-            <div class="batak-center">
-
-                <div class="batak-status">
-                    <span>İhale</span>
-                    <strong>Oyun başlıyor...</strong>
-                </div>
-
-                <div class="played-cards">
-
-                    <div class="card-placeholder">♠</div>
-                    <div class="card-placeholder">♥</div>
-                    <div class="card-placeholder">♦</div>
-                    <div class="card-placeholder">♣</div>
-
-                </div>
-
-                <div class="trump">
-                    Koz: <strong>♠</strong>
-                </div>
-
-            </div>
-
-
-            <div class="batak-player player-bottom">
-
-                <div class="avatar">👤</div>
-
-                <strong>Sen</strong>
-
-                <span>Oyuncu</span>
-
-                <div id="playerHand" class="player-hand">
-
-                    <div class="playing-card">A♠</div>
-                    <div class="playing-card">K♥</div>
-                    <div class="playing-card">Q♦</div>
-                    <div class="playing-card">J♣</div>
-                    <div class="playing-card">10♠</div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <div class="batak-controls">
-
-            <button class="primary-button">
-                İhaleye Gir
-            </button>
-
-            <button class="secondary-button">
-                Pas
-            </button>
-
-        </div>
-
-    </section>
-
-
-    <!-- ================= OYUN SALONU ================= -->
-
-    <section id="salonScreen" class="screen">
-
-        <div class="salon-page">
-
-            <div class="section-heading">
-                <span>OYUN SALONU</span>
-
-                <h2>Bir masaya katıl</h2>
-
-                <p>
-                    İleride burada açık Tavla ve Batak masalarını
-                    görebilecek ve istediğin masaya katılabileceksin.
-                </p>
-            </div>
-
-
-            <div class="empty-salon">
-
-                <div class="empty-icon">👥</div>
-
-                <h3>Oyun salonu hazırlanıyor</h3>
-
-                <p>
-                    Çok yakında arkadaşlarınla özel masa oluşturabileceksin.
-                </p>
-
-                <button class="primary-button" onclick="showHome()">
-                    Ana Sayfaya Dön
+            <h1>
+                Tavla ve Batak
+                <span>tek yerde.</span>
+            </h1>
+
+            <p>
+                Klasik Türk oyunlarını modern ve
+                kullanımı kolay bir platformda oynayın.
+            </p>
+
+            <div class="hero-buttons">
+
+                <button
+                    class="primary-button"
+                    onclick="openTavla()"
+                >
+                    🎲 Tavla Oyna
+                </button>
+
+                <button
+                    class="secondary-button"
+                    onclick="openBatak()"
+                >
+                    🃏 Batak Oyna
                 </button>
 
             </div>
 
         </div>
 
+
+        <div class="hero-art">
+
+            <div class="table-preview">
+
+                <div class="mini-board">
+
+                    <div class="mini-row">
+
+                        <div class="mini-point">
+                            <i></i>
+                            <i></i>
+                            <i></i>
+                        </div>
+
+                        <div class="mini-point">
+                            <i></i>
+                            <i></i>
+                        </div>
+
+                        <div class="mini-point">
+                            <i></i>
+                            <i></i>
+                            <i></i>
+                        </div>
+
+                        <div class="mini-point">
+                            <i></i>
+                            <i></i>
+                        </div>
+
+                        <div class="mini-point">
+                            <i></i>
+                        </div>
+
+                        <div class="mini-point">
+                            <i></i>
+                            <i></i>
+                        </div>
+
+                    </div>
+
+                    <div class="mini-bar"></div>
+
+                    <div class="mini-row bottom">
+
+                        <div class="mini-point">
+                            <i></i>
+                            <i></i>
+                        </div>
+
+                        <div class="mini-point">
+                            <i></i>
+                            <i></i>
+                            <i></i>
+                        </div>
+
+                        <div class="mini-point">
+                            <i></i>
+                        </div>
+
+                        <div class="mini-point">
+                            <i></i>
+                            <i></i>
+                        </div>
+
+                        <div class="mini-point">
+                            <i></i>
+                            <i></i>
+                            <i></i>
+                        </div>
+
+                        <div class="mini-point">
+                            <i></i>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="preview-dice">
+
+                    <span>⚄</span>
+                    <span>⚂</span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <section class="games-section">
+
+        <div class="section-title">
+
+            <span>OYUNLAR</span>
+
+            <h2>
+                Hemen oynamaya başla
+            </h2>
+
+        </div>
+
+
+        <div class="game-grid">
+
+
+            <article class="game-card">
+
+                <div class="game-image tavla-image">
+
+                    <div class="game-icon-large">
+                        🎲
+                    </div>
+
+                    <div class="card-dice">
+                        ⚄ ⚂
+                    </div>
+
+                </div>
+
+                <div class="game-card-content">
+
+                    <div class="card-label">
+                        KLASİK OYUN
+                    </div>
+
+                    <h3>Tavla</h3>
+
+                    <p>
+                        Zarını at, pullarını hareket ettir
+                        ve rakibinden önce tüm pullarını topla.
+                    </p>
+
+                    <button
+                        class="game-button"
+                        onclick="openTavla()"
+                    >
+                        Tavla Oyna →
+                    </button>
+
+                </div>
+
+            </article>
+
+
+            <article class="game-card">
+
+                <div class="game-image batak-image">
+
+                    <div class="game-icon-large">
+                        🃏
+                    </div>
+
+                    <div class="playing-cards-preview">
+
+                        <span class="red-card">
+                            A♥
+                        </span>
+
+                        <span>
+                            K♠
+                        </span>
+
+                        <span class="red-card">
+                            Q♦
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <div class="game-card-content">
+
+                    <div class="card-label">
+                        4 KİŞİLİK
+                    </div>
+
+                    <h3>Batak</h3>
+
+                    <p>
+                        İhaleye gir, kozunu seç,
+                        rakiplerine karşı elleri kazan.
+                    </p>
+
+                    <button
+                        class="game-button"
+                        onclick="openBatak()"
+                    >
+                        Batak Oyna →
+                    </button>
+
+                </div>
+
+            </article>
+
+        </div>
+
     </section>
+
+
+    <section class="features">
+
+        <div class="feature">
+
+            <span>📱</span>
+
+            <div>
+                <strong>Her cihazda</strong>
+                <small>
+                    Telefon, tablet ve bilgisayarda oynayın.
+                </small>
+            </div>
+
+        </div>
+
+
+        <div class="feature">
+
+            <span>🎮</span>
+
+            <div>
+                <strong>Gerçek oyun</strong>
+                <small>
+                    Tavla ve Batak oyun mekanikleri.
+                </small>
+            </div>
+
+        </div>
+
+
+        <div class="feature">
+
+            <span>⚡</span>
+
+            <div>
+                <strong>Hızlı oyun</strong>
+                <small>
+                    Beklemeden oyuna başlayın.
+                </small>
+            </div>
+
+        </div>
+
+    </section>
+
+</section>
+
+
+<!-- =========================================================
+     TAVLA
+========================================================= -->
+
+<section id="tavlaScreen" class="screen game-screen">
+
+    <div class="game-top">
+
+        <button
+            class="back-button"
+            onclick="showHome()"
+        >
+            ← Ana Sayfa
+        </button>
+
+        <h2>🎲 Tavla</h2>
+
+        <button
+            id="newTavla"
+            class="new-game-button"
+        >
+            Yeni Oyun
+        </button>
+
+    </div>
+
+
+    <div class="tavla-layout">
+
+
+        <aside class="player-panel">
+
+            <div class="player-avatar">
+                👤
+            </div>
+
+            <strong>Sen</strong>
+
+            <span>Oyuncu</span>
+
+            <div class="player-score">
+                <small>Toplanan</small>
+                <strong id="offYou">0</strong>
+            </div>
+
+        </aside>
+
+
+        <div class="tavla-table">
+
+            <div class="table-player top-player">
+
+                <span>🤖 Rakip</span>
+
+                <strong id="turnLabel">
+                    Sen
+                </strong>
+
+            </div>
+
+
+            <div
+                id="backgammonBoard"
+                class="backgammon-board"
+            ></div>
+
+
+            <div class="dice-area">
+
+                <div
+                    id="diceBox"
+                    class="dice-box"
+                >
+                    <span>⚄</span>
+                    <span>⚂</span>
+                </div>
+
+                <button
+                    id="rollDice"
+                    class="roll-button"
+                >
+                    🎲 Zar At
+                </button>
+
+            </div>
+
+
+            <div
+                id="gameMessage"
+                class="game-message"
+            >
+                Oyuna başlamak için zar at.
+            </div>
+
+        </div>
+
+
+        <aside class="side-info">
+
+            <div class="info-box">
+
+                <span>Rakibin bardaki pulları</span>
+
+                <strong id="barBot">
+                    0
+                </strong>
+
+            </div>
+
+
+            <div class="info-box">
+
+                <span>Senin bardaki pulların</span>
+
+                <strong id="barYou">
+                    0
+                </strong>
+
+            </div>
+
+
+            <div class="info-box">
+
+                <span>Toplanan pulların</span>
+
+                <strong id="offYouSide">
+                    0
+                </strong>
+
+            </div>
+
+        </aside>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     BATAK
+========================================================= -->
+
+<section id="batakScreen" class="screen game-screen">
+
+    <div class="game-top">
+
+        <button
+            class="back-button"
+            onclick="showHome()"
+        >
+            ← Ana Sayfa
+        </button>
+
+        <h2>🃏 Batak</h2>
+
+        <button
+            id="newBatak"
+            class="new-game-button"
+        >
+            Yeni Oyun
+        </button>
+
+    </div>
+
+
+    <div class="batak-table">
+
+
+        <div class="batak-player player-top">
+
+            <div class="avatar">
+                🤖
+            </div>
+
+            <strong>Rakip 1</strong>
+
+            <span>Bot</span>
+
+        </div>
+
+
+        <div class="batak-player player-left">
+
+            <div class="avatar">
+                🤖
+            </div>
+
+            <strong>Rakip 2</strong>
+
+            <span>Bot</span>
+
+        </div>
+
+
+        <div class="batak-player player-right">
+
+            <div class="avatar">
+                🤖
+            </div>
+
+            <strong>Rakip 3</strong>
+
+            <span>Bot</span>
+
+        </div>
+
+
+        <div class="batak-center">
+
+            <div
+                class="batak-status"
+            >
+                Oyun hazırlanıyor...
+            </div>
+
+            <div class="trump">
+                Koz: -
+            </div>
+
+
+            <div
+                class="played-cards"
+            ></div>
+
+        </div>
+
+
+        <div class="batak-player player-bottom">
+
+            <div class="avatar">
+                👤
+            </div>
+
+            <strong>Sen</strong>
+
+            <span>Oyuncu</span>
+
+        </div>
+
+
+        <div
+            id="playerHand"
+            class="player-hand"
+        ></div>
+
+
+        <div class="batak-controls">
+
+            <button
+                type="button"
+                id="bidButton"
+            >
+                İhaleye Gir
+            </button>
+
+            <button
+                type="button"
+                id="passButton"
+            >
+                Pas
+            </button>
+
+        </div>
+
+
+        <div
+            id="trumpChoices"
+            class="trump-choices hidden"
+        >
+
+            <div class="trump-title">
+                Kozunu seç
+            </div>
+
+            <div class="trump-buttons">
+
+                <button
+                    type="button"
+                    data-suit="♠"
+                >
+                    <span>♠</span>
+                    Maça
+                </button>
+
+                <button
+                    type="button"
+                    data-suit="♥"
+                    class="red"
+                >
+                    <span>♥</span>
+                    Kupa
+                </button>
+
+                <button
+                    type="button"
+                    data-suit="♦"
+                    class="red"
+                >
+                    <span>♦</span>
+                    Karo
+                </button>
+
+                <button
+                    type="button"
+                    data-suit="♣"
+                >
+                    <span>♣</span>
+                    Sinek
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     OYUN SALONU
+========================================================= -->
+
+<section
+    id="salonScreen"
+    class="screen salon-page"
+>
+
+    <div class="salon-inner">
+
+        <span class="salon-icon">
+            👥
+        </span>
+
+        <h2>Oyun Salonu</h2>
+
+        <p>
+            Online oyun salonu ve arkadaş sistemi
+            sonraki aşamada eklenecek.
+        </p>
+
+        <button
+            class="primary-button"
+            onclick="showHome()"
+        >
+            Ana Sayfaya Dön
+        </button>
+
+    </div>
+
+</section>
 
 </main>
 
 
 <footer class="site-footer">
 
-    <div>
-        <strong>Tavla & Batak</strong>
-        <span>Türkçe Oyun Platformu</span>
-    </div>
+    <strong>
+        Tavla & Batak
+    </strong>
 
-    <div>
-        © 2026 Tavla & Batak
-    </div>
+    <span>
+        Türkçe Oyun Platformu
+    </span>
 
 </footer>
-
-
-<script src="app.js"></script>
 
 
 <script>
 
 function hideAllScreens() {
 
-    document.querySelectorAll(".screen").forEach(function(screen) {
-        screen.classList.remove("active");
-    });
+    document
+        .querySelectorAll(".screen")
+        .forEach(screen => {
+            screen.classList.remove("active");
+        });
 
 }
 
@@ -512,16 +737,12 @@ function showHome() {
 
     hideAllScreens();
 
-    const home = document.getElementById("homeScreen");
+    const home =
+        document.getElementById("homeScreen");
 
     if (home) {
         home.classList.add("active");
     }
-
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
 
 }
 
@@ -530,18 +751,17 @@ function openTavla() {
 
     hideAllScreens();
 
-    const tavla = document.getElementById("tavlaScreen");
+    const screen =
+        document.getElementById("tavlaScreen");
 
-    if (tavla) {
-        tavla.classList.add("active");
+    if (screen) {
+        screen.classList.add("active");
     }
 
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
-
-    if (window.Tavla && typeof window.Tavla.refresh === "function") {
+    if (
+        window.Tavla &&
+        typeof window.Tavla.refresh === "function"
+    ) {
         window.Tavla.refresh();
     }
 
@@ -552,16 +772,12 @@ function openBatak() {
 
     hideAllScreens();
 
-    const batak = document.getElementById("batakScreen");
+    const screen =
+        document.getElementById("batakScreen");
 
-    if (batak) {
-        batak.classList.add("active");
+    if (screen) {
+        screen.classList.add("active");
     }
-
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
 
 }
 
@@ -570,27 +786,29 @@ function openSalon() {
 
     hideAllScreens();
 
-    const salon = document.getElementById("salonScreen");
+    const screen =
+        document.getElementById("salonScreen");
 
-    if (salon) {
-        salon.classList.add("active");
+    if (screen) {
+        screen.classList.add("active");
     }
-
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
 
 }
 
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
 
-    showHome();
+        showHome();
 
-});
+    }
+);
 
 </script>
+
+
+<script src="app.js"></script>
 
 </body>
 </html>
