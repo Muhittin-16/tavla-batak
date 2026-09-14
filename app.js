@@ -1,1401 +1,701 @@
-/* =========================================================
-   TAVLA & BATAK
-   app.js
-   ========================================================= */
-
 "use strict";
 
-/* =========================================================
-   GENEL YARDIMCILAR
-========================================================= */
+/* ============================================================
+   TAVLA & BATAK
+   GERÇEK OYNANABİLİR TEMEL OYUN MOTORU
+   ============================================================ */
 
-const $ = (selector, root = document) =>
-    root.querySelector(selector);
+const $ = (s) => document.querySelector(s);
+const $$ = (s) => document.querySelectorAll(s);
 
-const $$ = (selector, root = document) =>
-    [...root.querySelectorAll(selector)];
-
-function randomInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-
-/* =========================================================
+/* ============================================================
    TAVLA
-========================================================= */
+   ============================================================ */
 
 const Tavla = (() => {
 
     const state = {
         board: Array(24).fill(0),
-
-        bar: {
-            player: 0,
-            bot: 0
-        },
-
-        borneOff: {
-            player: 0,
-            bot: 0
-        },
+        barYou: 0,
+        barBot: 0,
+        offYou: 0,
+        offBot: 0,
 
         dice: [],
         usedDice: [],
+        turn: "you",
 
-        turn: "player",
-
-        selectedPoint: null,
-
+        selected: null,
         started: false,
         gameOver: false,
-        botThinking: false,
-
-        message: "Zar atarak oyuna başla."
+        botThinking: false
     };
 
+    function reset() {
 
-    /* =====================================================
-       BAŞLANGIÇ
-    ===================================================== */
-
-    function init() {
-        resetGame();
-
-        const rollButton = $("#rollDice");
-
-        if (rollButton) {
-            rollButton.addEventListener("click", rollDice);
-        }
-
-        const newButton = $("#newTavla");
-
-        if (newButton) {
-            newButton.addEventListener("click", resetGame);
-        }
-    }
-
-
-    function resetGame() {
-
-        state.board.fill(0);
+        state.board = Array(24).fill(0);
 
         /*
-         * Gerçek tavla başlangıç dizilimi.
-         *
-         * Oyuncu:
-         * 2 adet 1. hanede
-         * 5 adet 12. hanede
-         * 3 adet 17. hanede
-         * 5 adet 19. hanede
-         *
-         * Bot bunun karşı tarafıdır.
-         */
+            Pozitif = oyuncu
+            Negatif = bot
+        */
 
-        state.board[0] = 2;
+        // SEN
+        state.board[0]  = 2;
         state.board[11] = 5;
         state.board[16] = 3;
         state.board[18] = 5;
 
+        // BOT
         state.board[23] = -2;
         state.board[12] = -5;
-        state.board[7] = -3;
-        state.board[5] = -5;
+        state.board[7]  = -3;
+        state.board[5]  = -5;
 
-        state.bar.player = 0;
-        state.bar.bot = 0;
+        state.barYou = 0;
+        state.barBot = 0;
 
-        state.borneOff.player = 0;
-        state.borneOff.bot = 0;
+        state.offYou = 0;
+        state.offBot = 0;
 
         state.dice = [];
         state.usedDice = [];
 
-        state.turn = "player";
-        state.selectedPoint = null;
-
+        state.turn = "you";
+        state.selected = null;
         state.started = false;
         state.gameOver = false;
         state.botThinking = false;
 
-        state.message = "Zar atarak oyuna başla.";
-
         render();
+
+        message("Oyuna başlamak için zar at.");
     }
 
-
-    /* =====================================================
-       ZAR
-    ===================================================== */
+    function message(text) {
+        const el = $("#gameMessage");
+        if (el) el.textContent = text;
+    }
 
     function rollDice() {
 
         if (state.gameOver) return;
 
-        if (state.turn !== "player") {
-            state.message = "Şu anda rakibin sırası.";
-            render();
+        if (state.turn !== "you") {
+            message("Şu anda sıra rakipte.");
             return;
         }
 
         if (state.dice.length > 0) {
-            state.message = "Önce mevcut zarlarını kullan.";
-            render();
+            message("Önce mevcut zarlarını kullan.");
             return;
         }
 
-        const d1 = randomInt(1, 6);
-        const d2 = randomInt(1, 6);
+        const a = Math.floor(Math.random() * 6) + 1;
+        const b = Math.floor(Math.random() * 6) + 1;
 
-        state.dice = d1 === d2
-            ? [d1, d1, d1, d1]
-            : [d1, d2];
+        state.dice = a === b
+            ? [a, a, a, a]
+            : [a, b];
 
         state.usedDice = [];
         state.started = true;
-        state.selectedPoint = null;
 
-        state.message =
-            d1 === d2
-                ? `Çift attın: ${d1}-${d2}. Dört hamle hakkın var.`
-                : `Zarların: ${d1}-${d2}. Pulunu seç.`;
+        message(
+            `Zarlar: ${state.dice.join(" - ")}. Pulunu seç.`
+        );
 
         render();
 
-        setTimeout(() => {
-            if (!hasAnyPlayerMove()) {
-                state.message =
-                    "Bu zarlarla yapabileceğin hamle yok. Sıra rakibe geçiyor.";
-
-                render();
-
-                setTimeout(endPlayerTurn, 1200);
-            }
-        }, 250);
+        if (!hasAnyMove("you")) {
+            setTimeout(() => endYouTurn(), 700);
+        }
     }
 
+    function getDiceSymbols() {
 
-    function getAvailableDice() {
+        const symbols = {
+            1: "⚀",
+            2: "⚁",
+            3: "⚂",
+            4: "⚃",
+            5: "⚄",
+            6: "⚅"
+        };
 
         return state.dice
-            .map((value, index) => ({
-                value,
-                index
-            }))
-            .filter(item =>
-                !state.usedDice.includes(item.index)
-            );
+            .map((d, i) => {
+                const used = state.usedDice[i];
+                return `<span class="${used ? "used-die" : ""}">
+                            ${symbols[d]}
+                        </span>`;
+            })
+            .join("");
     }
 
+    function renderDice() {
+
+        const box = $("#diceBox");
+        if (!box) return;
+
+        if (!state.dice.length) {
+            box.innerHTML = `
+                <span class="die">⚄</span>
+                <span class="die">⚂</span>
+            `;
+            return;
+        }
+
+        box.innerHTML = getDiceSymbols();
+    }
+
+    function canMoveToYou(target) {
+
+        if (target < 0 || target > 23) return false;
+
+        return state.board[target] >= -1;
+    }
+
+    function distanceForYou(from, to) {
+        return to - from;
+    }
+
+    function canBearOffYou(from, die) {
+
+        if (from < 18) return false;
+
+        const target = from + die;
+
+        if (target === 24) return true;
+
+        if (target > 24) {
+
+            for (let i = 18; i < from; i++) {
+                if (state.board[i] > 0) return false;
+            }
+
+            return true;
+        }
+
+        return false;
+    }
 
     function useDie(index) {
 
-        if (!state.usedDice.includes(index)) {
-            state.usedDice.push(index);
-        }
+        if (state.usedDice[index]) return false;
+
+        state.usedDice[index] = true;
+        return true;
     }
 
+    function availableDice() {
 
-    /* =====================================================
-       SAHİPLİK / KAPI
-    ===================================================== */
+        const result = [];
 
-    function playerOwns(point) {
-        return state.board[point] > 0;
-    }
+        for (let i = 0; i < state.dice.length; i++) {
 
-
-    function botOwns(point) {
-        return state.board[point] < 0;
-    }
-
-
-    function playerTargetOpen(point) {
-
-        if (point < 0 || point > 23) {
-            return false;
+            if (!state.usedDice[i]) {
+                result.push({
+                    index: i,
+                    value: state.dice[i]
+                });
+            }
         }
 
-        /*
-         * Rakibin iki veya daha fazla pulu varsa kapalıdır.
-         */
-        return state.board[point] >= -1;
+        return result;
     }
 
+    function findDie(from, to) {
 
-    function botTargetOpen(point) {
+        const distance = to - from;
 
-        if (point < 0 || point > 23) {
-            return false;
+        for (const d of availableDice()) {
+
+            if (distance === d.value) {
+                return d;
+            }
         }
 
-        return state.board[point] <= 1;
+        return null;
     }
 
-
-    /* =====================================================
-       BAR
-    ===================================================== */
-
-    function playerHasBar() {
-        return state.bar.player > 0;
-    }
-
-
-    function botHasBar() {
-        return state.bar.bot > 0;
-    }
-
-
-    function playerBarTarget(die) {
-        /*
-         * Oyuncu 24 yönünde ilerler.
-         */
-        return 24 - die;
-    }
-
-
-    function botBarTarget(die) {
-        /*
-         * Bot ters yönde ilerler.
-         */
-        return die - 1;
-    }
-
-
-    function canEnterPlayerFromBar(die) {
-
-        const target = playerBarTarget(die);
-
-        return playerTargetOpen(target);
-    }
-
-
-    function enterPlayerFromBar(dieIndex) {
-
-        const dice = getAvailableDice();
-
-        const dieObject =
-            dice.find(d => d.index === dieIndex);
-
-        if (!dieObject) return false;
-
-        const die = dieObject.value;
-        const target = playerBarTarget(die);
-
-        if (!canEnterPlayerFromBar(die)) {
-            return false;
-        }
+    function hitOpponent(target) {
 
         if (state.board[target] === -1) {
 
-            state.board[target] = 1;
-            state.bar.bot++;
+            state.board[target] = 0;
+            state.barBot++;
 
-        } else {
-
-            state.board[target]++;
+            message("Rakibin pulunu kırdın!");
         }
+    }
 
-        state.bar.player--;
+    function moveYou(from, to, dieIndex) {
+
+        if (state.board[from] <= 0) return false;
+
+        if (!canMoveToYou(to)) return false;
+
+        const die = state.dice[dieIndex];
+
+        if (to - from !== die) return false;
+
+        hitOpponent(to);
+
+        state.board[from]--;
+        state.board[to]++;
 
         useDie(dieIndex);
 
-        return true;
-    }
+        state.selected = null;
 
-
-    /* =====================================================
-       TOPLAMA KONTROLÜ
-    ===================================================== */
-
-    function playerCanBearOff() {
-
-        if (state.bar.player > 0) {
-            return false;
-        }
-
-        /*
-         * Oyuncunun bütün pulları 19-24 bölgesinde olmalı.
-         */
-        for (let i = 0; i < 18; i++) {
-            if (state.board[i] > 0) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-
-    function botCanBearOff() {
-
-        if (state.bar.bot > 0) {
-            return false;
-        }
-
-        /*
-         * Botun toplama bölgesi 1-6.
-         */
-        for (let i = 6; i < 24; i++) {
-            if (state.board[i] < 0) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-
-    function playerCanBearFrom(point, die) {
-
-        if (!playerCanBearOff()) {
-            return false;
-        }
-
-        /*
-         * Normal tam eşleşme.
-         */
-        if (point + die === 24) {
+        if (state.offYou >= 15) {
+            winYou();
             return true;
         }
 
-        /*
-         * Zar fazla geldiyse, daha geride pul yoksa
-         * toplama yapılabilir.
-         */
-        if (point + die > 24) {
-
-            for (let i = point + 1; i < 24; i++) {
-
-                if (state.board[i] > 0) {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        return false;
-    }
-
-
-    function botCanBearFrom(point, die) {
-
-        if (!botCanBearOff()) {
-            return false;
-        }
-
-        if (point - die === -1) {
-            return true;
-        }
-
-        if (point - die < 0) {
-
-            for (let i = point - 1; i >= 0; i--) {
-
-                if (state.board[i] < 0) {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        return false;
-    }
-
-
-    /* =====================================================
-       OYUNCU HAMLE KONTROLÜ
-    ===================================================== */
-
-    function playerMoveDestination(point, die) {
-        return point + die;
-    }
-
-
-    function canPlayerMove(point, die) {
-
-        if (!playerOwns(point)) {
-            return false;
-        }
-
-        const target =
-            playerMoveDestination(point, die);
-
-        /*
-         * Toplama.
-         */
-        if (target >= 24) {
-            return playerCanBearFrom(point, die);
-        }
-
-        return playerTargetOpen(target);
-    }
-
-
-    function movePlayer(point, dieIndex) {
-
-        const dice =
-            getAvailableDice();
-
-        const dieObject =
-            dice.find(d => d.index === dieIndex);
-
-        if (!dieObject) {
-            return false;
-        }
-
-        const die = dieObject.value;
-
-        if (!canPlayerMove(point, die)) {
-            return false;
-        }
-
-        const target =
-            point + die;
-
-        /*
-         * TOPLAMA
-         */
-        if (target >= 24) {
-
-            state.board[point]--;
-            state.borneOff.player++;
-
-            useDie(dieIndex);
-
-            state.selectedPoint = null;
-
-            state.message =
-                "Pulunu topladın.";
-
-            checkWinner();
-
-            return true;
-        }
-
-
-        /*
-         * NORMAL HAREKET
-         */
-        state.board[point]--;
-
-
-        /*
-         * Rakibin tek pulunu kır.
-         */
-        if (state.board[target] === -1) {
-
-            state.board[target] = 1;
-            state.bar.bot++;
-
-            state.message =
-                "Rakibin pulunu kırdın!";
-
+        if (availableDice().length === 0) {
+            endYouTurn();
         } else {
-
-            state.board[target]++;
-
-            state.message =
-                "Pulun hareket etti.";
+            message("Başka bir zar kullanabilir veya turu tamamlayabilirsin.");
         }
+
+        render();
+
+        return true;
+    }
+
+    function bearOffYou(from, dieIndex) {
+
+        const die = state.dice[dieIndex];
+
+        if (!canBearOffYou(from, die)) return false;
+
+        state.board[from]--;
+        state.offYou++;
 
         useDie(dieIndex);
 
-        state.selectedPoint = null;
+        state.selected = null;
 
-        checkWinner();
+        message("Pulunu topladın!");
+
+        if (state.offYou >= 15) {
+            winYou();
+            return true;
+        }
+
+        if (availableDice().length === 0) {
+            endYouTurn();
+        }
+
+        render();
 
         return true;
     }
 
-
-    /* =====================================================
-       OYUNCU TIKLAMASI
-    ===================================================== */
-
-    function handlePointClick(point) {
+    function pointClick(point) {
 
         if (state.gameOver) return;
 
-        if (state.turn !== "player") return;
-
-        if (state.dice.length === 0) {
-
-            state.message =
-                "Önce zar at.";
-
-            render();
+        if (state.turn !== "you") {
+            message("Rakibin sırasını bekle.");
             return;
         }
 
-
-        /*
-         * Bardaki pul önceliklidir.
-         */
-        if (playerHasBar()) {
-
-            state.message =
-                "Önce bardaki pulunu oyuna sokmalısın.";
-
-            render();
+        if (!state.started) {
+            message("Önce Zar At butonuna bas.");
             return;
         }
 
+        /* BARDA PUL VARSA */
 
-        /*
-         * Pul seçilmemiş.
-         */
-        if (state.selectedPoint === null) {
+        if (state.barYou > 0) {
 
-            if (!playerOwns(point)) {
+            const dice = availableDice();
 
-                state.message =
-                    "Kendi pulunu seçmelisin.";
+            for (const d of dice) {
 
-                render();
-                return;
-            }
+                const target = d.value - 1;
 
-            const canMove =
-                getAvailableDice()
-                    .some(d =>
-                        canPlayerMove(point, d.value)
-                    );
+                if (point === target && canMoveToYou(target)) {
 
-            if (!canMove) {
+                    if (state.board[target] === -1) {
+                        state.barBot++;
+                        state.board[target] = 0;
+                    }
 
-                state.message =
-                    "Bu pul mevcut zarlarla hareket edemez.";
+                    state.barYou--;
+                    state.board[target]++;
 
-                render();
-                return;
-            }
+                    useDie(d.index);
 
-            state.selectedPoint = point;
+                    message("Bardaki pul oyuna girdi.");
 
-            state.message =
-                `${point + 1}. hane seçildi. Şimdi hedefe bas.`;
+                    if (state.barYou === 0) {
+                        message("Artık normal pullarını oynayabilirsin.");
+                    }
 
-            render();
-
-            return;
-        }
-
-
-        /*
-         * Aynı pula tekrar basılırsa seçimi kaldır.
-         */
-        if (state.selectedPoint === point) {
-
-            state.selectedPoint = null;
-
-            state.message =
-                "Pul seçimi kaldırıldı.";
-
-            render();
-            return;
-        }
-
-
-        const from =
-            state.selectedPoint;
-
-
-        /*
-         * Hedef noktaya uygun zar bul.
-         */
-        const possibleDice =
-            getAvailableDice()
-                .filter(d =>
-                    canPlayerMove(from, d.value)
-                );
-
-
-        /*
-         * Doğrudan hedef haneye basıldıysa
-         * mesafeye göre uygun zarı kullan.
-         */
-        for (const die of possibleDice) {
-
-            if (from + die.value === point) {
-
-                movePlayer(from, die.index);
-
-                state.selectedPoint = null;
-
-                render();
-
-                finishPlayerTurnIfNeeded();
-
-                return;
-            }
-        }
-
-
-        /*
-         * Toplama için hedef 24 olarak düşünülür.
-         */
-        if (point === 23) {
-
-            for (const die of possibleDice) {
-
-                if (
-                    from + die.value >= 24 &&
-                    playerCanBearFrom(
-                        from,
-                        die.value
-                    )
-                ) {
-
-                    movePlayer(from, die.index);
-
-                    state.selectedPoint = null;
+                    if (availableDice().length === 0) {
+                        endYouTurn();
+                    }
 
                     render();
+                    return;
+                }
+            }
 
-                    finishPlayerTurnIfNeeded();
+            message("Bardaki pulunu önce oyuna sokmalısın.");
+            return;
+        }
 
+        /* PUL SEÇ */
+
+        if (state.selected === null) {
+
+            if (state.board[point] > 0) {
+
+                state.selected = point;
+
+                message(
+                    `${point + 1}. hanedeki pul seçildi. Hedef noktaya tıkla.`
+                );
+
+                render();
+            } else {
+                message("Burada senin pulun yok.");
+            }
+
+            return;
+        }
+
+        /* AYNI PULA TEKRAR TIKLAMA */
+
+        if (state.selected === point) {
+
+            state.selected = null;
+            message("Pul seçimi iptal edildi.");
+            render();
+            return;
+        }
+
+        /* NORMAL HAREKET */
+
+        const die = findDie(state.selected, point);
+
+        if (die) {
+
+            moveYou(
+                state.selected,
+                point,
+                die.index
+            );
+
+            return;
+        }
+
+        /* TOPLAMA */
+
+        for (const d of availableDice()) {
+
+            if (canBearOffYou(state.selected, d.value)) {
+
+                if (point === 23) {
+                    bearOffYou(
+                        state.selected,
+                        d.index
+                    );
                     return;
                 }
             }
         }
 
-
-        /*
-         * Başka kendi puluna basılırsa
-         * yeni pul seç.
-         */
-        if (playerOwns(point)) {
-
-            state.selectedPoint = point;
-
-            state.message =
-                `${point + 1}. hanedeki pul seçildi.`;
-
-            render();
-            return;
-        }
-
-
-        state.message =
-            "Bu hedefe mevcut zarlarla gidemezsin.";
-
-        render();
+        message("Bu noktaya bu zarla gidemezsin.");
     }
 
+    function hasAnyMove(player) {
 
-    /* =====================================================
-       HAMLE VAR MI?
-    ===================================================== */
+        const dice = availableDice();
 
-    function hasAnyPlayerMove() {
+        if (!dice.length) return false;
 
-        const dice =
-            getAvailableDice();
+        if (player === "you") {
 
-        if (dice.length === 0) {
-            return false;
-        }
+            if (state.barYou > 0) {
 
-
-        /*
-         * Bar kontrolü.
-         */
-        if (playerHasBar()) {
-
-            return dice.some(d =>
-                canEnterPlayerFromBar(d.value)
-            );
-        }
-
-
-        /*
-         * Normal pullar.
-         */
-        for (let point = 0; point < 24; point++) {
-
-            if (!playerOwns(point)) {
-                continue;
+                return dice.some(d => {
+                    const target = d.value - 1;
+                    return canMoveToYou(target);
+                });
             }
 
-            for (const die of dice) {
+            for (let from = 0; from < 24; from++) {
 
-                if (canPlayerMove(point, die.value)) {
-                    return true;
+                if (state.board[from] <= 0) continue;
+
+                for (const d of dice) {
+
+                    const to = from + d.value;
+
+                    if (to <= 23 && canMoveToYou(to)) {
+                        return true;
+                    }
+
+                    if (to >= 24 && canBearOffYou(from, d.value)) {
+                        return true;
+                    }
                 }
             }
         }
 
-        return false;
+        return true;
     }
 
-
-    /* =====================================================
-       TUR BİTİRME
-    ===================================================== */
-
-    function finishPlayerTurnIfNeeded() {
-
-        if (state.gameOver) {
-            return;
-        }
-
-        if (state.usedDice.length >= state.dice.length) {
-
-            setTimeout(endPlayerTurn, 450);
-
-            return;
-        }
-
-        if (!hasAnyPlayerMove()) {
-
-            state.message =
-                "Başka hamle yok. Rakibin sırası.";
-
-            render();
-
-            setTimeout(endPlayerTurn, 900);
-        }
-    }
-
-
-    function endPlayerTurn() {
+    function endYouTurn() {
 
         if (state.gameOver) return;
 
         state.dice = [];
         state.usedDice = [];
-        state.selectedPoint = null;
+        state.selected = null;
 
         state.turn = "bot";
-        state.botThinking = true;
 
-        state.message =
-            "Rakip zar atıyor...";
+        message("Sıra rakipte...");
 
         render();
 
-        setTimeout(botRoll, 900);
+        setTimeout(botTurn, 900);
     }
 
+    function botCanMove(from, to) {
 
-    /* =====================================================
-       BOT ZARI
-    ===================================================== */
+        if (to < 0 || to > 23) return false;
 
-    function botRoll() {
-
-        if (state.gameOver) return;
-
-        const d1 = randomInt(1, 6);
-        const d2 = randomInt(1, 6);
-
-        state.dice =
-            d1 === d2
-                ? [d1, d1, d1, d1]
-                : [d1, d2];
-
-        state.usedDice = [];
-
-        state.message =
-            `Rakibin zarları: ${d1}-${d2}`;
-
-        render();
-
-        setTimeout(botPlayAvailableMoves, 700);
+        return state.board[to] <= 1;
     }
 
+    function botMove(from, to, dieIndex) {
 
-    /* =====================================================
-       BOT HAMLESİ
-    ===================================================== */
+        if (state.board[from] >= 0) return false;
 
-    function botPlayAvailableMoves() {
-
-        if (state.gameOver) return;
-
-        const dice =
-            getAvailableDice();
-
-        if (dice.length === 0) {
-
-            endBotTurn();
-            return;
-        }
-
-        /*
-         * Basit ama kurallı bot:
-         * 1. Bardaki pulu sok.
-         * 2. Rakibin tek pulunu kır.
-         * 3. Güvenli noktaya git.
-         * 4. Gerekirse toplar.
-         */
-
-        const die =
-            chooseBotDie(dice);
-
-
-        /*
-         * Bardaki bot pulu.
-         */
-        if (botHasBar()) {
-
-            const target =
-                botBarTarget(die.value);
-
-            if (botTargetOpen(target)) {
-
-                if (state.board[target] === 1) {
-
-                    state.board[target] = -1;
-                    state.bar.player++;
-
-                } else {
-
-                    state.board[target]--;
-                }
-
-                state.bar.bot--;
-
-                useDie(die.index);
-
-                state.message =
-                    "Rakip bardaki pulunu oyuna soktu.";
-
-                render();
-
-                setTimeout(
-                    botPlayAvailableMoves,
-                    550
-                );
-
-                return;
-            }
-
-
-            useDie(die.index);
-
-            setTimeout(
-                botPlayAvailableMoves,
-                350
-            );
-
-            return;
-        }
-
-
-        /*
-         * Önce kırabileceği hamle.
-         */
-        const hitMove =
-            findBotHitMove(die.value);
-
-        if (hitMove) {
-
-            executeBotMove(
-                hitMove.from,
-                hitMove.to,
-                die.index
-            );
-
-            setTimeout(
-                botPlayAvailableMoves,
-                550
-            );
-
-            return;
-        }
-
-
-        /*
-         * Toplayabiliyorsa toplama.
-         */
-        const bearMove =
-            findBotBearMove(die.value);
-
-        if (bearMove) {
-
-            state.board[bearMove.from]++;
-
-            state.borneOff.bot++;
-
-            useDie(die.index);
-
-            state.message =
-                "Rakip bir pulunu topladı.";
-
-            checkWinner();
-
-            render();
-
-            setTimeout(
-                botPlayAvailableMoves,
-                550
-            );
-
-            return;
-        }
-
-
-        /*
-         * Normal güvenli hamle.
-         */
-        const normalMove =
-            findBotNormalMove(die.value);
-
-        if (normalMove) {
-
-            executeBotMove(
-                normalMove.from,
-                normalMove.to,
-                die.index
-            );
-
-            setTimeout(
-                botPlayAvailableMoves,
-                550
-            );
-
-            return;
-        }
-
-
-        /*
-         * Hamle yok.
-         */
-        useDie(die.index);
-
-        setTimeout(
-            botPlayAvailableMoves,
-            350
-        );
-    }
-
-
-    function chooseBotDie(dice) {
-
-        /*
-         * Büyük zarı öncelikli kullan.
-         */
-        return [...dice]
-            .sort((a, b) => b.value - a.value)[0];
-    }
-
-
-    function findBotHitMove(die) {
-
-        for (let from = 23; from >= 0; from--) {
-
-            if (!botOwns(from)) {
-                continue;
-            }
-
-            const to =
-                from - die;
-
-            if (to < 0) {
-                continue;
-            }
-
-            if (state.board[to] === 1) {
-
-                return {
-                    from,
-                    to
-                };
-            }
-        }
-
-        return null;
-    }
-
-
-    function findBotBearMove(die) {
-
-        if (!botCanBearOff()) {
-            return null;
-        }
-
-        for (let from = 0; from < 6; from++) {
-
-            if (!botOwns(from)) {
-                continue;
-            }
-
-            if (botCanBearFrom(from, die)) {
-
-                return {
-                    from
-                };
-            }
-        }
-
-        return null;
-    }
-
-
-    function findBotNormalMove(die) {
-
-        let best = null;
-
-        for (let from = 23; from >= 0; from--) {
-
-            if (!botOwns(from)) {
-                continue;
-            }
-
-            const to =
-                from - die;
-
-            if (to < 0) {
-                continue;
-            }
-
-            if (!botTargetOpen(to)) {
-                continue;
-            }
-
-
-            /*
-             * Güvenli nokta önceliği.
-             */
-            const targetCount =
-                Math.abs(state.board[to]);
-
-            let score = 0;
-
-            if (targetCount === 0) score += 5;
-            if (targetCount === 1) score += 8;
-            if (state.board[to] < 0) score += 10;
-
-            score += to / 10;
-
-            if (!best || score > best.score) {
-
-                best = {
-                    from,
-                    to,
-                    score
-                };
-            }
-        }
-
-        return best;
-    }
-
-
-    function executeBotMove(from, to, dieIndex) {
-
-        state.board[from]++;
-
+        if (!botCanMove(from, to)) return false;
 
         if (state.board[to] === 1) {
 
-            state.board[to] = -1;
-            state.bar.player++;
-
-            state.message =
-                "Rakip senin pulunu kırdı.";
-
-        } else {
-
-            state.board[to]--;
-
-            state.message =
-                "Rakip pulunu hareket ettirdi.";
+            state.board[to] = 0;
+            state.barYou++;
         }
 
-        useDie(dieIndex);
+        state.board[from]++;
+        state.board[to]--;
 
-        checkWinner();
+        state.usedDice[dieIndex] = true;
 
-        render();
+        return true;
     }
 
-
-    function endBotTurn() {
+    function botTurn() {
 
         if (state.gameOver) return;
 
-        state.dice = [];
+        state.botThinking = true;
+
+        const a = Math.floor(Math.random() * 6) + 1;
+        const b = Math.floor(Math.random() * 6) + 1;
+
+        state.dice = a === b
+            ? [a, a, a, a]
+            : [a, b];
+
         state.usedDice = [];
 
-        state.turn = "player";
-        state.botThinking = false;
+        message(
+            `Rakip zar attı: ${state.dice.join(" - ")}`
+        );
 
-        state.message =
-            "Senin sıran. Zar at.";
+        render();
+
+        setTimeout(() => {
+
+            for (let d = 0; d < state.dice.length; d++) {
+
+                if (state.usedDice[d]) continue;
+
+                const die = state.dice[d];
+
+                let moved = false;
+
+                /* ÖNCE BAR */
+
+                if (state.barBot > 0) {
+
+                    const target = 24 - die;
+
+                    if (botCanMove(target, target)) {
+
+                        if (state.board[target] === 1) {
+                            state.board[target] = 0;
+                            state.barYou++;
+                        }
+
+                        state.barBot--;
+                        state.board[target]--;
+
+                        state.usedDice[d] = true;
+                        moved = true;
+                    }
+                }
+
+                /* NORMAL PUL */
+
+                if (!moved) {
+
+                    for (let from = 23; from >= 0; from--) {
+
+                        if (state.board[from] >= 0) continue;
+
+                        const to = from - die;
+
+                        if (to < 0) {
+
+                            if (from <= 5) {
+
+                                state.board[from]++;
+                                state.offBot++;
+                                state.usedDice[d] = true;
+                                moved = true;
+                                break;
+                            }
+
+                            continue;
+                        }
+
+                        if (botCanMove(from, to)) {
+
+                            botMove(from, to, d);
+                            moved = true;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            state.dice = [];
+            state.usedDice = [];
+            state.turn = "you";
+            state.botThinking = false;
+
+            if (state.offBot >= 15) {
+
+                loseYou();
+                return;
+            }
+
+            message("Sıra sende. Zar at.");
+
+            render();
+
+        }, 900);
+    }
+
+    function winYou() {
+
+        state.gameOver = true;
+        state.turn = "you";
+
+        message("🎉 Tebrikler! Tavlayı kazandın.");
 
         render();
     }
 
+    function loseYou() {
 
-    /* =====================================================
-       KAZANAN
-    ===================================================== */
+        state.gameOver = true;
+        state.turn = "bot";
 
-    function checkWinner() {
+        message("Rakip tavlayı kazandı.");
 
-        if (state.borneOff.player >= 15) {
-
-            state.gameOver = true;
-
-            state.message =
-                "🎉 Tebrikler! Tavlayı kazandın!";
-
-            render();
-
-            return true;
-        }
-
-        if (state.borneOff.bot >= 15) {
-
-            state.gameOver = true;
-
-            state.message =
-                "Rakip tavlayı kazandı.";
-
-            render();
-
-            return true;
-        }
-
-        return false;
+        render();
     }
-
-
-    /* =====================================================
-       GÖRSEL ZAR
-    ===================================================== */
-
-    function diceSymbol(value) {
-
-        const symbols = [
-            "",
-            "⚀",
-            "⚁",
-            "⚂",
-            "⚃",
-            "⚄",
-            "⚅"
-        ];
-
-        return symbols[value] || "⚄";
-    }
-
-
-    function renderDice() {
-
-        const box =
-            $("#diceBox");
-
-        if (!box) return;
-
-        box.innerHTML = "";
-
-
-        if (state.dice.length === 0) {
-
-            const a =
-                document.createElement("span");
-
-            const b =
-                document.createElement("span");
-
-            a.textContent = "⚄";
-            b.textContent = "⚂";
-
-            box.appendChild(a);
-            box.appendChild(b);
-
-            return;
-        }
-
-
-        state.dice.forEach((value, index) => {
-
-            const die =
-                document.createElement("span");
-
-            die.textContent =
-                diceSymbol(value);
-
-            if (state.usedDice.includes(index)) {
-
-                die.style.opacity = "0.28";
-                die.style.transform = "scale(.88)";
-            }
-
-            box.appendChild(die);
-        });
-    }
-
-
-    /* =====================================================
-       TAHTA ÇİZ
-    ===================================================== */
 
     function renderBoard() {
 
-        const board =
-            $("#backgammonBoard");
+        const board = $("#backgammonBoard");
 
         if (!board) return;
 
         board.innerHTML = "";
 
-
         for (let i = 0; i < 24; i++) {
 
-            const point =
-                document.createElement("div");
+            const point = document.createElement("div");
 
             point.className =
                 "tavla-point " +
                 (i < 12 ? "top" : "bottom");
 
-            point.dataset.point = String(i);
+            point.dataset.point = i;
 
-
-            if (state.selectedPoint === i) {
+            if (state.selected === i) {
                 point.classList.add("selected");
             }
 
+            const triangle = document.createElement("div");
 
-            const triangle =
-                document.createElement("div");
+            triangle.className = "tavla-triangle";
 
-            triangle.className =
-                "tavla-triangle";
+            const checkers = document.createElement("div");
 
+            checkers.className = "tavla-checkers";
 
-            const checkers =
-                document.createElement("div");
+            const count = Math.abs(state.board[i]);
 
-            checkers.className =
-                "tavla-checkers";
-
-
-            const count =
-                Math.abs(state.board[i]);
-
-            const owner =
-                state.board[i] > 0
-                    ? "player"
-                    : "bot";
-
-
-            /*
-             * Görselde 5'ten fazlasını da göstermek yerine
-             * pul sayısını doğru tutuyoruz.
-             */
             for (let c = 0; c < count; c++) {
 
-                const checker =
-                    document.createElement("div");
+                const checker = document.createElement("span");
 
                 checker.className =
-                    `tavla-checker ${owner}`;
+                    "tavla-checker " +
+                    (state.board[i] > 0 ? "player" : "bot");
+
+                checker.textContent = "";
 
                 checkers.appendChild(checker);
             }
 
-
             point.appendChild(triangle);
             point.appendChild(checkers);
 
-
             point.addEventListener(
                 "click",
-                () => handlePointClick(i)
+                () => pointClick(i)
             );
-
 
             board.appendChild(point);
         }
     }
 
-
-    /* =====================================================
-       BİLGİLERİ GÜNCELLE
-    ===================================================== */
-
     function renderInfo() {
 
-        const turnLabel =
-            $("#turnLabel");
+        const turn = $("#turnLabel");
 
-        if (turnLabel) {
+        if (turn) {
 
-            if (state.gameOver) {
-
-                turnLabel.textContent =
-                    "Oyun Bitti";
-
-            } else if (state.botThinking) {
-
-                turnLabel.textContent =
-                    "Rakip düşünüyor...";
-
-            } else if (state.turn === "player") {
-
-                turnLabel.textContent =
-                    "Senin sıran";
-
-            } else {
-
-                turnLabel.textContent =
-                    "Rakibin sırası";
-            }
+            turn.textContent =
+                state.turn === "you"
+                    ? "Sen"
+                    : "Rakip";
         }
 
+        const barBot = $("#barBot");
+        const barYou = $("#barYou");
+        const offYou = $("#offYou");
 
-        const message =
-            $("#gameMessage");
-
-        if (message) {
-            message.textContent =
-                state.message;
-        }
-
-
-        const barBot =
-            $("#barBot");
-
-        if (barBot) {
-            barBot.textContent =
-                state.bar.bot;
-        }
-
-
-        const barYou =
-            $("#barYou");
-
-        if (barYou) {
-            barYou.textContent =
-                state.bar.player;
-        }
-
-
-        const offYou =
-            $("#offYou");
-
-        if (offYou) {
-            offYou.textContent =
-                state.borneOff.player;
-        }
+        if (barBot) barBot.textContent = state.barBot;
+        if (barYou) barYou.textContent = state.barYou;
+        if (offYou) offYou.textContent = state.offYou;
     }
-
-
-    /* =====================================================
-       GENEL RENDER
-    ===================================================== */
 
     function render() {
 
@@ -1404,101 +704,116 @@ const Tavla = (() => {
         renderInfo();
     }
 
+    function init() {
 
-    /* =====================================================
-       DIŞARIDAN ERİŞİM
-    ===================================================== */
+        const roll = $("#rollDice");
+
+        if (roll) {
+            roll.addEventListener(
+                "click",
+                rollDice
+            );
+        }
+
+        const newGame = $("#newTavla");
+
+        if (newGame) {
+            newGame.addEventListener(
+                "click",
+                reset
+            );
+        }
+
+        reset();
+    }
 
     return {
         init,
-        resetGame,
         refresh: render,
-        rollDice,
-        getState: () => state
+        newGame: reset
     };
 
 })();
 
-
-/* =========================================================
+/* ============================================================
    BATAK
-========================================================= */
+   ============================================================ */
 
 const Batak = (() => {
 
-    const state = {
-        deck: [],
-        players: [
-            {
-                name: "Sen",
-                hand: [],
-                score: 0,
-                bid: 0
-            },
-            {
-                name: "Oyuncu 2",
-                hand: [],
-                score: 0,
-                bid: 0
-            },
-            {
-                name: "Oyuncu 3",
-                hand: [],
-                score: 0,
-                bid: 0
-            },
-            {
-                name: "Oyuncu 4",
-                hand: [],
-                score: 0,
-                bid: 0
-            }
-        ],
+    const suits = ["♠", "♥", "♦", "♣"];
 
-        trump: null,
-        currentPlayer: 0,
-        bidding: true,
-        highestBid: 0,
-        highestBidder: null,
-
-        trick: [],
-        trickNumber: 0,
-
-        message: "İhaleye gir veya pas de."
+    const suitNames = {
+        "♠": "Maça",
+        "♥": "Kupa",
+        "♦": "Karo",
+        "♣": "Sinek"
     };
 
-
-    /* =====================================================
-       DESTE
-    ===================================================== */
-
-    const suits = [
-        {
-            key: "S",
-            name: "Maça",
-            symbol: "♠",
-            red: false
-        },
-        {
-            key: "H",
-            name: "Kupa",
-            symbol: "♥",
-            red: true
-        },
-        {
-            key: "D",
-            name: "Karo",
-            symbol: "♦",
-            red: true
-        },
-        {
-            key: "C",
-            name: "Sinek",
-            symbol: "♣",
-            red: false
-        }
+    const ranks = [
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "J",
+        "Q",
+        "K",
+        "A"
     ];
 
+    const state = {
+        players: [
+            [],
+            [],
+            [],
+            []
+        ],
+
+        names: [
+            "Sen",
+            "Rakip 1",
+            "Rakip 2",
+            "Rakip 3"
+        ],
+
+        bid: [
+            null,
+            null,
+            null,
+            null
+        ],
+
+        currentBidPlayer: 0,
+
+        trump: null,
+
+        phase: "deal",
+
+        turn: 0,
+
+        leadSuit: null,
+
+        table: [],
+
+        scores: [
+            0,
+            0,
+            0,
+            0
+        ],
+
+        trickWins: [
+            0,
+            0,
+            0,
+            0
+        ]
+    };
 
     function createDeck() {
 
@@ -1506,14 +821,11 @@ const Batak = (() => {
 
         for (const suit of suits) {
 
-            for (let rank = 2; rank <= 14; rank++) {
+            for (const rank of ranks) {
 
                 deck.push({
-                    suit: suit.key,
-                    suitName: suit.name,
-                    symbol: suit.symbol,
-                    rank,
-                    red: suit.red
+                    suit,
+                    rank
                 });
             }
         }
@@ -1521,13 +833,13 @@ const Batak = (() => {
         return deck;
     }
 
-
     function shuffle(deck) {
 
         for (let i = deck.length - 1; i > 0; i--) {
 
-            const j =
-                Math.floor(Math.random() * (i + 1));
+            const j = Math.floor(
+                Math.random() * (i + 1)
+            );
 
             [deck[i], deck[j]] =
                 [deck[j], deck[i]];
@@ -1536,517 +848,535 @@ const Batak = (() => {
         return deck;
     }
 
+    function rankValue(rank) {
+
+        return ranks.indexOf(rank) + 2;
+    }
 
     function cardText(card) {
 
-        const names = {
-            11: "J",
-            12: "Q",
-            13: "K",
-            14: "A"
-        };
-
-        return `${names[card.rank] || card.rank}${card.symbol}`;
+        return `${card.rank}${card.suit}`;
     }
 
+    function reset() {
 
-    /* =====================================================
-       YENİ BATAK
-    ===================================================== */
+        const deck = shuffle(createDeck());
 
-    function resetGame() {
+        state.players = [
+            [],
+            [],
+            [],
+            []
+        ];
 
-        state.deck =
-            shuffle(createDeck());
+        for (let i = 0; i < 52; i++) {
 
-        state.players.forEach(player => {
-
-            player.hand = [];
-            player.score = 0;
-            player.bid = 0;
-        });
-
-        for (let i = 0; i < 13; i++) {
-
-            for (const player of state.players) {
-
-                player.hand.push(
-                    state.deck.pop()
-                );
-            }
+            state.players[i % 4].push(
+                deck[i]
+            );
         }
 
+        state.players.forEach(hand => {
+
+            hand.sort((a, b) => {
+
+                if (a.suit !== b.suit) {
+                    return suits.indexOf(a.suit) -
+                           suits.indexOf(b.suit);
+                }
+
+                return rankValue(a.rank) -
+                       rankValue(b.rank);
+            });
+        });
+
+        state.bid = [
+            null,
+            null,
+            null,
+            null
+        ];
+
+        state.currentBidPlayer = 0;
 
         state.trump = null;
-        state.currentPlayer = 0;
-        state.bidding = true;
 
-        state.highestBid = 0;
-        state.highestBidder = null;
+        state.phase = "bid";
 
-        state.trick = [];
-        state.trickNumber = 0;
+        state.turn = 0;
 
-        state.message =
-            "İhaleye gir veya pas de.";
+        state.leadSuit = null;
+
+        state.table = [];
+
+        state.trickWins = [
+            0,
+            0,
+            0,
+            0
+        ];
 
         render();
+
+        setTimeout(startBotsBid, 500);
     }
-
-
-    /* =====================================================
-       İHALE
-    ===================================================== */
 
     function playerBid() {
 
-        if (!state.bidding) return;
+        if (state.phase !== "bid") return;
 
-        const bid =
-            randomInt(3, 5);
+        if (state.currentBidPlayer !== 0) {
 
-        state.players[0].bid = bid;
+            return;
+        }
 
-        state.highestBid = bid;
-        state.highestBidder = 0;
+        if (state.bid[0] !== null) {
 
-        state.message =
-            `Sen ${bid} dedin. Rakipler düşünüyor...`;
+            message("Zaten ihale verdin.");
+            return;
+        }
 
-        render();
+        state.bid[0] = 8;
 
-        setTimeout(botBids, 900);
+        message("Sen 8 verdin.");
+
+        nextBid();
     }
-
 
     function playerPass() {
 
-        if (!state.bidding) return;
+        if (state.phase !== "bid") return;
 
-        state.players[0].bid = 0;
+        if (state.currentBidPlayer !== 0) return;
 
-        state.message =
-            "Sen pas dedin. Rakipler ihaleye devam ediyor.";
+        state.bid[0] = 0;
 
-        render();
+        message("Sen pas geçtin.");
 
-        setTimeout(botBids, 800);
+        nextBid();
     }
 
+    function startBotsBid() {
 
-    function botBids() {
+        if (state.phase !== "bid") return;
 
-        if (!state.bidding) return;
+        while (state.currentBidPlayer !== 0) {
 
-        /*
-         * Basit ihale sistemi.
-         */
-        for (let i = 1; i < 4; i++) {
+            const player =
+                state.currentBidPlayer;
 
             const bid =
-                randomInt(0, 5);
+                Math.random() < 0.55
+                    ? 0
+                    : 5 + Math.floor(Math.random() * 6);
 
-            state.players[i].bid = bid;
+            state.bid[player] = bid;
 
-            if (bid > state.highestBid) {
+            state.currentBidPlayer =
+                (state.currentBidPlayer + 1) % 4;
+        }
 
-                state.highestBid = bid;
-                state.highestBidder = i;
+        message("Sıra sende. İhaleye gir veya pas geç.");
+
+        render();
+    }
+
+    function nextBid() {
+
+        state.currentBidPlayer =
+            (state.currentBidPlayer + 1) % 4;
+
+        if (state.bid.every(v => v !== null)) {
+
+            finishBidding();
+            return;
+        }
+
+        if (state.currentBidPlayer === 0) {
+
+            message("Sıra sende. İhaleye gir veya pas geç.");
+
+            render();
+        }
+    }
+
+    function finishBidding() {
+
+        let winner = 0;
+        let highest = -1;
+
+        for (let i = 0; i < 4; i++) {
+
+            if (state.bid[i] !== null &&
+                state.bid[i] > highest) {
+
+                highest = state.bid[i];
+                winner = i;
             }
         }
 
+        if (highest <= 0) {
 
-        if (state.highestBidder === null) {
-
-            state.highestBidder = 0;
-            state.highestBid = 3;
+            highest = 8;
+            winner = 0;
+            state.bid[0] = 8;
         }
 
+        state.phase = "trump";
 
-        const trumpIndex =
-            randomInt(0, 3);
+        /*
+           Gerçek oyunda koz seçimi ihaleyi alan
+           oyuncuya bırakılabilir.
+           Burada oyuncu almadıysa bot otomatik seçer.
+        */
 
-        state.trump =
-            suits[trumpIndex];
+        if (winner === 0) {
 
+            state.trump =
+                suits[Math.floor(Math.random() * 4)];
 
-        state.bidding = false;
-
-        state.currentPlayer =
-            state.highestBidder;
-
-        state.message =
-            `${state.players[state.highestBidder].name} ihaleyi ${state.highestBid} aldı. Koz: ${state.trump.symbol} ${state.trump.name}`;
-
-        render();
-
-        if (state.currentPlayer !== 0) {
-
-            setTimeout(playBotTrick, 900);
-        }
-    }
-
-
-    /* =====================================================
-       GEÇERLİ KARTLAR
-    ===================================================== */
-
-    function getLegalCards(playerIndex) {
-
-        const hand =
-            state.players[playerIndex].hand;
-
-        if (state.trick.length === 0) {
-            return hand;
-        }
-
-        const leadSuit =
-            state.trick[0].card.suit;
-
-        const sameSuit =
-            hand.filter(card =>
-                card.suit === leadSuit
+            message(
+                `İhaleyi sen aldın. Koz: ${suitNames[state.trump]}`
             );
 
-        if (sameSuit.length > 0) {
-            return sameSuit;
-        }
+            state.turn = 0;
+            state.phase = "play";
 
-        return hand;
+            state.leadSuit = null;
+            state.table = [];
+
+            render();
+
+        } else {
+
+            state.trump =
+                suits[Math.floor(Math.random() * 4)];
+
+            message(
+                `${state.names[winner]} ihaleyi aldı. Koz: ${suitNames[state.trump]}`
+            );
+
+            state.turn = winner;
+            state.phase = "play";
+
+            state.leadSuit = null;
+            state.table = [];
+
+            render();
+
+            if (winner !== 0) {
+                setTimeout(botPlay, 800);
+            }
+        }
     }
 
+    function cardCanPlay(player, card) {
 
-    /* =====================================================
-       KART OYNAMA
-    ===================================================== */
+        if (state.table.length === 0) {
+            return true;
+        }
+
+        const lead = state.leadSuit;
+
+        const hasLead =
+            state.players[player].some(
+                c => c.suit === lead
+            );
+
+        if (hasLead) {
+            return card.suit === lead;
+        }
+
+        return true;
+    }
 
     function playPlayerCard(index) {
 
-        if (state.bidding) {
+        if (state.phase !== "play") return;
 
-            state.message =
-                "Önce ihaleyi tamamla.";
-
-            render();
+        if (state.turn !== 0) {
+            message("Şu anda sıra rakipte.");
             return;
         }
-
-        if (state.currentPlayer !== 0) {
-            return;
-        }
-
-        const legal =
-            getLegalCards(0);
 
         const card =
-            state.players[0].hand[index];
+            state.players[0][index];
 
         if (!card) return;
 
-        if (!legal.includes(card)) {
+        if (!cardCanPlay(0, card)) {
 
-            state.message =
-                "Bu kartı oynayamazsın.";
-
-            render();
-            return;
-        }
-
-        state.players[0].hand.splice(index, 1);
-
-        state.trick.push({
-            player: 0,
-            card
-        });
-
-        state.message =
-            "Kartını oynadın.";
-
-        render();
-
-        if (state.trick.length < 4) {
-
-            state.currentPlayer = 1;
-
-            setTimeout(playBotTrick, 650);
-        } else {
-
-            finishTrick();
-        }
-    }
-
-
-    function playBotTrick() {
-
-        if (state.trick.length >= 4) {
-            finishTrick();
-            return;
-        }
-
-        const playerIndex =
-            state.currentPlayer;
-
-        if (playerIndex === 0) {
-            return;
-        }
-
-        const legal =
-            getLegalCards(playerIndex);
-
-        if (!legal.length) return;
-
-        /*
-         * Basit bot:
-         * mümkünse düşük kart oynar.
-         */
-        const sorted =
-            [...legal].sort(
-                (a, b) => a.rank - b.rank
+            message(
+                `Elinde ${suitNames[state.leadSuit]} varsa o türden oynamalısın.`
             );
 
-        const card =
-            sorted[0];
-
-        const hand =
-            state.players[playerIndex].hand;
-
-        const index =
-            hand.indexOf(card);
-
-        if (index >= 0) {
-            hand.splice(index, 1);
+            return;
         }
 
-        state.trick.push({
-            player: playerIndex,
+        playCard(0, index);
+    }
+
+    function playCard(player, index) {
+
+        const card =
+            state.players[player][index];
+
+        if (!card) return;
+
+        if (!cardCanPlay(player, card)) {
+            return;
+        }
+
+        state.players[player].splice(
+            index,
+            1
+        );
+
+        if (state.table.length === 0) {
+            state.leadSuit = card.suit;
+        }
+
+        state.table.push({
+            player,
             card
         });
 
-        state.message =
-            `${state.players[playerIndex].name} kart oynadı.`;
-
         render();
 
-        if (state.trick.length === 4) {
+        if (state.table.length < 4) {
+
+            state.turn =
+                (player + 1) % 4;
+
+            if (state.turn !== 0) {
+
+                setTimeout(
+                    botPlay,
+                    650
+                );
+            } else {
+
+                message("Sıra sende. Kartını seç.");
+            }
+
+        } else {
 
             setTimeout(
                 finishTrick,
-                800
-            );
-
-        } else {
-
-            state.currentPlayer =
-                (playerIndex + 1) % 4;
-
-            if (state.currentPlayer === 0) {
-
-                state.message =
-                    "Sıra sende. Kartını seç.";
-
-                render();
-
-            } else {
-
-                setTimeout(
-                    playBotTrick,
-                    650
-                );
-            }
-        }
-    }
-
-
-    /* =====================================================
-       EL KAZANANI
-    ===================================================== */
-
-    function cardPower(card, leadSuit) {
-
-        let power = card.rank;
-
-        if (
-            state.trump &&
-            card.suit === state.trump.key
-        ) {
-            power += 100;
-        }
-
-        if (card.suit === leadSuit) {
-            power += 50;
-        }
-
-        return power;
-    }
-
-
-    function getTrickWinner() {
-
-        if (!state.trick.length) {
-            return null;
-        }
-
-        const leadSuit =
-            state.trick[0].card.suit;
-
-        let winner =
-            state.trick[0];
-
-        for (let i = 1; i < state.trick.length; i++) {
-
-            const current =
-                state.trick[i];
-
-            if (
-                cardPower(
-                    current.card,
-                    leadSuit
-                ) >
-                cardPower(
-                    winner.card,
-                    leadSuit
-                )
-            ) {
-                winner = current;
-            }
-        }
-
-        return winner.player;
-    }
-
-
-    function finishTrick() {
-
-        const winner =
-            getTrickWinner();
-
-        if (winner === null) {
-            return;
-        }
-
-        state.players[winner].score++;
-
-        state.trickNumber++;
-
-        state.message =
-            `${state.players[winner].name} eli aldı.`;
-
-        state.trick = [];
-
-        state.currentPlayer = winner;
-
-        render();
-
-        /*
-         * 13 el tamamlandı.
-         */
-        if (state.trickNumber >= 13) {
-
-            finishRound();
-
-            return;
-        }
-
-
-        if (state.currentPlayer === 0) {
-
-            state.message =
-                "Sıra sende.";
-
-            render();
-
-        } else {
-
-            setTimeout(
-                playBotTrick,
                 900
             );
         }
     }
 
+    function botPlay() {
+
+        if (state.phase !== "play") return;
+
+        const player = state.turn;
+
+        if (player === 0) return;
+
+        const hand =
+            state.players[player];
+
+        if (!hand.length) return;
+
+        let possible =
+            hand.filter(
+                card => cardCanPlay(player, card)
+            );
+
+        if (!possible.length) {
+            possible = hand;
+        }
+
+        /*
+           Basit bot:
+           İlk uygun kartı oynar.
+        */
+
+        const card = possible[0];
+
+        const index =
+            hand.indexOf(card);
+
+        playCard(player, index);
+    }
+
+    function trickCardBeats(a, b) {
+
+        /*
+           a mevcut kazanan
+           b yeni kart
+        */
+
+        const ca = a.card;
+        const cb = b.card;
+
+        if (cb.suit === state.trump &&
+            ca.suit !== state.trump) {
+            return true;
+        }
+
+        if (cb.suit !== state.trump &&
+            ca.suit === state.trump) {
+            return false;
+        }
+
+        if (cb.suit !== ca.suit) {
+            return false;
+        }
+
+        return rankValue(cb.rank) >
+               rankValue(ca.rank);
+    }
+
+    function finishTrick() {
+
+        if (state.table.length !== 4) return;
+
+        let winner =
+            state.table[0];
+
+        for (let i = 1; i < state.table.length; i++) {
+
+            if (trickCardBeats(
+                winner,
+                state.table[i]
+            )) {
+
+                winner =
+                    state.table[i];
+            }
+        }
+
+        const winnerPlayer =
+            winner.player;
+
+        state.trickWins[winnerPlayer]++;
+
+        message(
+            `${state.names[winnerPlayer]} eli aldı.`
+        );
+
+        state.table = [];
+        state.leadSuit = null;
+
+        state.turn = winnerPlayer;
+
+        if (
+            state.players.every(
+                hand => hand.length === 0
+            )
+        ) {
+
+            finishRound();
+            return;
+        }
+
+        render();
+
+        if (state.turn !== 0) {
+
+            setTimeout(
+                botPlay,
+                800
+            );
+        } else {
+
+            message("Sıra sende.");
+        }
+    }
 
     function finishRound() {
 
-        state.message =
-            "🎉 Batak eli tamamlandı.";
+        state.phase = "finished";
+
+        for (let i = 0; i < 4; i++) {
+
+            state.scores[i] +=
+                state.trickWins[i];
+        }
+
+        const result = state.trickWins[0];
+
+        message(
+            `Oyun bitti. Sen ${result} el aldın.`
+        );
 
         render();
     }
 
-
-    /* =====================================================
-       BATAK RENDER
-    ===================================================== */
-
     function renderHand() {
 
-        const handElement =
+        const hand =
             $("#playerHand");
 
-        if (!handElement) return;
+        if (!hand) return;
 
-        handElement.innerHTML = "";
+        hand.innerHTML = "";
 
-
-        state.players[0].hand.forEach(
+        state.players[0].forEach(
             (card, index) => {
 
-                const element =
+                const button =
                     document.createElement("button");
 
-                element.className =
+                button.className =
                     "playing-card";
 
-                element.type = "button";
-
-                element.textContent =
-                    cardText(card);
-
-                if (card.red) {
-                    element.style.color =
-                        "#b32d36";
+                if (
+                    card.suit === "♥" ||
+                    card.suit === "♦"
+                ) {
+                    button.classList.add("red");
                 }
 
-                element.addEventListener(
+                button.textContent =
+                    cardText(card);
+
+                button.title =
+                    `${card.rank} ${suitNames[card.suit]}`;
+
+                button.addEventListener(
                     "click",
                     () => playPlayerCard(index)
                 );
 
-                handElement.appendChild(element);
+                hand.appendChild(button);
             }
         );
     }
 
+    function renderTable() {
 
-    function renderTrick() {
+        const table =
+            $(".played-cards");
 
-        const cards =
-            $$(".card-placeholder");
+        if (!table) return;
 
-        cards.forEach((element, index) => {
+        table.innerHTML = "";
 
-            element.textContent =
-                "🂠";
+        state.table.forEach(item => {
 
-            if (
-                state.trick[index] &&
-                state.trick[index].card
-            ) {
+            const card =
+                document.createElement("div");
 
-                const card =
-                    state.trick[index].card;
+            card.className =
+                "card-placeholder played";
 
-                element.textContent =
-                    cardText(card);
+            card.innerHTML = `
+                <strong>
+                    ${cardText(item.card)}
+                </strong>
+                <small>
+                    ${state.names[item.player]}
+                </small>
+            `;
 
-                element.style.color =
-                    card.red
-                        ? "#b32d36"
-                        : "#222";
-            }
+            table.appendChild(card);
         });
     }
-
 
     function renderStatus() {
 
@@ -2055,104 +1385,108 @@ const Batak = (() => {
 
         if (!status) return;
 
-        const span =
-            status.querySelector("span");
+        let text = "";
 
-        const strong =
-            status.querySelector("strong");
+        if (state.phase === "bid") {
 
-        if (span) {
-            span.textContent =
-                state.bidding
-                    ? "İhale"
-                    : "Durum";
+            text =
+                state.currentBidPlayer === 0
+                    ? "Sıra sende: İhaleye Gir veya Pas"
+                    : "İhale devam ediyor...";
         }
 
-        if (strong) {
-            strong.textContent =
-                state.message;
+        if (state.phase === "play") {
+
+            if (state.turn === 0) {
+                text = "Sıra sende — kartını seç.";
+            } else {
+                text =
+                    `${state.names[state.turn]} oynuyor...`;
+            }
         }
 
+        if (state.phase === "finished") {
+            text = "Tur tamamlandı.";
+        }
+
+        status.textContent = text;
 
         const trump =
             $(".trump");
 
         if (trump) {
 
-            trump.textContent =
+            trump.innerHTML =
                 state.trump
-                    ? `Koz: ${state.trump.symbol} ${state.trump.name}`
-                    : "Koz: Henüz belirlenmedi";
+                    ? `Koz: <strong>${state.trump}</strong>`
+                    : "Koz: -";
         }
     }
-
 
     function render() {
 
         renderHand();
-        renderTrick();
+        renderTable();
         renderStatus();
+
+        const players =
+            $$(".batak-player");
+
+        players.forEach(
+            (el, i) => {
+
+                el.classList.toggle(
+                    "active-player",
+                    state.turn === i &&
+                    state.phase === "play"
+                );
+            }
+        );
     }
-
-
-    /* =====================================================
-       BATAK INIT
-    ===================================================== */
 
     function init() {
 
-        const newButton =
+        const newGame =
             $("#newBatak");
 
-        if (newButton) {
+        if (newGame) {
 
-            newButton.addEventListener(
+            newGame.addEventListener(
                 "click",
-                resetGame
+                reset
             );
         }
 
+        const buttons =
+            $$(".batak-controls button");
 
-        const bidButton =
-            $(".batak-controls button:nth-child(1)");
-
-        const passButton =
-            $(".batak-controls button:nth-child(2)");
-
-
-        if (bidButton) {
-
-            bidButton.addEventListener(
+        if (buttons[0]) {
+            buttons[0].addEventListener(
                 "click",
                 playerBid
             );
         }
 
-
-        if (passButton) {
-
-            passButton.addEventListener(
+        if (buttons[1]) {
+            buttons[1].addEventListener(
                 "click",
                 playerPass
             );
         }
 
-
-        resetGame();
+        reset();
     }
-
 
     return {
         init,
-        resetGame
+        newGame: reset
     };
 
 })();
 
-
-/* =========================================================
-   SAYFA AÇILINCA
-========================================================= */
+/* ============================================================
+   BAŞLAT
+   ============================================================ */
 
 document.addEventListener(
     "DOMContentLoaded",
@@ -2163,11 +1497,6 @@ document.addEventListener(
 
     }
 );
-
-
-/* =========================================================
-   GLOBAL ERİŞİM
-========================================================= */
 
 window.Tavla = Tavla;
 window.Batak = Batak;
