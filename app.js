@@ -931,3 +931,1172 @@ document.addEventListener(
 );
 
 window.Tavla = Tavla;
+/* ============================================================
+   TAVLA - 2. PARÇA
+   BOT / RAKİP OYUN MOTORU
+   ============================================================ */
+
+/*
+   Oyuncunun pulunu bardan oyuna sokma
+*/
+Tavla.getState().enterPlayerFromBar = function(die) {
+
+    const state = Tavla.getState();
+
+    if (state.turn !== "player") {
+        return false;
+    }
+
+    if (state.bar.player <= 0) {
+        return false;
+    }
+
+    const target = die - 1;
+
+    if (state.board[target] < -1) {
+        return false;
+    }
+
+    state.bar.player--;
+
+    if (state.board[target] === -1) {
+
+        state.board[target] = 1;
+        state.bar.bot++;
+
+    } else {
+
+        state.board[target]++;
+
+    }
+
+    state.remainingDice =
+        state.remainingDice.filter(
+            d => d !== die
+        );
+
+    return true;
+};
+
+
+/* ============================================================
+   BOT YARDIMCI FONKSİYONLARI
+   ============================================================ */
+
+function botCanMoveTo(target) {
+
+    const state = Tavla.getState();
+
+    if (target < 0 || target > 23) {
+        return false;
+    }
+
+    /*
+       Oyuncunun iki veya daha fazla pulu varsa
+       nokta kapalıdır.
+    */
+
+    if (state.board[target] > 1) {
+        return false;
+    }
+
+    return true;
+}
+
+
+/* ============================================================
+   BOT ZAR AT
+   ============================================================ */
+
+function botRollDice() {
+
+    const state = Tavla.getState();
+
+    const d1 =
+        Math.floor(Math.random() * 6) + 1;
+
+    const d2 =
+        Math.floor(Math.random() * 6) + 1;
+
+    state.dice = [d1, d2];
+
+    if (d1 === d2) {
+
+        state.remainingDice = [
+            d1,
+            d1,
+            d1,
+            d1
+        ];
+
+    } else {
+
+        state.remainingDice = [
+            d1,
+            d2
+        ];
+
+    }
+
+    return [d1, d2];
+}
+
+
+/* ============================================================
+   BOT HAREKETLERİNİ BUL
+   ============================================================ */
+
+function getBotMoves() {
+
+    const state = Tavla.getState();
+
+    const moves = [];
+
+    /*
+       Önce bardaki taşlar
+    */
+
+    if (state.bar.bot > 0) {
+
+        for (
+            const die
+            of state.remainingDice
+        ) {
+
+            /*
+               Bot ters yönde hareket eder.
+               24 -> 1 yönünde.
+            */
+
+            const target =
+                24 - die;
+
+            if (
+                botCanMoveTo(target)
+            ) {
+
+                moves.push({
+                    from: "bar",
+                    to: target,
+                    die: die
+                });
+
+            }
+
+        }
+
+        return moves;
+    }
+
+
+    /*
+       Normal taşlar
+    */
+
+    for (
+        let from = 23;
+        from >= 0;
+        from--
+    ) {
+
+        if (state.board[from] >= 0) {
+            continue;
+        }
+
+        for (
+            const die
+            of state.remainingDice
+        ) {
+
+            const target =
+                from - die;
+
+            if (target >= 0) {
+
+                if (
+                    botCanMoveTo(target)
+                ) {
+
+                    moves.push({
+                        from: from,
+                        to: target,
+                        die: die
+                    });
+
+                }
+
+            } else {
+
+                /*
+                   Pul toplama.
+                */
+
+                if (
+                    botCanBearOff(
+                        from,
+                        die
+                    )
+                ) {
+
+                    moves.push({
+                        from: from,
+                        to: "off",
+                        die: die
+                    });
+
+                }
+
+            }
+
+        }
+
+    }
+
+    return moves;
+}
+
+
+/* ============================================================
+   BOT PUL TOPLAYABİLİR Mİ?
+   ============================================================ */
+
+function botCanBearOff(
+    from,
+    die
+) {
+
+    const state = Tavla.getState();
+
+    /*
+       Botun bütün taşları kendi evinde olmalı.
+       Bot için ev bölgesi 1-6.
+    */
+
+    for (
+        let i = 6;
+        i < 24;
+        i++
+    ) {
+
+        if (state.board[i] < 0) {
+            return false;
+        }
+
+    }
+
+    /*
+       Tam zar
+    */
+
+    if (from - die < 0) {
+        return true;
+    }
+
+    /*
+       Daha geride taş var mı?
+    */
+
+    for (
+        let i = from - 1;
+        i >= 0;
+        i--
+    ) {
+
+        if (state.board[i] < 0) {
+            return false;
+        }
+
+    }
+
+    return false;
+}
+
+
+/* ============================================================
+   BOT HAMLESİ
+   ============================================================ */
+
+function executeBotMove(move) {
+
+    const state = Tavla.getState();
+
+    const dieIndex =
+        state.remainingDice.indexOf(
+            move.die
+        );
+
+    if (dieIndex === -1) {
+        return false;
+    }
+
+    state.remainingDice.splice(
+        dieIndex,
+        1
+    );
+
+
+    /*
+       BAR'DAN GİRİŞ
+    */
+
+    if (move.from === "bar") {
+
+        state.bar.bot--;
+
+        if (
+            state.board[move.to] === 1
+        ) {
+
+            /*
+               Oyuncunun tek pulunu kır.
+            */
+
+            state.board[move.to] = -1;
+
+            state.bar.player++;
+
+        } else {
+
+            state.board[move.to]--;
+
+        }
+
+        return true;
+    }
+
+
+    /*
+       NORMAL TAŞ
+    */
+
+    state.board[move.from]++;
+
+
+    /*
+       PUL TOPLAMA
+    */
+
+    if (move.to === "off") {
+
+        state.borneOff.bot++;
+
+        return true;
+    }
+
+
+    /*
+       OYUNCUNUN TEK PULUNU KIR
+    */
+
+    if (
+        state.board[move.to] === 1
+    ) {
+
+        state.board[move.to] = 0;
+
+        state.bar.player++;
+
+    }
+
+
+    /*
+       BOT PULUNU YERLEŞTİR
+    */
+
+    state.board[move.to]--;
+
+    return true;
+}
+
+
+/* ============================================================
+   BOT HAMLE SEÇİMİ
+   ============================================================ */
+
+function chooseBestBotMove(
+    moves
+) {
+
+    if (!moves.length) {
+        return null;
+    }
+
+    const state =
+        Tavla.getState();
+
+    /*
+       Öncelik sırası:
+
+       1. Oyuncuyu kır
+       2. Pul topla
+       3. Kapı oluştur
+       4. Rastgele
+    */
+
+
+    /*
+       Önce kırma
+    */
+
+    const hit =
+        moves.find(move => {
+
+            if (move.to === "off") {
+                return false;
+            }
+
+            return (
+                state.board[move.to] === 1
+            );
+
+        });
+
+    if (hit) {
+        return hit;
+    }
+
+
+    /*
+       Sonra toplama
+    */
+
+    const bear =
+        moves.find(
+            move => move.to === "off"
+        );
+
+    if (bear) {
+        return bear;
+    }
+
+
+    /*
+       Sonra daha ileri giden hamle
+    */
+
+    let best =
+        moves[0];
+
+    let bestDistance = -1;
+
+    for (
+        const move
+        of moves
+    ) {
+
+        if (
+            move.from === "bar"
+        ) {
+            continue;
+        }
+
+        const distance =
+            move.from -
+            (
+                typeof move.to === "number"
+                    ? move.to
+                    : 0
+            );
+
+        if (
+            distance >
+            bestDistance
+        ) {
+
+            bestDistance =
+                distance;
+
+            best =
+                move;
+
+        }
+
+    }
+
+    return best;
+}
+
+
+/* ============================================================
+   BOT TURU
+   ============================================================ */
+
+async function realBotTurn() {
+
+    const state =
+        Tavla.getState();
+
+    if (
+        state.gameOver
+    ) {
+        return;
+    }
+
+    if (
+        state.turn !== "bot"
+    ) {
+        return;
+    }
+
+    /*
+       Zar at
+    */
+
+    botRollDice();
+
+    setTimeout(() => {
+
+        const moves =
+            getBotMoves();
+
+        if (!moves.length) {
+
+            state.remainingDice = [];
+            state.dice = [];
+
+            state.turn = "player";
+
+            const message =
+                document.getElementById(
+                    "gameMessage"
+                );
+
+            if (message) {
+
+                message.textContent =
+                    "Rakip hamle yapamadı. Senin sıran.";
+
+            }
+
+            return;
+        }
+
+
+        /*
+           Zarlar bitene kadar oyna
+        */
+
+        function playNext() {
+
+            if (
+                state.gameOver
+            ) {
+                return;
+            }
+
+            if (
+                state.remainingDice.length === 0
+            ) {
+
+                state.dice = [];
+
+                state.turn = "player";
+
+                const message =
+                    document.getElementById(
+                        "gameMessage"
+                    );
+
+                if (message) {
+
+                    message.textContent =
+                        "Senin sıran. Zar at.";
+
+                }
+
+                if (
+                    window.Tavla &&
+                    typeof window.Tavla.refresh ===
+                    "function"
+                ) {
+
+                    window.Tavla.refresh();
+
+                }
+
+                return;
+            }
+
+
+            const available =
+                getBotMoves();
+
+            if (!available.length) {
+
+                state.remainingDice = [];
+
+                playNext();
+
+                return;
+            }
+
+
+            const move =
+                chooseBestBotMove(
+                    available
+                );
+
+            if (!move) {
+
+                state.remainingDice = [];
+
+                playNext();
+
+                return;
+            }
+
+
+            executeBotMove(
+                move
+            );
+
+
+            /*
+               Görsel güncelleme
+            */
+
+            if (
+                window.Tavla &&
+                typeof window.Tavla.refresh ===
+                "function"
+            ) {
+
+                window.Tavla.refresh();
+
+            }
+
+
+            /*
+               Kazanma
+            */
+
+            if (
+                state.borneOff.bot >= 15
+            ) {
+
+                state.gameOver = true;
+                state.scores.bot++;
+
+                const message =
+                    document.getElementById(
+                        "gameMessage"
+                    );
+
+                if (message) {
+
+                    message.textContent =
+                        "Rakip oyunu kazandı.";
+
+                }
+
+                return;
+            }
+
+
+            /*
+               Biraz bekle.
+               Böylece rakip gerçekten oynuyormuş
+               gibi görünür.
+            */
+
+            setTimeout(
+                playNext,
+                550
+            );
+
+        }
+
+        playNext();
+
+    }, 900);
+
+}
+
+
+/* ============================================================
+   BOT MOTORUNU ANA SİSTEME BAĞLA
+   ============================================================ */
+
+Tavla.botTurn = realBotTurn;
+
+
+/* ============================================================
+   RENDER YENİLEME
+   ============================================================ */
+
+Tavla.refresh = function() {
+
+    const state =
+        Tavla.getState();
+
+    const board =
+        document.getElementById(
+            "backgammonBoard"
+        );
+
+    if (board) {
+
+        board.innerHTML = "";
+
+        for (
+            let i = 0;
+            i < 24;
+            i++
+        ) {
+
+            const point =
+                document.createElement(
+                    "div"
+                );
+
+            point.className =
+                "tavla-point";
+
+            point.dataset.point =
+                i;
+
+            const number =
+                document.createElement(
+                    "div"
+                );
+
+            number.className =
+                "tavla-point-number";
+
+            number.textContent =
+                i + 1;
+
+            point.appendChild(
+                number
+            );
+
+
+            const checkers =
+                document.createElement(
+                    "div"
+                );
+
+            checkers.className =
+                "tavla-checkers";
+
+
+            const count =
+                Math.abs(
+                    state.board[i]
+                );
+
+
+            for (
+                let c = 0;
+                c < count;
+                c++
+            ) {
+
+                const checker =
+                    document.createElement(
+                        "div"
+                    );
+
+                checker.className =
+                    "tavla-checker " +
+                    (
+                        state.board[i] > 0
+                            ? "player"
+                            : "bot"
+                    );
+
+                checkers.appendChild(
+                    checker
+                );
+
+            }
+
+
+            point.appendChild(
+                checkers
+            );
+
+
+            if (
+                state.selectedPoint === i
+            ) {
+
+                point.classList.add(
+                    "selected"
+                );
+
+            }
+
+
+            point.addEventListener(
+                "click",
+                () => {
+
+                    if (
+                        state.turn ===
+                        "player"
+                    ) {
+
+                        if (
+                            state.selectedPoint ===
+                            null
+                        ) {
+
+                            if (
+                                state.board[i] > 0
+                            ) {
+
+                                state.selectedPoint =
+                                    i;
+
+                                const msg =
+                                    document.getElementById(
+                                        "gameMessage"
+                                    );
+
+                                if (msg) {
+
+                                    msg.textContent =
+                                        `${i + 1}. nokta seçildi.`;
+
+                                }
+
+                                Tavla.refresh();
+
+                            }
+
+                        } else {
+
+                            const from =
+                                state.selectedPoint;
+
+                            const distance =
+                                i - from;
+
+                            const dieIndex =
+                                state.remainingDice
+                                    .indexOf(
+                                        distance
+                                    );
+
+                            if (
+                                dieIndex === -1
+                            ) {
+
+                                const msg =
+                                    document.getElementById(
+                                        "gameMessage"
+                                    );
+
+                                if (msg) {
+
+                                    msg.textContent =
+                                        "Bu hamle için uygun zar yok.";
+
+                                }
+
+                                return;
+
+                            }
+
+
+                            if (
+                                state.board[i] < -1
+                            ) {
+
+                                const msg =
+                                    document.getElementById(
+                                        "gameMessage"
+                                    );
+
+                                if (msg) {
+
+                                    msg.textContent =
+                                        "Bu kapı kapalı.";
+
+                                }
+
+                                return;
+
+                            }
+
+
+                            state.remainingDice.splice(
+                                dieIndex,
+                                1
+                            );
+
+
+                            state.board[from]--;
+
+
+                            if (
+                                state.board[i] === -1
+                            ) {
+
+                                state.board[i] = 0;
+
+                                state.bar.bot++;
+
+                            }
+
+
+                            state.board[i]++;
+
+
+                            state.selectedPoint =
+                                null;
+
+
+                            if (
+                                state.remainingDice
+                                    .length === 0
+                            ) {
+
+                                state.dice = [];
+
+                                state.turn =
+                                    "bot";
+
+                                const msg =
+                                    document.getElementById(
+                                        "gameMessage"
+                                    );
+
+                                if (msg) {
+
+                                    msg.textContent =
+                                        "Rakip düşünüyor...";
+
+                                }
+
+                                Tavla.refresh();
+
+                                setTimeout(
+                                    realBotTurn,
+                                    700
+                                );
+
+                            } else {
+
+                                Tavla.refresh();
+
+                            }
+
+                        }
+
+                    }
+
+                }
+            );
+
+
+            board.appendChild(
+                point
+            );
+
+        }
+
+    }
+
+
+    /*
+       Zar kutusu
+    */
+
+    const diceBox =
+        document.getElementById(
+            "diceBox"
+        );
+
+    if (diceBox) {
+
+        diceBox.innerHTML = "";
+
+        state.dice.forEach(
+            die => {
+
+                const element =
+                    document.createElement(
+                        "div"
+                    );
+
+                element.className =
+                    "die";
+
+                element.textContent =
+                    die;
+
+                diceBox.appendChild(
+                    element
+                );
+
+            }
+        );
+
+    }
+
+
+    /*
+       Tur yazısı
+    */
+
+    const turn =
+        document.getElementById(
+            "turnLabel"
+        );
+
+    if (turn) {
+
+        turn.textContent =
+            state.turn === "player"
+                ? "Senin sıran"
+                : "Rakibin sırası";
+
+    }
+
+
+    /*
+       Zar yazısı
+    */
+
+    const diceText =
+        document.getElementById(
+            "diceText"
+        );
+
+    if (diceText) {
+
+        diceText.textContent =
+            state.dice.length
+                ? state.dice.join(" - ")
+                : "-";
+
+    }
+
+
+    /*
+       Toplanan taşlar
+    */
+
+    const offYou =
+        document.getElementById(
+            "offYou"
+        );
+
+    if (offYou) {
+
+        offYou.textContent =
+            state.borneOff.player;
+
+    }
+
+
+    const offBot =
+        document.getElementById(
+            "offBot"
+        );
+
+    if (offBot) {
+
+        offBot.textContent =
+            state.borneOff.bot;
+
+    }
+
+
+    const barYou =
+        document.getElementById(
+            "barYou"
+        );
+
+    if (barYou) {
+
+        barYou.textContent =
+            state.bar.player;
+
+    }
+
+
+    const barBot =
+        document.getElementById(
+            "barBot"
+        );
+
+    if (barBot) {
+
+        barBot.textContent =
+            state.bar.bot;
+
+    }
+
+};
+
+
+/* ============================================================
+   ZAR BUTONUNU YENİDEN BAĞLA
+   ============================================================ */
+
+const oldRollButton =
+    document.getElementById(
+        "rollDice"
+    );
+
+if (oldRollButton) {
+
+    oldRollButton.onclick = function() {
+
+        const state =
+            Tavla.getState();
+
+        if (
+            state.turn !== "player" ||
+            state.gameOver
+        ) {
+            return;
+        }
+
+        if (
+            state.remainingDice.length > 0
+        ) {
+            return;
+        }
+
+        const d1 =
+            Math.floor(
+                Math.random() * 6
+            ) + 1;
+
+        const d2 =
+            Math.floor(
+                Math.random() * 6
+            ) + 1;
+
+        state.dice =
+            [d1, d2];
+
+        state.remainingDice =
+            d1 === d2
+                ? [d1, d1, d1, d1]
+                : [d1, d2];
+
+        state.selectedPoint =
+            null;
+
+        const message =
+            document.getElementById(
+                "gameMessage"
+            );
+
+        if (message) {
+
+            message.textContent =
+                `Zarlar: ${d1} - ${d2}. Pulunu seç.`;
+
+        }
+
+        Tavla.refresh();
+
+    };
+
+}
