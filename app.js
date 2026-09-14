@@ -1,1318 +1,596 @@
-/* =========================================================
-   TAVLA & BATAK
-   TAVLA MOTORU - 1. PARÇA
-   ========================================================= */
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#10151f">
+    <meta name="description" content="Tavla ve Batak - Türkçe online oyun platformu">
+    <title>Tavla & Batak | Türkçe Oyun Platformu</title>
+    <link rel="stylesheet" href="style.css">
+</head>
 
-"use strict";
+<body>
 
-const Tavla = (() => {
+<header class="site-header">
+    <div class="header-inner">
 
-    const state = {
-        board: [],
-        bar: {
-            player: 0,
-            bot: 0
-        },
-        borneOff: {
-            player: 0,
-            bot: 0
-        },
+        <a href="#" class="logo" onclick="showHome(); return false;">
+            <span class="logo-icon">🎲</span>
+            <span>
+                <strong>Tavla & Batak</strong>
+                <small>Türkçe Oyun Platformu</small>
+            </span>
+        </a>
 
-        dice: [],
-        usedDice: [],
+        <nav class="main-nav">
+            <button onclick="showHome()">Ana Sayfa</button>
+            <button onclick="openTavla()">🎲 Tavla</button>
+            <button onclick="openBatak()">🃏 Batak</button>
+            <button onclick="openSalon()">👥 Oyun Salonu</button>
+        </nav>
 
-        turn: "player",
-        selectedPoint: null,
+    </div>
+</header>
 
-        gameStarted: false,
-        gameOver: false,
 
-        message: "Zar atmak için butona basın.",
+<main>
 
-        playerName: "Sen",
-        botName: "Rakip",
+    <!-- ================= ANA SAYFA ================= -->
 
-        score: {
-            player: 0,
-            bot: 0
-        },
+    <section id="homeScreen" class="screen active">
 
-        matchTarget: 5
-    };
+        <div class="hero">
 
-    /* =====================================================
-       YARDIMCI
-       ===================================================== */
+            <div class="hero-content">
 
-    const $ = (id) => document.getElementById(id);
+                <div class="hero-badge">
+                    🇹🇷 Türkçe Oyun Platformu
+                </div>
 
-    function setMessage(text) {
-        state.message = text;
+                <h1>
+                    Tavla ve Batak<br>
+                    <span>tek yerde.</span>
+                </h1>
 
-        const el = $("gameMessage");
+                <p>
+                    Klasik oyunların keyfini çıkar.
+                    Tavla veya Batak'ı seç, masaya otur ve oyuna başla.
+                </p>
 
-        if (el) {
-            el.textContent = text;
-        }
+                <div class="hero-buttons">
+                    <button class="primary-button" onclick="openTavla()">
+                        🎲 Tavla Oyna
+                    </button>
+
+                    <button class="secondary-button" onclick="openBatak()">
+                        🃏 Batak Oyna
+                    </button>
+                </div>
+
+            </div>
+
+            <div class="hero-art">
+
+                <div class="floating-dice dice-one">⚄</div>
+                <div class="floating-dice dice-two">⚂</div>
+
+                <div class="table-preview">
+
+                    <div class="preview-title">
+                        <span>🎲</span>
+                        TAVLA
+                    </div>
+
+                    <div class="mini-board">
+
+                        <div class="mini-point"></div>
+                        <div class="mini-point"></div>
+                        <div class="mini-point"></div>
+                        <div class="mini-point"></div>
+                        <div class="mini-point"></div>
+                        <div class="mini-point"></div>
+
+                        <div class="mini-checkers">
+                            <i></i>
+                            <i></i>
+                            <i></i>
+                        </div>
+
+                    </div>
+
+                    <div class="preview-dice">
+                        <span>⚄</span>
+                        <span>⚂</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="games-section">
+
+            <div class="section-heading">
+                <span>OYUNLAR</span>
+                <h2>Hangi oyunu oynayacaksın?</h2>
+                <p>Bir oyun seç ve masaya otur.</p>
+            </div>
+
+
+            <div class="game-grid">
+
+                <!-- TAVLA -->
+
+                <article class="game-card tavla-card">
+
+                    <div class="game-image tavla-image">
+
+                        <div class="game-icon-large">🎲</div>
+
+                        <div class="card-dice">
+                            ⚄
+                        </div>
+
+                    </div>
+
+                    <div class="game-card-content">
+
+                        <span class="game-label">KLASİK OYUN</span>
+
+                        <h3>Tavla</h3>
+
+                        <p>
+                            Klasik tavla deneyimi.
+                            Zarını at, pullarını hareket ettir
+                            ve rakibini yen.
+                        </p>
+
+                        <button class="game-button" onclick="openTavla()">
+                            Tavla Oyna
+                            <span>→</span>
+                        </button>
+
+                    </div>
+
+                </article>
+
+
+                <!-- BATAK -->
+
+                <article class="game-card batak-card">
+
+                    <div class="game-image batak-image">
+
+                        <div class="game-icon-large">🃏</div>
+
+                        <div class="playing-cards">
+                            <span>♠</span>
+                            <span>♥</span>
+                            <span>♦</span>
+                        </div>
+
+                    </div>
+
+                    <div class="game-card-content">
+
+                        <span class="game-label">4 KİŞİLİK</span>
+
+                        <h3>Batak</h3>
+
+                        <p>
+                            Kartlarını al, ihaleni yap,
+                            kozu belirle ve rakiplerinden
+                            daha fazla el toplamaya çalış.
+                        </p>
+
+                        <button class="game-button" onclick="openBatak()">
+                            Batak Oyna
+                            <span>→</span>
+                        </button>
+
+                    </div>
+
+                </article>
+
+            </div>
+
+        </div>
+
+
+        <section class="features">
+
+            <div class="feature">
+                <div class="feature-icon">📱</div>
+                <div>
+                    <strong>Her cihazda</strong>
+                    <span>Telefon, tablet ve bilgisayarda oynayın.</span>
+                </div>
+            </div>
+
+            <div class="feature">
+                <div class="feature-icon">🎮</div>
+                <div>
+                    <strong>Gerçek oyun</strong>
+                    <span>Tavla ve Batak oyunlarını gerçekten oynayın.</span>
+                </div>
+            </div>
+
+            <div class="feature">
+                <div class="feature-icon">🔒</div>
+                <div>
+                    <strong>Güvenli oyun</strong>
+                    <span>Oyun kuralları sistem tarafından kontrol edilir.</span>
+                </div>
+            </div>
+
+        </section>
+
+    </section>
+
+
+    <!-- ================= TAVLA ================= -->
+
+    <section id="tavlaScreen" class="screen game-screen">
+
+        <div class="game-top">
+
+            <button class="back-button" onclick="showHome()">
+                ← Ana Sayfa
+            </button>
+
+            <div>
+                <span class="game-title-icon">🎲</span>
+                <h2>Tavla</h2>
+                <small>Klasik tavla</small>
+            </div>
+
+            <button class="new-game-button" id="newTavla">
+                Yeni Oyun
+            </button>
+
+        </div>
+
+
+        <div class="tavla-layout">
+
+            <div class="player-panel">
+
+                <div class="player-avatar">👤</div>
+
+                <div>
+                    <strong>Sen</strong>
+                    <span>Oyuncu</span>
+                </div>
+
+                <div class="player-score">
+                    0
+                </div>
+
+            </div>
+
+
+            <div class="tavla-table">
+
+                <div class="board-header">
+                    <span>Rakip</span>
+                    <span id="turnLabel">Zar atma sırası</span>
+                    <span>Sen</span>
+                </div>
+
+
+                <div id="backgammonBoard" class="backgammon-board">
+
+                    <!-- JavaScript buraya tavla tahtasını oluşturacak -->
+
+                </div>
+
+
+                <div class="dice-area">
+
+                    <div id="diceBox" class="dice-box">
+                        <span>⚄</span>
+                        <span>⚂</span>
+                    </div>
+
+                    <button id="rollDice" class="roll-button">
+                        🎲 Zar At
+                    </button>
+
+                </div>
+
+
+                <div class="game-message" id="gameMessage">
+                    Oyuna başlamak için zar at.
+                </div>
+
+            </div>
+
+
+            <div class="side-info">
+
+                <div class="info-box">
+                    <span>Rakibin pulları</span>
+                    <strong id="barBot">0</strong>
+                </div>
+
+                <div class="info-box">
+                    <span>Senin pulların</span>
+                    <strong id="barYou">0</strong>
+                </div>
+
+                <div class="info-box">
+                    <span>Toplanan</span>
+                    <strong id="offYou">0</strong>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= BATAK ================= -->
+
+    <section id="batakScreen" class="screen game-screen">
+
+        <div class="game-top">
+
+            <button class="back-button" onclick="showHome()">
+                ← Ana Sayfa
+            </button>
+
+            <div>
+                <span class="game-title-icon">🃏</span>
+                <h2>Batak</h2>
+                <small>4 kişilik Batak</small>
+            </div>
+
+            <button class="new-game-button" id="newBatak">
+                Yeni Oyun
+            </button>
+
+        </div>
+
+
+        <div class="batak-table">
+
+            <div class="batak-player player-top">
+                <div class="avatar">🤖</div>
+                <strong>Rakip 1</strong>
+                <span>Bot</span>
+            </div>
+
+
+            <div class="batak-player player-left">
+                <div class="avatar">🤖</div>
+                <strong>Rakip 2</strong>
+                <span>Bot</span>
+            </div>
+
+
+            <div class="batak-player player-right">
+                <div class="avatar">🤖</div>
+                <strong>Rakip 3</strong>
+                <span>Bot</span>
+            </div>
+
+
+            <div class="batak-center">
+
+                <div class="batak-status">
+                    <span>İhale</span>
+                    <strong>Oyun başlıyor...</strong>
+                </div>
+
+                <div class="played-cards">
+
+                    <div class="card-placeholder">♠</div>
+                    <div class="card-placeholder">♥</div>
+                    <div class="card-placeholder">♦</div>
+                    <div class="card-placeholder">♣</div>
+
+                </div>
+
+                <div class="trump">
+                    Koz: <strong>♠</strong>
+                </div>
+
+            </div>
+
+
+            <div class="batak-player player-bottom">
+
+                <div class="avatar">👤</div>
+
+                <strong>Sen</strong>
+
+                <span>Oyuncu</span>
+
+                <div id="playerHand" class="player-hand">
+
+                    <div class="playing-card">A♠</div>
+                    <div class="playing-card">K♥</div>
+                    <div class="playing-card">Q♦</div>
+                    <div class="playing-card">J♣</div>
+                    <div class="playing-card">10♠</div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="batak-controls">
+
+            <button class="primary-button">
+                İhaleye Gir
+            </button>
+
+            <button class="secondary-button">
+                Pas
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= OYUN SALONU ================= -->
+
+    <section id="salonScreen" class="screen">
+
+        <div class="salon-page">
+
+            <div class="section-heading">
+                <span>OYUN SALONU</span>
+
+                <h2>Bir masaya katıl</h2>
+
+                <p>
+                    İleride burada açık Tavla ve Batak masalarını
+                    görebilecek ve istediğin masaya katılabileceksin.
+                </p>
+            </div>
+
+
+            <div class="empty-salon">
+
+                <div class="empty-icon">👥</div>
+
+                <h3>Oyun salonu hazırlanıyor</h3>
+
+                <p>
+                    Çok yakında arkadaşlarınla özel masa oluşturabileceksin.
+                </p>
+
+                <button class="primary-button" onclick="showHome()">
+                    Ana Sayfaya Dön
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<footer class="site-footer">
+
+    <div>
+        <strong>Tavla & Batak</strong>
+        <span>Türkçe Oyun Platformu</span>
+    </div>
+
+    <div>
+        © 2026 Tavla & Batak
+    </div>
+
+</footer>
+
+
+<script src="app.js"></script>
+
+
+<script>
+
+function hideAllScreens() {
+
+    document.querySelectorAll(".screen").forEach(function(screen) {
+        screen.classList.remove("active");
+    });
+
+}
+
+
+function showHome() {
+
+    hideAllScreens();
+
+    const home = document.getElementById("homeScreen");
+
+    if (home) {
+        home.classList.add("active");
     }
 
-    function randomDie() {
-        return Math.floor(Math.random() * 6) + 1;
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+
+}
+
+
+function openTavla() {
+
+    hideAllScreens();
+
+    const tavla = document.getElementById("tavlaScreen");
+
+    if (tavla) {
+        tavla.classList.add("active");
     }
 
-    /* =====================================================
-       YENİ OYUN
-       ===================================================== */
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
 
-    function resetBoard() {
-
-        state.board = new Array(24).fill(0);
-
-        /*
-            POZİTİF = OYUNCU
-            NEGATİF = RAKİP
-        */
-
-        // Oyuncunun 15 pulu
-        state.board[0] = 2;
-        state.board[11] = 5;
-        state.board[16] = 3;
-        state.board[18] = 5;
-
-        // Rakibin 15 pulu
-        state.board[23] = -2;
-        state.board[12] = -5;
-        state.board[7] = -3;
-        state.board[5] = -5;
-
-        state.bar.player = 0;
-        state.bar.bot = 0;
-
-        state.borneOff.player = 0;
-        state.borneOff.bot = 0;
+    if (window.Tavla && typeof window.Tavla.refresh === "function") {
+        window.Tavla.refresh();
     }
 
-    function resetGame() {
+}
 
-        resetBoard();
 
-        state.dice = [];
-        state.usedDice = [];
+function openBatak() {
 
-        state.turn = "player";
-        state.selectedPoint = null;
+    hideAllScreens();
 
-        state.gameStarted = true;
-        state.gameOver = false;
+    const batak = document.getElementById("batakScreen");
 
-        setMessage("Oyun başladı. Zar at.");
-
-        render();
+    if (batak) {
+        batak.classList.add("active");
     }
 
-    /* =====================================================
-       ZAR
-       ===================================================== */
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
 
-    function rollDice() {
+}
 
-        if (!state.gameStarted) {
-            resetGame();
-            return;
-        }
 
-        if (state.gameOver) {
-            return;
-        }
+function openSalon() {
 
-        if (state.turn !== "player") {
-            setMessage("Şu anda rakibin sırası.");
-            return;
-        }
+    hideAllScreens();
 
-        if (state.dice.length > 0) {
-            setMessage("Önce mevcut zarlarını kullan.");
-            return;
-        }
+    const salon = document.getElementById("salonScreen");
 
-        const first = randomDie();
-        const second = randomDie();
-
-        if (first === second) {
-
-            state.dice = [
-                first,
-                first,
-                first,
-                first
-            ];
-
-        } else {
-
-            state.dice = [
-                first,
-                second
-            ];
-        }
-
-        state.usedDice = [];
-
-        setMessage(
-            `Zarlar: ${first} - ${second}. Bir pul seç.`
-        );
-
-        render();
-
-        checkAvailableMoves();
+    if (salon) {
+        salon.classList.add("active");
     }
 
-    /* =====================================================
-       ZAR KULLANIMI
-       ===================================================== */
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
 
-    function availableDice() {
+}
 
-        return state.dice
-            .map((value, index) => {
 
-                if (state.usedDice.includes(index)) {
-                    return null;
-                }
+document.addEventListener("DOMContentLoaded", function() {
 
-                return {
-                    value,
-                    index
-                };
+    showHome();
 
-            })
-            .filter(Boolean);
-    }
+});
 
-    function useDie(index) {
+</script>
 
-        if (!state.usedDice.includes(index)) {
-            state.usedDice.push(index);
-        }
-    }
-
-    /* =====================================================
-       PUl SAHİPLİĞİ
-       ===================================================== */
-
-    function isPlayerPoint(point) {
-
-        return state.board[point] > 0;
-    }
-
-    function isBotPoint(point) {
-
-        return state.board[point] < 0;
-    }
-
-    function playerCount(point) {
-
-        return Math.max(0, state.board[point]);
-    }
-
-    function botCount(point) {
-
-        return Math.max(0, -state.board[point]);
-    }
-
-    /* =====================================================
-       HAMLE KONTROLÜ
-       ===================================================== */
-
-    function canPlayerMoveTo(point) {
-
-        if (point < 0 || point > 23) {
-            return false;
-        }
-
-        /*
-           Rakibin 2 veya daha fazla pulu varsa
-           o haneye girilemez.
-        */
-
-        if (state.board[point] <= -2) {
-            return false;
-        }
-
-        return true;
-    }
-
-    function playerMoveDistance(from, to) {
-
-        return to - from;
-    }
-
-    function getPossibleDestinations(from) {
-
-        const results = [];
-
-        if (state.bar.player > 0) {
-
-            for (const die of availableDice()) {
-
-                const destination = die.value - 1;
-
-                if (canPlayerMoveTo(destination)) {
-
-                    results.push({
-                        from: "bar",
-                        to: destination,
-                        dieIndex: die.index,
-                        dieValue: die.value
-                    });
-                }
-            }
-
-            return results;
-        }
-
-        for (const die of availableDice()) {
-
-            const destination =
-                from + die.value;
-
-            if (destination > 23) {
-                continue;
-            }
-
-            if (!canPlayerMoveTo(destination)) {
-                continue;
-            }
-
-            results.push({
-                from,
-                to: destination,
-                dieIndex: die.index,
-                dieValue: die.value
-            });
-        }
-
-        return results;
-    }
-
-    /* =====================================================
-       PUL SEÇME
-       ===================================================== */
-
-    function selectPoint(point) {
-
-        if (state.turn !== "player") {
-            return;
-        }
-
-        if (state.gameOver) {
-            return;
-        }
-
-        /*
-           BARDA PUL VARSA ÖNCE BARDAKİ PUL
-           OYUNA GİRMELİ.
-        */
-
-        if (state.bar.player > 0) {
-
-            setMessage(
-                "Önce bardaki pulunu oyuna sokmalısın."
-            );
-
-            return;
-        }
-
-        if (!isPlayerPoint(point)) {
-
-            setMessage(
-                "Bu hanede senin pulun yok."
-            );
-
-            return;
-        }
-
-        state.selectedPoint = point;
-
-        const moves = getPossibleDestinations(point);
-
-        if (moves.length === 0) {
-
-            setMessage(
-                "Bu pul ile geçerli bir hamle yok."
-            );
-
-            state.selectedPoint = null;
-
-        } else {
-
-            setMessage(
-                `${point + 1}. haneyi seçtin. Gideceğin haneye bas.`
-            );
-        }
-
-        render();
-    }
-
-    /* =====================================================
-       HEDEF SEÇME
-       ===================================================== */
-
-    function moveTo(point) {
-
-        if (state.selectedPoint === null) {
-            return;
-        }
-
-        const from = state.selectedPoint;
-
-        const distance =
-            playerMoveDistance(from, point);
-
-        const die = availableDice().find(
-            item => item.value === distance
-        );
-
-        if (!die) {
-
-            setMessage(
-                "Bu hamle için uygun zar yok."
-            );
-
-            return;
-        }
-
-        if (!canPlayerMoveTo(point)) {
-
-            setMessage(
-                "Bu haneye oynayamazsın."
-            );
-
-            return;
-        }
-
-        executePlayerMove(
-            from,
-            point,
-            die.index
-        );
-    }
-
-    /* =====================================================
-       OYUNCU HAMLESİ
-       ===================================================== */
-
-    function executePlayerMove(
-        from,
-        to,
-        dieIndex
-    ) {
-
-        if (state.board[from] <= 0) {
-            return;
-        }
-
-        /*
-           PULU KALDIR
-        */
-
-        state.board[from]--;
-
-        /*
-           RAKİBİN TEK PULU VARSA KIR
-        */
-
-        if (state.board[to] === -1) {
-
-            state.board[to] = 0;
-
-            state.bar.bot++;
-
-            setMessage(
-                "Rakibin pulunu kırdın!"
-            );
-        }
-
-        /*
-           HEDEF HANEYE KOY
-        */
-
-        state.board[to]++;
-
-        useDie(dieIndex);
-
-        state.selectedPoint = null;
-
-        /*
-           TÜM ZARLAR KULLANILDIYSA
-           TUR BİTER
-        */
-
-        if (
-            availableDice().length === 0
-        ) {
-
-            endPlayerTurn();
-
-        } else {
-
-            setMessage(
-                "Hamle tamam. Diğer zarını kullan."
-            );
-
-            render();
-        }
-    }
-
-    /* =====================================================
-       BARDAKİ PULU OYUNA SOK
-       ===================================================== */
-
-    function enterFromBar(dieIndex) {
-
-        if (state.bar.player <= 0) {
-            return;
-        }
-
-        const die =
-            state.dice[dieIndex];
-
-        const destination =
-            die - 1;
-
-        if (!canPlayerMoveTo(destination)) {
-
-            setMessage(
-                "Bu zar ile bardan giriş yapılamıyor."
-            );
-
-            return;
-        }
-
-        /*
-           RAKİBİN TEK PULU VARSA KIR
-        */
-
-        if (state.board[destination] === -1) {
-
-            state.board[destination] = 0;
-
-            state.bar.bot++;
-
-            setMessage(
-                "Bardan girdin ve rakibin pulunu kırdın!"
-            );
-        }
-
-        state.board[destination]++;
-
-        state.bar.player--;
-
-        useDie(dieIndex);
-
-        if (
-            availableDice().length === 0
-        ) {
-
-            endPlayerTurn();
-
-        } else {
-
-            render();
-        }
-    }
-
-    /* =====================================================
-       BAR KONTROLÜ
-       ===================================================== */
-
-    function handleBarEntry() {
-
-        if (state.bar.player <= 0) {
-            return false;
-        }
-
-        const dice = availableDice();
-
-        if (dice.length === 0) {
-            return false;
-        }
-
-        let possible = false;
-
-        for (const die of dice) {
-
-            const destination =
-                die.value - 1;
-
-            if (
-                canPlayerMoveTo(destination)
-            ) {
-
-                possible = true;
-            }
-        }
-
-        if (!possible) {
-
-            setMessage(
-                "Bardaki pulun için geçerli giriş yok."
-            );
-
-            return true;
-        }
-
-        setMessage(
-            "Bardaki pulunu oyuna sokmak için üstteki uygun haneye bas."
-        );
-
-        return true;
-    }
-
-    /* =====================================================
-       GEÇERLİ HAMLE KONTROLÜ
-       ===================================================== */
-
-    function checkAvailableMoves() {
-
-        if (state.bar.player > 0) {
-
-            handleBarEntry();
-
-            render();
-
-            return;
-        }
-
-        let possible = false;
-
-        for (let point = 0; point < 24; point++) {
-
-            if (!isPlayerPoint(point)) {
-                continue;
-            }
-
-            const moves =
-                getPossibleDestinations(point);
-
-            if (moves.length > 0) {
-                possible = true;
-                break;
-            }
-        }
-
-        if (!possible) {
-
-            setMessage(
-                "Bu zarlarla geçerli hamle yok. Tur geçiliyor."
-            );
-
-            setTimeout(
-                endPlayerTurn,
-                800
-            );
-
-        } else {
-
-            render();
-        }
-    }
-
-    /* =====================================================
-       OYUNCU TURU BİTİR
-       ===================================================== */
-
-    function endPlayerTurn() {
-
-        state.dice = [];
-        state.usedDice = [];
-        state.selectedPoint = null;
-
-        state.turn = "bot";
-
-        setMessage(
-            "Rakibin sırası..."
-        );
-
-        render();
-
-        setTimeout(
-            botTurn,
-            900
-        );
-    }
-
-    /* =====================================================
-       RAKİP
-       ===================================================== */
-
-    function botTurn() {
-
-        if (state.gameOver) {
-            return;
-        }
-
-        const first = randomDie();
-        const second = randomDie();
-
-        if (first === second) {
-
-            state.dice = [
-                first,
-                first,
-                first,
-                first
-            ];
-
-        } else {
-
-            state.dice = [
-                first,
-                second
-            ];
-        }
-
-        state.usedDice = [];
-
-        setMessage(
-            `Rakip zar attı: ${first} - ${second}`
-        );
-
-        render();
-
-        setTimeout(
-            playBotMoves,
-            800
-        );
-    }
-
-    /* =====================================================
-       RAKİP HAMLELERİ
-       ===================================================== */
-
-    function playBotMoves() {
-
-        let safety = 10;
-
-        while (
-            availableDice().length > 0 &&
-            safety > 0
-        ) {
-
-            safety--;
-
-            const dice =
-                availableDice();
-
-            let moved = false;
-
-            for (const die of dice) {
-
-                /*
-                   BARDA RAKİP PULU
-                */
-
-                if (state.bar.bot > 0) {
-
-                    const destination =
-                        24 - die.value;
-
-                    if (
-                        destination >= 0 &&
-                        state.board[destination] <= 1
-                    ) {
-
-                        moveBotFromBar(
-                            die.index,
-                            destination
-                        );
-
-                        moved = true;
-                        break;
-                    }
-
-                    continue;
-                }
-
-                /*
-                   NORMAL HAMLE
-                */
-
-                for (
-                    let from = 23;
-                    from >= 0;
-                    from--
-                ) {
-
-                    if (
-                        state.board[from] >= 0
-                    ) {
-                        continue;
-                    }
-
-                    const to =
-                        from - die.value;
-
-                    if (to < 0) {
-                        continue;
-                    }
-
-                    if (
-                        state.board[to] > 1
-                    ) {
-                        continue;
-                    }
-
-                    executeBotMove(
-                        from,
-                        to,
-                        die.index
-                    );
-
-                    moved = true;
-
-                    break;
-                }
-
-                if (moved) {
-                    break;
-                }
-            }
-
-            if (!moved) {
-
-                /*
-                   OYUNDA HİÇ HAMLE YOK
-                */
-
-                state.usedDice =
-                    state.dice.map(
-                        (_, index) => index
-                    );
-            }
-        }
-
-        state.dice = [];
-        state.usedDice = [];
-
-        state.turn = "player";
-
-        setMessage(
-            "Rakibin turu bitti. Şimdi senin sıran."
-        );
-
-        render();
-
-        checkWin();
-    }
-
-    /* =====================================================
-       RAKİP BAR GİRİŞİ
-       ===================================================== */
-
-    function moveBotFromBar(
-        dieIndex,
-        destination
-    ) {
-
-        if (
-            state.board[destination] === 1
-        ) {
-
-            state.board[destination] = 0;
-
-            state.bar.player++;
-        }
-
-        state.board[destination]--;
-
-        state.bar.bot--;
-
-        useDie(dieIndex);
-    }
-
-    /* =====================================================
-       RAKİP NORMAL HAMLESİ
-       ===================================================== */
-
-    function executeBotMove(
-        from,
-        to,
-        dieIndex
-    ) {
-
-        if (state.board[from] >= 0) {
-            return;
-        }
-
-        state.board[from]++;
-
-        if (
-            state.board[to] === 1
-        ) {
-
-            state.board[to] = 0;
-
-            state.bar.player++;
-
-        }
-
-        state.board[to]--;
-
-        useDie(dieIndex);
-    }
-
-    /* =====================================================
-       KAZANMA KONTROLÜ
-       ===================================================== */
-
-    function checkWin() {
-
-        if (
-            state.borneOff.player >= 15
-        ) {
-
-            state.gameOver = true;
-
-            state.score.player++;
-
-            setMessage(
-                "🎉 Tebrikler! Oyunu kazandın."
-            );
-
-            render();
-
-            return true;
-        }
-
-        if (
-            state.borneOff.bot >= 15
-        ) {
-
-            state.gameOver = true;
-
-            state.score.bot++;
-
-            setMessage(
-                "Rakip oyunu kazandı."
-            );
-
-            render();
-
-            return true;
-        }
-
-        return false;
-    }
-
-    /* =====================================================
-       TAŞA TIKLAMA
-       ===================================================== */
-
-    function pointClicked(point) {
-
-        if (state.turn !== "player") {
-            return;
-        }
-
-        if (state.gameOver) {
-            return;
-        }
-
-        /*
-           BARDA PUL VARSA
-        */
-
-        if (state.bar.player > 0) {
-
-            const dice =
-                availableDice();
-
-            for (const die of dice) {
-
-                const destination =
-                    die.value - 1;
-
-                if (
-                    destination === point
-                ) {
-
-                    enterFromBar(
-                        die.index
-                    );
-
-                    return;
-                }
-            }
-
-            setMessage(
-                "Önce bardaki pulunu oyuna sok."
-            );
-
-            return;
-        }
-
-        /*
-           SEÇİLİ PUL YOKSA
-           PUL SEÇ
-        */
-
-        if (
-            state.selectedPoint === null
-        ) {
-
-            selectPoint(point);
-
-            return;
-        }
-
-        /*
-           AYNI HANeye TEKRAR BASILDIYSA
-        */
-
-        if (
-            state.selectedPoint === point
-        ) {
-
-            state.selectedPoint = null;
-
-            setMessage(
-                "Pul seçimi iptal edildi."
-            );
-
-            render();
-
-            return;
-        }
-
-        /*
-           HEDEF HANE
-        */
-
-        moveTo(point);
-    }
-
-    /* =====================================================
-       HTML EVENTS
-       ===================================================== */
-
-    function bindEvents() {
-
-        const rollButton =
-            $("rollDice");
-
-        const newButton =
-            $("newTavla");
-
-        if (rollButton) {
-
-            rollButton.onclick = () => {
-                rollDice();
-            };
-        }
-
-        if (newButton) {
-
-            newButton.onclick = () => {
-                resetGame();
-            };
-        }
-    }
-
-    /* =====================================================
-       TAVLA TAHTASI ÇİZ
-       ===================================================== */
-
-    function renderBoard() {
-
-        const board =
-            $("backgammonBoard");
-
-        if (!board) {
-            return;
-        }
-
-        board.innerHTML = "";
-
-        /*
-           24 HANE
-        */
-
-        for (
-            let point = 0;
-            point < 24;
-            point++
-        ) {
-
-            const el =
-                document.createElement("div");
-
-            el.className =
-                "tavla-point " +
-                (point < 12
-                    ? "top"
-                    : "bottom");
-
-            el.dataset.point = point;
-
-            if (
-                state.selectedPoint === point
-            ) {
-
-                el.classList.add(
-                    "selected"
-                );
-            }
-
-            const triangle =
-                document.createElement("div");
-
-            triangle.className =
-                "tavla-triangle";
-
-            const number =
-                document.createElement("div");
-
-            number.className =
-                "tavla-point-number";
-
-            number.textContent =
-                point + 1;
-
-            const checkers =
-                document.createElement("div");
-
-            checkers.className =
-                "tavla-checkers";
-
-            const count =
-                Math.abs(
-                    state.board[point]
-                );
-
-            const owner =
-                state.board[point] > 0
-                    ? "player"
-                    : "bot";
-
-            /*
-               PULLAR
-            */
-
-            for (
-                let i = 0;
-                i < count;
-                i++
-            ) {
-
-                const checker =
-                    document.createElement("div");
-
-                checker.className =
-                    "tavla-checker " +
-                    owner;
-
-                checker.textContent =
-                    count > 5
-                        ? (i === 4
-                            ? count
-                            : "")
-                        : "";
-
-                checkers.appendChild(
-                    checker
-                );
-            }
-
-            el.appendChild(triangle);
-            el.appendChild(number);
-            el.appendChild(checkers);
-
-            el.onclick = () => {
-                pointClicked(point);
-            };
-
-            board.appendChild(el);
-        }
-    }
-
-    /* =====================================================
-       ZARLARI ÇİZ
-       ===================================================== */
-
-    function renderDice() {
-
-        const box =
-            $("diceBox");
-
-        if (!box) {
-            return;
-        }
-
-        box.innerHTML = "";
-
-        if (
-            state.dice.length === 0
-        ) {
-
-            const empty =
-                document.createElement("div");
-
-            empty.className =
-                "die";
-
-            empty.textContent =
-                "—";
-
-            box.appendChild(empty);
-
-            return;
-        }
-
-        state.dice.forEach(
-            (value, index) => {
-
-                const die =
-                    document.createElement("div");
-
-                die.className = "die";
-
-                if (
-                    state.usedDice.includes(
-                        index
-                    )
-                ) {
-
-                    die.classList.add(
-                        "used"
-                    );
-                }
-
-                die.textContent =
-                    value;
-
-                box.appendChild(die);
-            }
-        );
-    }
-
-    /* =====================================================
-       DURUMU ÇİZ
-       ===================================================== */
-
-    function renderStatus() {
-
-        const turn =
-            $("turnLabel");
-
-        const diceText =
-            $("diceText");
-
-        const offYou =
-            $("offYou");
-
-        const offBot =
-            $("offBot");
-
-        const barYou =
-            $("barYou");
-
-        const barBot =
-            $("barBot");
-
-        if (turn) {
-
-            turn.textContent =
-                state.turn === "player"
-                    ? "Senin sıran"
-                    : "Rakibin sırası";
-        }
-
-        if (diceText) {
-
-            diceText.textContent =
-                state.dice.length
-                    ? state.dice.join(" - ")
-                    : "Zar bekleniyor";
-        }
-
-        if (offYou) {
-            offYou.textContent =
-                state.borneOff.player;
-        }
-
-        if (offBot) {
-            offBot.textContent =
-                state.borneOff.bot;
-        }
-
-        if (barYou) {
-            barYou.textContent =
-                state.bar.player;
-        }
-
-        if (barBot) {
-            barBot.textContent =
-                state.bar.bot;
-        }
-
-        const message =
-            $("gameMessage");
-
-        if (message) {
-            message.textContent =
-                state.message;
-        }
-    }
-
-    /* =====================================================
-       GENEL RENDER
-       ===================================================== */
-
-    function render() {
-
-        renderBoard();
-        renderDice();
-        renderStatus();
-    }
-
-    /* =====================================================
-       BAŞLAT
-       ===================================================== */
-
-    function init() {
-
-        resetBoard();
-
-        state.gameStarted = true;
-
-        bindEvents();
-
-        render();
-    }
-
-    /* =====================================================
-       DIŞARI AÇ
-       ===================================================== */
-
-    return {
-        init,
-        resetGame,
-        rollDice,
-        render,
-        getState: () => state
-    };
-
-})();
-
-/* =========================================================
-   TAVLA'YI BAŞLAT
-   ========================================================= */
-
-window.Tavla = Tavla;
-
-document.addEventListener(
-    "DOMContentLoaded",
-    () => {
-        Tavla.init();
-    }
-);
+</body>
+</html>
