@@ -1,1420 +1,43 @@
-
-
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
-:root {
-    --bg: #0b0f16;
-    --bg2: #111722;
-    --panel: #151d29;
-    --panel2: #1b2533;
-    --border: rgba(255,255,255,.09);
-    --text: #f5f7fa;
-    --muted: #9da8b7;
-    --gold: #d9a441;
-    --gold2: #f0c766;
-    --green: #238b63;
-    --green2: #2fa977;
-    --red: #c84b4b;
-    --shadow: 0 20px 60px rgba(0,0,0,.35);
-}
-
-html {
-    scroll-behavior: smooth;
-}
-
-body {
-    min-height: 100vh;
-    background:
-        radial-gradient(circle at 15% 10%, rgba(217,164,65,.08), transparent 30%),
-        radial-gradient(circle at 85% 20%, rgba(35,139,99,.08), transparent 30%),
-        var(--bg);
-    color: var(--text);
-    font-family: Arial, Helvetica, sans-serif;
-}
-
-button {
-    font: inherit;
-    cursor: pointer;
-}
-
-button,
-a {
-    -webkit-tap-highlight-color: transparent;
-}
-
-
-/* =========================================================
-   HEADER
-========================================================= */
-
-.site-header {
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    border-bottom: 1px solid var(--border);
-    background: rgba(11,15,22,.92);
-    backdrop-filter: blur(16px);
-}
-
-.header-inner {
-    width: min(1180px, calc(100% - 32px));
-    min-height: 76px;
-    margin: auto;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 30px;
-}
-
-.logo {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    color: white;
-    text-decoration: none;
-}
-
-.logo-icon {
-    width: 44px;
-    height: 44px;
-    border-radius: 12px;
-    display: grid;
-    place-items: center;
-    background: linear-gradient(135deg, var(--gold), #8e6318);
-    font-size: 23px;
-    box-shadow: 0 8px 25px rgba(217,164,65,.2);
-}
-
-.logo strong {
-    display: block;
-    font-size: 18px;
-}
-
-.logo small {
-    display: block;
-    margin-top: 3px;
-    color: var(--muted);
-    font-size: 11px;
-}
-
-.main-nav {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-.main-nav button {
-    border: 0;
-    background: transparent;
-    color: #c8d0db;
-    padding: 10px 13px;
-    border-radius: 9px;
-    transition: .2s;
-}
-
-.main-nav button:hover {
-    background: rgba(255,255,255,.06);
-    color: white;
-}
-
-
-/* =========================================================
-   SCREENS
-========================================================= */
-
-.screen {
-    display: none;
-}
-
-.screen.active {
-    display: block;
-}
-
-
-/* =========================================================
-   HERO
-========================================================= */
-
-.hero {
-    width: min(1180px, calc(100% - 32px));
-    min-height: 570px;
-    margin: auto;
-    display: grid;
-    grid-template-columns: 1.05fr .95fr;
-    align-items: center;
-    gap: 50px;
-    padding: 70px 0 55px;
-}
-
-.hero-content {
-    max-width: 650px;
-}
-
-.hero-badge {
-    display: inline-flex;
-    align-items: center;
-    padding: 8px 13px;
-    border: 1px solid rgba(217,164,65,.25);
-    border-radius: 999px;
-    background: rgba(217,164,65,.08);
-    color: var(--gold2);
-    font-size: 13px;
-    margin-bottom: 22px;
-}
-
-.hero h1 {
-    font-size: clamp(44px, 6vw, 76px);
-    line-height: .98;
-    letter-spacing: -3px;
-}
-
-.hero h1 span {
-    color: var(--gold2);
-}
-
-.hero p {
-    max-width: 560px;
-    margin-top: 25px;
-    color: var(--muted);
-    font-size: 18px;
-    line-height: 1.7;
-}
-
-.hero-buttons {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    margin-top: 32px;
-}
-
-.primary-button,
-.secondary-button,
-.game-button,
-.new-game-button,
-.back-button,
-.roll-button {
-    border: 0;
-    border-radius: 10px;
-    padding: 13px 19px;
-    font-weight: 700;
-    transition: transform .2s, box-shadow .2s, background .2s;
-}
-
-.primary-button {
-    background: linear-gradient(135deg, var(--gold2), var(--gold));
-    color: #171108;
-    box-shadow: 0 10px 30px rgba(217,164,65,.18);
-}
-
-.primary-button:hover,
-.game-button:hover,
-.roll-button:hover {
-    transform: translateY(-2px);
-}
-
-.secondary-button {
-    color: white;
-    background: rgba(255,255,255,.06);
-    border: 1px solid var(--border);
-}
-
-.secondary-button:hover {
-    background: rgba(255,255,255,.1);
-}
-
-
-/* =========================================================
-   HERO TAVLA GÖRSELİ
-========================================================= */
-
-.hero-art {
-    min-height: 410px;
-    position: relative;
-    display: grid;
-    place-items: center;
-}
-
-.table-preview {
-    width: min(470px, 90%);
-    aspect-ratio: 1.35;
-    padding: 22px;
-    border-radius: 22px;
-    background:
-        linear-gradient(135deg, #6f3f1e, #3a1e11);
-    border: 9px solid #24150d;
-    box-shadow:
-        0 30px 70px rgba(0,0,0,.45),
-        inset 0 0 0 2px rgba(255,210,120,.15);
-    transform: perspective(900px) rotateX(7deg) rotateZ(-2deg);
-}
-
-.preview-title {
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    color: #f3cf8b;
-    font-weight: 800;
-    letter-spacing: 2px;
-    font-size: 13px;
-    margin-bottom: 14px;
-}
-
-.mini-board {
-    height: 250px;
-    border-radius: 10px;
-    background:
-        repeating-linear-gradient(
-            90deg,
-            #a66b34 0 32px,
-            #75421f 32px 64px
-        );
-    position: relative;
-    overflow: hidden;
-    border: 4px solid #2c180d;
-}
-
-.mini-board::after {
-    content: "";
-    position: absolute;
-    left: 50%;
-    top: 0;
-    bottom: 0;
-    width: 16px;
-    transform: translateX(-50%);
-    background: #2a160b;
-}
-
-.mini-point {
-    position: absolute;
-    width: 0;
-    height: 0;
-    border-left: 22px solid transparent;
-    border-right: 22px solid transparent;
-    border-top: 110px solid rgba(45,20,10,.8);
-}
-
-.mini-point:nth-child(1) { left: 4%; top: 0; }
-.mini-point:nth-child(2) { left: 19%; top: 0; }
-.mini-point:nth-child(3) { left: 35%; top: 0; }
-.mini-point:nth-child(4) {
-    left: 55%;
-    bottom: 0;
-    border-top: 0;
-    border-bottom: 110px solid rgba(45,20,10,.8);
-}
-.mini-point:nth-child(5) {
-    left: 71%;
-    bottom: 0;
-    border-top: 0;
-    border-bottom: 110px solid rgba(45,20,10,.8);
-}
-.mini-point:nth-child(6) {
-    left: 87%;
-    bottom: 0;
-    border-top: 0;
-    border-bottom: 110px solid rgba(45,20,10,.8);
-}
-
-.mini-checkers {
-    position: absolute;
-    left: 10%;
-    bottom: 12px;
-    display: flex;
-    flex-direction: column-reverse;
-    gap: 2px;
-    z-index: 3;
-}
-
-.mini-checkers i {
-    width: 42px;
-    height: 42px;
-    border-radius: 50%;
-    background: #eee7d7;
-    border: 3px solid #bcae92;
-    box-shadow: 0 3px 5px rgba(0,0,0,.35);
-}
-
-.preview-dice {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-top: -20px;
-    position: relative;
-    z-index: 5;
-}
-
-.preview-dice span {
-    width: 45px;
-    height: 45px;
-    display: grid;
-    place-items: center;
-    background: white;
-    color: #111;
-    border-radius: 8px;
-    font-size: 25px;
-    box-shadow: 0 7px 15px rgba(0,0,0,.35);
-}
-
-.floating-dice {
-    position: absolute;
-    width: 62px;
-    height: 62px;
-    display: grid;
-    place-items: center;
-    border-radius: 14px;
-    background: white;
-    color: #111;
-    font-size: 34px;
-    box-shadow: 0 15px 35px rgba(0,0,0,.4);
-    z-index: 5;
-}
-
-.dice-one {
-    top: 45px;
-    right: 15px;
-    transform: rotate(13deg);
-}
-
-.dice-two {
-    bottom: 45px;
-    left: 10px;
-    transform: rotate(-15deg);
-}
-
-
-/* =========================================================
-   OYUNLAR
-========================================================= */
-
-.games-section {
-    width: min(1180px, calc(100% - 32px));
-    margin: auto;
-    padding: 65px 0 30px;
-}
-
-.section-heading {
-    text-align: center;
-    margin-bottom: 35px;
-}
-
-.section-heading > span {
-    color: var(--gold2);
-    font-size: 11px;
-    font-weight: 800;
-    letter-spacing: 2px;
-}
-
-.section-heading h2 {
-    margin-top: 8px;
-    font-size: 34px;
-}
-
-.section-heading p {
-    color: var(--muted);
-    margin-top: 9px;
-}
-
-.game-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 24px;
-}
-
-.game-card {
-    overflow: hidden;
-    border-radius: 20px;
-    background: var(--panel);
-    border: 1px solid var(--border);
-    box-shadow: var(--shadow);
-}
-
-.game-image {
-    height: 235px;
-    position: relative;
-    display: grid;
-    place-items: center;
-    overflow: hidden;
-}
-
-.tavla-image {
-    background:
-        radial-gradient(circle at 50% 50%, rgba(220,160,70,.25), transparent 55%),
-        linear-gradient(135deg, #482414, #1d100a);
-}
-
-.batak-image {
-    background:
-        radial-gradient(circle at 50% 50%, rgba(35,139,99,.22), transparent 55%),
-        linear-gradient(135deg, #102d25, #071712);
-}
-
-.game-icon-large {
-    font-size: 76px;
-    filter: drop-shadow(0 15px 20px rgba(0,0,0,.45));
-}
-
-.card-dice {
-    position: absolute;
-    right: 28px;
-    top: 28px;
-    width: 58px;
-    height: 58px;
-    display: grid;
-    place-items: center;
-    border-radius: 12px;
-    background: white;
-    color: #111;
-    font-size: 30px;
-    transform: rotate(9deg);
-}
-
-.playing-cards {
-    position: absolute;
-    bottom: 22px;
-    right: 30px;
-    display: flex;
-}
-
-.playing-cards span {
-    width: 52px;
-    height: 72px;
-    display: grid;
-    place-items: center;
-    margin-left: -15px;
-    border-radius: 8px;
-    background: #f5f1e8;
-    color: #1b1b1b;
-    border: 2px solid white;
-    font-size: 25px;
-    box-shadow: 0 8px 15px rgba(0,0,0,.3);
-}
-
-.playing-cards span:nth-child(2) {
-    color: #b83c3c;
-    transform: rotate(7deg);
-}
-
-.playing-cards span:nth-child(3) {
-    color: #222;
-    transform: rotate(13deg);
-}
-
-.game-card-content {
-    padding: 27px;
-}
-
-.game-label {
-    color: var(--gold2);
-    font-size: 10px;
-    font-weight: 800;
-    letter-spacing: 1.5px;
-}
-
-.game-card h3 {
-    font-size: 29px;
-    margin-top: 7px;
-}
-
-.game-card p {
-    color: var(--muted);
-    line-height: 1.65;
-    margin-top: 9px;
-    min-height: 53px;
-}
-
-.game-button {
-    width: 100%;
-    margin-top: 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: rgba(217,164,65,.1);
-    color: var(--gold2);
-    border: 1px solid rgba(217,164,65,.2);
-}
-
-.batak-card .game-button {
-    background: rgba(35,139,99,.1);
-    color: #61d8a9;
-    border-color: rgba(35,139,99,.25);
-}
-
-
-/* =========================================================
-   ÖZELLİKLER
-========================================================= */
-
-.features {
-    width: min(1180px, calc(100% - 32px));
-    margin: 45px auto 70px;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 15px;
-}
-
-.feature {
-    display: flex;
-    align-items: center;
-    gap: 13px;
-    padding: 20px;
-    border-radius: 14px;
-    background: rgba(255,255,255,.025);
-    border: 1px solid var(--border);
-}
-
-.feature-icon {
-    width: 43px;
-    height: 43px;
-    flex-shrink: 0;
-    display: grid;
-    place-items: center;
-    border-radius: 10px;
-    background: rgba(217,164,65,.1);
-    font-size: 20px;
-}
-
-.feature strong {
-    display: block;
-    font-size: 14px;
-}
-
-.feature span {
-    display: block;
-    margin-top: 4px;
-    color: var(--muted);
-    font-size: 12px;
-    line-height: 1.4;
-}
-
-
-/* =========================================================
-   OYUN EKRANI
-========================================================= */
-
-.game-screen {
-    width: min(1250px, calc(100% - 28px));
-    margin: auto;
-    padding: 28px 0 70px;
-}
-
-.game-top {
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 25px;
-}
-
-.game-top > div {
-    text-align: center;
-}
-
-.game-top h2 {
-    display: inline;
-    font-size: 26px;
-    margin-left: 7px;
-}
-
-.game-top small {
-    display: block;
-    color: var(--muted);
-    margin-top: 4px;
-}
-
-.game-title-icon {
-    font-size: 25px;
-}
-
-.back-button {
-    justify-self: start;
-    background: rgba(255,255,255,.06);
-    color: white;
-    border: 1px solid var(--border);
-}
-
-.new-game-button {
-    justify-self: end;
-    background: var(--gold);
-    color: #171108;
-}
-
-
-/* =========================================================
-   TAVLA MASASI
-========================================================= */
-
-.tavla-layout {
-    display: grid;
-    grid-template-columns: 170px minmax(500px, 850px) 170px;
-    justify-content: center;
-    align-items: center;
-    gap: 18px;
-}
-
-.player-panel,
-.info-box {
-    padding: 17px;
-    border-radius: 14px;
-    background: var(--panel);
-    border: 1px solid var(--border);
-}
-
-.player-panel {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 10px;
-}
-
-.player-avatar {
-    width: 40px;
-    height: 40px;
-    display: grid;
-    place-items: center;
-    border-radius: 50%;
-    background: rgba(217,164,65,.13);
-}
-
-.player-panel strong {
-    display: block;
-    font-size: 14px;
-}
-
-.player-panel span {
-    display: block;
-    color: var(--muted);
-    font-size: 11px;
-    margin-top: 2px;
-}
-
-.player-score {
-    width: 100%;
-    margin-top: 7px;
-    color: var(--gold2);
-    font-size: 25px;
-    font-weight: 800;
-}
-
-.tavla-table {
-    padding: 18px;
-    border-radius: 22px;
-    background: #21140c;
-    border: 8px solid #120b07;
-    box-shadow: 0 30px 60px rgba(0,0,0,.5);
-}
-
-.board-header {
-    display: flex;
-    justify-content: space-between;
-    color: #d6b27a;
-    font-size: 12px;
-    padding: 0 8px 12px;
-}
-
-.backgammon-board {
-    min-height: 470px;
-    padding: 20px;
-    display: grid;
-    grid-template-columns: repeat(12, 1fr);
-    gap: 5px;
-    position: relative;
-    overflow: hidden;
-    border-radius: 9px;
-    background:
-        linear-gradient(
-            90deg,
-            #713d1b 0 49%,
-            #2a150b 49% 51%,
-            #713d1b 51% 100%
-        );
-    border: 4px solid #8b5528;
-}
-
-.backgammon-board::before {
-    content: "";
-    position: absolute;
-    left: 50%;
-    top: 0;
-    bottom: 0;
-    width: 20px;
-    transform: translateX(-50%);
-    background: #2b160c;
-    z-index: 1;
-}
-
-.tavla-point {
-    min-width: 0;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    z-index: 2;
-}
-
-.tavla-point.top {
-    justify-content: flex-start;
-}
-
-.tavla-point.bottom {
-    justify-content: flex-end;
-}
-
-.tavla-triangle {
-    width: 0;
-    height: 0;
-    border-left: 24px solid transparent;
-    border-right: 24px solid transparent;
-}
-
-.tavla-point.top .tavla-triangle {
-    border-top: 180px solid #a66532;
-}
-
-.tavla-point.bottom .tavla-triangle {
-    order: 2;
-    border-bottom: 180px solid #a66532;
-}
-
-.tavla-checkers {
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    align-items: center;
-}
-
-.tavla-point.top .tavla-checkers {
-    top: 7px;
-}
-
-.tavla-point.bottom .tavla-checkers {
-    bottom: 7px;
-    flex-direction: column-reverse;
-}
-
-.tavla-checker {
-    width: 36px;
-    height: 36px;
-    flex-shrink: 0;
-    border-radius: 50%;
-    border: 3px solid rgba(0,0,0,.28);
-    box-shadow:
-        0 3px 5px rgba(0,0,0,.45),
-        inset 0 2px 2px rgba(255,255,255,.2);
-}
-
-.tavla-checker.player {
-    background: #eee5d2;
-    border-color: #bcae92;
-}
-
-.tavla-checker.bot {
-    background: #292d35;
-    border-color: #0c0e12;
-}
-
-.tavla-point.selected .tavla-triangle {
-    filter: brightness(1.35);
-}
-
-.tavla-point.selected {
-    outline: 3px solid rgba(240,199,102,.7);
-    outline-offset: -3px;
-    border-radius: 5px;
-}
-
-.dice-area {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 15px;
-    padding: 18px 0 8px;
-}
-
-.dice-box {
-    display: flex;
-    gap: 8px;
-}
-
-.dice-box span {
-    width: 48px;
-    height: 48px;
-    display: grid;
-    place-items: center;
-    border-radius: 9px;
-    background: white;
-    color: #111;
-    font-size: 26px;
-    font-weight: 800;
-    box-shadow: 0 7px 15px rgba(0,0,0,.3);
-}
-
-.roll-button {
-    background: var(--gold);
-    color: #171108;
-}
-
-.game-message {
-    text-align: center;
-    color: #e2c681;
-    font-size: 13px;
-    padding: 5px;
-}
-
-.side-info {
-    display: grid;
-    gap: 10px;
-}
-
-.info-box span {
-    display: block;
-    color: var(--muted);
-    font-size: 11px;
-}
-
-.info-box strong {
-    display: block;
-    color: var(--gold2);
-    font-size: 23px;
-    margin-top: 5px;
-}
-
-
-/* =========================================================
-   BATAK
-========================================================= */
-
-.batak-table {
-    min-height: 680px;
-    max-width: 1050px;
-    margin: auto;
-    position: relative;
-    border-radius: 28px;
-    border: 12px solid #21140c;
-    background:
-        radial-gradient(circle at center, rgba(39,166,119,.25), transparent 55%),
-        #14583f;
-    box-shadow: 0 30px 70px rgba(0,0,0,.5);
-}
-
-.batak-player {
-    position: absolute;
-    min-width: 130px;
-    padding: 12px;
-    border-radius: 13px;
-    background: rgba(5,25,19,.85);
-    border: 1px solid rgba(255,255,255,.1);
-    text-align: center;
-}
-
-.batak-player .avatar {
-    font-size: 25px;
-}
-
-.batak-player strong {
-    display: block;
-    font-size: 13px;
-    margin-top: 4px;
-}
-
-.batak-player span {
-    display: block;
-    color: #91b9a9;
-    font-size: 10px;
-    margin-top: 3px;
-}
-
-.player-top {
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-}
-
-.player-left {
-    top: 50%;
-    left: 20px;
-    transform: translateY(-50%);
-}
-
-.player-right {
-    top: 50%;
-    right: 20px;
-    transform: translateY(-50%);
-}
-
-.player-bottom {
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-}
-
-.batak-center {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-}
-
-.batak-status {
-    margin-bottom: 18px;
-}
-
-.batak-status span {
-    display: block;
-    color: #9cc8b7;
-    font-size: 11px;
-}
-
-.batak-status strong {
-    display: block;
-    margin-top: 5px;
-}
-
-.played-cards {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 5px;
-}
-
-.card-placeholder {
-    width: 65px;
-    height: 90px;
-    display: grid;
-    place-items: center;
-    background: #f4f0e7;
-    color: #222;
-    border-radius: 8px;
-    font-size: 27px;
-    box-shadow: 0 7px 15px rgba(0,0,0,.25);
-}
-
-.card-placeholder:nth-child(2) {
-    color: #b32d36;
-}
-
-.card-placeholder:nth-child(3) {
-    color: #b32d36;
-}
-
-.trump {
-    margin-top: 15px;
-    color: #cde4db;
-}
-
-.player-hand {
-    display: flex;
-    justify-content: center;
-    margin-top: 12px;
-}
-
-.playing-card {
-    width: 55px;
-    height: 76px;
-    margin-left: -7px;
-    display: grid;
-    place-items: center;
-    border-radius: 7px;
-    background: #f5f1e8;
-    color: #222;
-    border: 2px solid white;
-    font-size: 14px;
-    box-shadow: 0 5px 12px rgba(0,0,0,.3);
-}
-
-.batak-controls {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 20px;
-}
-
-
-/* =========================================================
-   SALON
-========================================================= */
-
-.salon-page {
-    width: min(1000px, calc(100% - 32px));
-    margin: auto;
-    padding: 75px 0;
-}
-
-.empty-salon {
-    max-width: 600px;
-    margin: 45px auto;
-    padding: 55px 30px;
-    text-align: center;
-    border-radius: 20px;
-    background: var(--panel);
-    border: 1px solid var(--border);
-}
-
-.empty-icon {
-    font-size: 55px;
-}
-
-.empty-salon h3 {
-    margin-top: 15px;
-    font-size: 24px;
-}
-
-.empty-salon p {
-    color: var(--muted);
-    line-height: 1.6;
-    margin: 10px 0 25px;
-}
-
-
-/* =========================================================
-   FOOTER
-========================================================= */
-
-.site-footer {
-    width: min(1180px, calc(100% - 32px));
-    margin: auto;
-    padding: 25px 0;
-    border-top: 1px solid var(--border);
-    display: flex;
-    justify-content: space-between;
-    color: var(--muted);
-    font-size: 12px;
-}
-
-.site-footer strong {
-    display: block;
-    color: white;
-}
-
-.site-footer span {
-    display: block;
-    margin-top: 3px;
-}
-
-
-/* =========================================================
-   MOBİL
-========================================================= */
-
-@media (max-width: 950px) {
-
-    .main-nav button:nth-child(4) {
-        display: none;
-    }
-
-    .hero {
-        grid-template-columns: 1fr;
-        text-align: center;
-        padding-top: 45px;
-    }
-
-    .hero-content {
-        margin: auto;
-    }
-
-    .hero p {
-        margin-left: auto;
-        margin-right: auto;
-    }
-
-    .hero-buttons {
-        justify-content: center;
-    }
-
-    .hero-art {
-        min-height: 350px;
-    }
-
-    .game-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .features {
-        grid-template-columns: 1fr;
-    }
-
-    .tavla-layout {
-        grid-template-columns: 1fr;
-    }
-
-    .player-panel {
-        max-width: 400px;
-        margin: auto;
-    }
-
-    .side-info {
-        grid-template-columns: repeat(3, 1fr);
-    }
-
-    .backgammon-board {
-        min-height: 420px;
-    }
-
-}
-
-
-@media (max-width: 650px) {
-
-    .header-inner {
-        min-height: 68px;
-    }
-
-    .logo small {
-        display: none;
-    }
-
-    .logo strong {
-        font-size: 15px;
-    }
-
-    .logo-icon {
-        width: 38px;
-        height: 38px;
-        font-size: 19px;
-    }
-
-    .main-nav {
-        gap: 0;
-    }
-
-    .main-nav button {
-        padding: 8px;
-        font-size: 11px;
-    }
-
-    .hero {
-        width: min(100% - 22px, 1180px);
-        min-height: auto;
-        padding: 40px 0;
-    }
-
-    .hero h1 {
-        font-size: 43px;
-        letter-spacing: -2px;
-    }
-
-    .hero p {
-        font-size: 15px;
-    }
-
-    .hero-art {
-        min-height: 280px;
-    }
-
-    .table-preview {
-        width: 92%;
-        padding: 12px;
-    }
-
-    .mini-board {
-        height: 190px;
-    }
-
-    .mini-point {
-        border-left-width: 15px;
-        border-right-width: 15px;
-    }
-
-    .mini-point:nth-child(1),
-    .mini-point:nth-child(2),
-    .mini-point:nth-child(3) {
-        border-top-width: 85px;
-    }
-
-    .mini-point:nth-child(4),
-    .mini-point:nth-child(5),
-    .mini-point:nth-child(6) {
-        border-bottom-width: 85px;
-    }
-
-    .mini-checkers i {
-        width: 30px;
-        height: 30px;
-    }
-
-    .floating-dice {
-        width: 48px;
-        height: 48px;
-        font-size: 25px;
-    }
-
-    .games-section {
-        width: min(100% - 22px, 1180px);
-        padding-top: 30px;
-    }
-
-    .section-heading h2 {
-        font-size: 27px;
-    }
-
-    .game-image {
-        height: 200px;
-    }
-
-    .game-card-content {
-        padding: 22px;
-    }
-
-    .game-screen {
-        width: min(100% - 18px, 1250px);
-        padding-top: 18px;
-    }
-
-    .game-top {
-        grid-template-columns: auto 1fr auto;
-    }
-
-    .game-top h2 {
-        font-size: 20px;
-    }
-
-    .game-title-icon {
-        font-size: 19px;
-    }
-
-    .new-game-button,
-    .back-button {
-        padding: 9px 10px;
-        font-size: 11px;
-    }
-
-    .tavla-table {
-        padding: 8px;
-        border-width: 5px;
-    }
-
-    .backgammon-board {
-        min-height: 330px;
-        padding: 10px;
-        gap: 2px;
-    }
-
-    .tavla-triangle {
-        border-left-width: 14px;
-        border-right-width: 14px;
-    }
-
-    .tavla-point.top .tavla-triangle {
-        border-top-width: 125px;
-    }
-
-    .tavla-point.bottom .tavla-triangle {
-        border-bottom-width: 125px;
-    }
-
-    .tavla-checker {
-        width: 25px;
-        height: 25px;
-        border-width: 2px;
-    }
-
-    .side-info {
-        grid-template-columns: repeat(3, 1fr);
-    }
-
-    .info-box {
-        padding: 10px;
-        text-align: center;
-    }
-
-    .info-box strong {
-        font-size: 18px;
-    }
-
-    .batak-table {
-        min-height: 610px;
-        border-width: 6px;
-    }
-
-    .batak-player {
-        min-width: 92px;
-        padding: 8px;
-    }
-
-    .player-left {
-        left: 7px;
-    }
-
-    .player-right {
-        right: 7px;
-    }
-
-    .card-placeholder {
-        width: 48px;
-        height: 70px;
-        font-size: 21px;
-    }
-
-    .playing-card {
-        width: 43px;
-        height: 63px;
-        font-size: 11px;
-    }
-
-    .site-footer {
-        flex-direction: column;
-        gap: 15px;
-        text-align: center;
-    }
-
-}
-
-Bunu kaydettikten sonra siteyi hemen açma.
-
-Bana sadece:
-
-style tamam
-
-yaz. Sonra app.js'ye geçip Tavla'yı gerçekten oynanabilir hale getireceğiz.
-
-style tamam
-
-Tamam kanka. Şimdi sıra app.js'de. Burada artık gösteriş değil, gerçek Tavla oynanışı yapacağız.
-
-app.js dosyasını aç
-
-Yapacağın işlem
-Kalem / Düzenle'ye bas.
-İçindeki her şeyi sil.
-Aşağıdaki kodu tamamını yapıştır.
-Değişiklikleri kaydet.
-
-Bu sürümde:
-
-🎲 Zar atma
-⚪ 15 senin pulun
-⚫ 15 rakip pul
-↔️ Pul seçme ve hareket ettirme
-💥 Rakip tek pulunu kırma
-🚧 Kapalı kapı kontrolü
-🎲 Çift zar
-🚪 Bara gönderme
-🔄 Yeni oyun
-🤖 Bot rakip
-📱 Telefon/tablet uyumu
-
-olacak.
-
 /* =========================================================
    TAVLA & BATAK
-   TAVLA OYUN MOTORU
-========================================================= */
+   app.js
+   ========================================================= */
 
 "use strict";
+
+/* =========================================================
+   GENEL YARDIMCILAR
+========================================================= */
+
+const $ = (selector, root = document) =>
+    root.querySelector(selector);
+
+const $$ = (selector, root = document) =>
+    [...root.querySelectorAll(selector)];
+
+function randomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+
+/* =========================================================
+   TAVLA
+========================================================= */
 
 const Tavla = (() => {
 
     const state = {
-        board: [],
+        board: Array(24).fill(0),
+
         bar: {
             player: 0,
             bot: 0
         },
+
         borneOff: {
             player: 0,
             bot: 0
@@ -1424,41 +47,53 @@ const Tavla = (() => {
         usedDice: [],
 
         turn: "player",
+
         selectedPoint: null,
 
-        gameStarted: false,
+        started: false,
         gameOver: false,
         botThinking: false,
 
-        playerName: "Sen",
-        botName: "Rakip",
-
-        message: "Oyuna başlamak için zar at."
+        message: "Zar atarak oyuna başla."
     };
 
 
     /* =====================================================
-       YARDIMCILAR
+       BAŞLANGIÇ
     ===================================================== */
 
-    const $ = (selector) => document.querySelector(selector);
+    function init() {
+        resetGame();
 
+        const rollButton = $("#rollDice");
 
-    function createArray() {
-        return new Array(24).fill(0);
+        if (rollButton) {
+            rollButton.addEventListener("click", rollDice);
+        }
+
+        const newButton = $("#newTavla");
+
+        if (newButton) {
+            newButton.addEventListener("click", resetGame);
+        }
     }
 
 
-    function resetBoard() {
+    function resetGame() {
 
-        state.board = createArray();
+        state.board.fill(0);
 
         /*
-            POZİSYONLAR
-
-            Pozitif = oyuncu
-            Negatif = bot
-        */
+         * Gerçek tavla başlangıç dizilimi.
+         *
+         * Oyuncu:
+         * 2 adet 1. hanede
+         * 5 adet 12. hanede
+         * 3 adet 17. hanede
+         * 5 adet 19. hanede
+         *
+         * Bot bunun karşı tarafıdır.
+         */
 
         state.board[0] = 2;
         state.board[11] = 5;
@@ -1469,12 +104,6 @@ const Tavla = (() => {
         state.board[12] = -5;
         state.board[7] = -3;
         state.board[5] = -5;
-    }
-
-
-    function resetGame() {
-
-        resetBoard();
 
         state.bar.player = 0;
         state.bar.bot = 0;
@@ -1488,11 +117,11 @@ const Tavla = (() => {
         state.turn = "player";
         state.selectedPoint = null;
 
-        state.gameStarted = false;
+        state.started = false;
         state.gameOver = false;
         state.botThinking = false;
 
-        state.message = "Oyuna başlamak için zar at.";
+        state.message = "Zar atarak oyuna başla.";
 
         render();
     }
@@ -1504,56 +133,61 @@ const Tavla = (() => {
 
     function rollDice() {
 
-        if (state.gameOver) {
-            return;
-        }
+        if (state.gameOver) return;
 
         if (state.turn !== "player") {
+            state.message = "Şu anda rakibin sırası.";
+            render();
             return;
         }
 
         if (state.dice.length > 0) {
+            state.message = "Önce mevcut zarlarını kullan.";
+            render();
             return;
         }
 
-        const first = Math.floor(Math.random() * 6) + 1;
-        const second = Math.floor(Math.random() * 6) + 1;
+        const d1 = randomInt(1, 6);
+        const d2 = randomInt(1, 6);
 
-        if (first === second) {
-            state.dice = [
-                first,
-                first,
-                first,
-                first
-            ];
-        } else {
-            state.dice = [
-                first,
-                second
-            ];
-        }
+        state.dice = d1 === d2
+            ? [d1, d1, d1, d1]
+            : [d1, d2];
 
         state.usedDice = [];
-        state.gameStarted = true;
+        state.started = true;
         state.selectedPoint = null;
 
         state.message =
-            `Zarların: ${first} ve ${second}. Pulunu seç.`;
+            d1 === d2
+                ? `Çift attın: ${d1}-${d2}. Dört hamle hakkın var.`
+                : `Zarların: ${d1}-${d2}. Pulunu seç.`;
 
         render();
 
-        setTimeout(checkPlayerMoves, 300);
+        setTimeout(() => {
+            if (!hasAnyPlayerMove()) {
+                state.message =
+                    "Bu zarlarla yapabileceğin hamle yok. Sıra rakibe geçiyor.";
+
+                render();
+
+                setTimeout(endPlayerTurn, 1200);
+            }
+        }, 250);
     }
 
 
-    function availableDice() {
+    function getAvailableDice() {
 
         return state.dice
             .map((value, index) => ({
                 value,
                 index
             }))
-            .filter(item => !state.usedDice.includes(item.index));
+            .filter(item =>
+                !state.usedDice.includes(item.index)
+            );
     }
 
 
@@ -1566,44 +200,39 @@ const Tavla = (() => {
 
 
     /* =====================================================
-       PUL KONTROLÜ
+       SAHİPLİK / KAPI
     ===================================================== */
 
-    function playerHasPiecesOnBar() {
-
-        return state.bar.player > 0;
-    }
-
-
-    function pointBelongsToPlayer(point) {
-
+    function playerOwns(point) {
         return state.board[point] > 0;
     }
 
 
-    function pointBelongsToBot(point) {
-
+    function botOwns(point) {
         return state.board[point] < 0;
     }
 
 
-    function isBlockedForPlayer(point) {
-
-        return state.board[point] <= -2;
-    }
-
-
-    function playerCanMoveTo(point) {
+    function playerTargetOpen(point) {
 
         if (point < 0 || point > 23) {
             return false;
         }
 
-        if (isBlockedForPlayer(point)) {
+        /*
+         * Rakibin iki veya daha fazla pulu varsa kapalıdır.
+         */
+        return state.board[point] >= -1;
+    }
+
+
+    function botTargetOpen(point) {
+
+        if (point < 0 || point > 23) {
             return false;
         }
 
-        return true;
+        return state.board[point] <= 1;
     }
 
 
@@ -1611,96 +240,136 @@ const Tavla = (() => {
        BAR
     ===================================================== */
 
-    function enterFromBar(die) {
+    function playerHasBar() {
+        return state.bar.player > 0;
+    }
 
+
+    function botHasBar() {
+        return state.bar.bot > 0;
+    }
+
+
+    function playerBarTarget(die) {
         /*
-            Oyuncu ters yönde ilerler.
-            Bar'dan giriş noktası 24 - zar
-        */
+         * Oyuncu 24 yönünde ilerler.
+         */
+        return 24 - die;
+    }
 
-        const target = 24 - die;
 
-        if (!playerCanMoveTo(target)) {
+    function botBarTarget(die) {
+        /*
+         * Bot ters yönde ilerler.
+         */
+        return die - 1;
+    }
+
+
+    function canEnterPlayerFromBar(die) {
+
+        const target = playerBarTarget(die);
+
+        return playerTargetOpen(target);
+    }
+
+
+    function enterPlayerFromBar(dieIndex) {
+
+        const dice = getAvailableDice();
+
+        const dieObject =
+            dice.find(d => d.index === dieIndex);
+
+        if (!dieObject) return false;
+
+        const die = dieObject.value;
+        const target = playerBarTarget(die);
+
+        if (!canEnterPlayerFromBar(die)) {
             return false;
         }
 
         if (state.board[target] === -1) {
 
             state.board[target] = 1;
-
-            state.bar.player--;
-
             state.bar.bot++;
-
-            state.board[target] = 1;
 
         } else {
 
             state.board[target]++;
-
-            state.bar.player--;
-
         }
+
+        state.bar.player--;
+
+        useDie(dieIndex);
 
         return true;
     }
 
 
     /* =====================================================
-       OYUNCU HAMLESİ
+       TOPLAMA KONTROLÜ
     ===================================================== */
 
-    function getPlayerDestination(from, die) {
+    function playerCanBearOff() {
 
-        return from + die;
-    }
-
-
-    function canPlayerMove(from, die) {
-
-        if (!pointBelongsToPlayer(from)) {
+        if (state.bar.player > 0) {
             return false;
         }
 
-        const target = getPlayerDestination(from, die);
-
-        if (target > 23) {
-            /*
-                Şimdilik toplama bölgesine girme kontrolü.
-            */
-
-            return canBearOff(from, die);
-        }
-
-        return playerCanMoveTo(target);
-    }
-
-
-    function canBearOff(from, die) {
-
         /*
-            Tüm oyuncu pulları kendi son bölgesinde
-            olduğunda toplama yapılabilir.
-
-            Oyuncunun son bölgesi 18-23.
-        */
-
+         * Oyuncunun bütün pulları 19-24 bölgesinde olmalı.
+         */
         for (let i = 0; i < 18; i++) {
-
             if (state.board[i] > 0) {
                 return false;
             }
         }
 
-        const distance = from + die;
+        return true;
+    }
 
-        if (distance === 24) {
+
+    function botCanBearOff() {
+
+        if (state.bar.bot > 0) {
+            return false;
+        }
+
+        /*
+         * Botun toplama bölgesi 1-6.
+         */
+        for (let i = 6; i < 24; i++) {
+            if (state.board[i] < 0) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+
+    function playerCanBearFrom(point, die) {
+
+        if (!playerCanBearOff()) {
+            return false;
+        }
+
+        /*
+         * Normal tam eşleşme.
+         */
+        if (point + die === 24) {
             return true;
         }
 
-        if (distance > 24) {
+        /*
+         * Zar fazla geldiyse, daha geride pul yoksa
+         * toplama yapılabilir.
+         */
+        if (point + die > 24) {
 
-            for (let i = from - 1; i >= 18; i--) {
+            for (let i = point + 1; i < 24; i++) {
 
                 if (state.board[i] > 0) {
                     return false;
@@ -1714,17 +383,68 @@ const Tavla = (() => {
     }
 
 
-    function movePlayer(from, dieIndex) {
+    function botCanBearFrom(point, die) {
 
-        if (state.turn !== "player") {
+        if (!botCanBearOff()) {
             return false;
         }
 
-        const available = availableDice();
+        if (point - die === -1) {
+            return true;
+        }
 
-        const dieObject = available.find(
-            item => item.index === dieIndex
-        );
+        if (point - die < 0) {
+
+            for (let i = point - 1; i >= 0; i--) {
+
+                if (state.board[i] < 0) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+
+    /* =====================================================
+       OYUNCU HAMLE KONTROLÜ
+    ===================================================== */
+
+    function playerMoveDestination(point, die) {
+        return point + die;
+    }
+
+
+    function canPlayerMove(point, die) {
+
+        if (!playerOwns(point)) {
+            return false;
+        }
+
+        const target =
+            playerMoveDestination(point, die);
+
+        /*
+         * Toplama.
+         */
+        if (target >= 24) {
+            return playerCanBearFrom(point, die);
+        }
+
+        return playerTargetOpen(target);
+    }
+
+
+    function movePlayer(point, dieIndex) {
+
+        const dice =
+            getAvailableDice();
+
+        const dieObject =
+            dice.find(d => d.index === dieIndex);
 
         if (!dieObject) {
             return false;
@@ -1732,131 +452,135 @@ const Tavla = (() => {
 
         const die = dieObject.value;
 
-        if (!canPlayerMove(from, die)) {
-            state.message = "Bu hamle yapılamaz.";
-            render();
+        if (!canPlayerMove(point, die)) {
             return false;
         }
 
+        const target =
+            point + die;
 
-        const target = from + die;
-
-
-        /* TOPLAMA */
-
+        /*
+         * TOPLAMA
+         */
         if (target >= 24) {
 
-            state.board[from]--;
-
+            state.board[point]--;
             state.borneOff.player++;
 
             useDie(dieIndex);
 
             state.selectedPoint = null;
 
-            state.message = "Pulunu topladın.";
+            state.message =
+                "Pulunu topladın.";
 
             checkWinner();
-
-            finishPlayerTurnIfNeeded();
-
-            render();
 
             return true;
         }
 
 
-        /* NORMAL HAMLE */
+        /*
+         * NORMAL HAREKET
+         */
+        state.board[point]--;
 
-        state.board[from]--;
 
-
-        /* RAKİP TEK PUL */
-
+        /*
+         * Rakibin tek pulunu kır.
+         */
         if (state.board[target] === -1) {
 
             state.board[target] = 1;
-
             state.bar.bot++;
+
+            state.message =
+                "Rakibin pulunu kırdın!";
 
         } else {
 
             state.board[target]++;
-        }
 
+            state.message =
+                "Pulun hareket etti.";
+        }
 
         useDie(dieIndex);
 
         state.selectedPoint = null;
 
-        state.message = "Hamle yapıldı.";
-
         checkWinner();
-
-        finishPlayerTurnIfNeeded();
-
-        render();
 
         return true;
     }
 
 
     /* =====================================================
-       TIKLAMA
+       OYUNCU TIKLAMASI
     ===================================================== */
 
     function handlePointClick(point) {
 
-        if (state.turn !== "player") {
-            return;
-        }
+        if (state.gameOver) return;
 
-        if (state.gameOver) {
-            return;
-        }
+        if (state.turn !== "player") return;
 
         if (state.dice.length === 0) {
-            state.message = "Önce zar at.";
+
+            state.message =
+                "Önce zar at.";
+
             render();
             return;
         }
 
 
         /*
-            BARDA PUL VARSA
-        */
-
-        if (playerHasPiecesOnBar()) {
+         * Bardaki pul önceliklidir.
+         */
+        if (playerHasBar()) {
 
             state.message =
                 "Önce bardaki pulunu oyuna sokmalısın.";
 
             render();
-
             return;
         }
 
 
         /*
-            HENÜZ PUL SEÇİLMEDİ
-        */
-
+         * Pul seçilmemiş.
+         */
         if (state.selectedPoint === null) {
 
-            if (!pointBelongsToPlayer(point)) {
+            if (!playerOwns(point)) {
 
                 state.message =
                     "Kendi pulunu seçmelisin.";
 
                 render();
+                return;
+            }
 
+            const canMove =
+                getAvailableDice()
+                    .some(d =>
+                        canPlayerMove(point, d.value)
+                    );
+
+            if (!canMove) {
+
+                state.message =
+                    "Bu pul mevcut zarlarla hareket edemez.";
+
+                render();
                 return;
             }
 
             state.selectedPoint = point;
 
             state.message =
-                `${point + 1}. hanedeki pul seçildi.`;
+                `${point + 1}. hane seçildi. Şimdi hedefe bas.`;
 
             render();
 
@@ -1865,37 +589,78 @@ const Tavla = (() => {
 
 
         /*
-            AYNI NOKTAYA BASILDI
-        */
-
+         * Aynı pula tekrar basılırsa seçimi kaldır.
+         */
         if (state.selectedPoint === point) {
 
             state.selectedPoint = null;
 
-            state.message = "Pul seçimi iptal edildi.";
+            state.message =
+                "Pul seçimi kaldırıldı.";
 
             render();
-
             return;
         }
 
 
+        const from =
+            state.selectedPoint;
+
+
         /*
-            SEÇİLEN PUL İLE HAMLE ARA
-        */
+         * Hedef noktaya uygun zar bul.
+         */
+        const possibleDice =
+            getAvailableDice()
+                .filter(d =>
+                    canPlayerMove(from, d.value)
+                );
 
-        const from = state.selectedPoint;
 
-        const possibleDice = availableDice();
-
+        /*
+         * Doğrudan hedef haneye basıldıysa
+         * mesafeye göre uygun zarı kullan.
+         */
         for (const die of possibleDice) {
 
-            if (canPlayerMove(from, die.value)) {
+            if (from + die.value === point) {
 
-                const success =
+                movePlayer(from, die.index);
+
+                state.selectedPoint = null;
+
+                render();
+
+                finishPlayerTurnIfNeeded();
+
+                return;
+            }
+        }
+
+
+        /*
+         * Toplama için hedef 24 olarak düşünülür.
+         */
+        if (point === 23) {
+
+            for (const die of possibleDice) {
+
+                if (
+                    from + die.value >= 24 &&
+                    playerCanBearFrom(
+                        from,
+                        die.value
+                    )
+                ) {
+
                     movePlayer(from, die.index);
 
-                if (success) {
+                    state.selectedPoint = null;
+
+                    render();
+
+                    finishPlayerTurnIfNeeded();
+
                     return;
                 }
             }
@@ -1903,24 +668,23 @@ const Tavla = (() => {
 
 
         /*
-            Başka pul seçmek
-        */
-
-        if (pointBelongsToPlayer(point)) {
+         * Başka kendi puluna basılırsa
+         * yeni pul seç.
+         */
+        if (playerOwns(point)) {
 
             state.selectedPoint = point;
 
             state.message =
-                `${point + 1}. hane seçildi.`;
+                `${point + 1}. hanedeki pul seçildi.`;
 
             render();
-
             return;
         }
 
 
         state.message =
-            "Bu noktaya bu zarlarla gidemezsin.";
+            "Bu hedefe mevcut zarlarla gidemezsin.";
 
         render();
     }
@@ -1932,28 +696,35 @@ const Tavla = (() => {
 
     function hasAnyPlayerMove() {
 
-        if (playerHasPiecesOnBar()) {
+        const dice =
+            getAvailableDice();
 
-            for (const die of availableDice()) {
-
-                const target = 24 - die.value;
-
-                if (playerCanMoveTo(target)) {
-                    return true;
-                }
-            }
-
+        if (dice.length === 0) {
             return false;
         }
 
 
+        /*
+         * Bar kontrolü.
+         */
+        if (playerHasBar()) {
+
+            return dice.some(d =>
+                canEnterPlayerFromBar(d.value)
+            );
+        }
+
+
+        /*
+         * Normal pullar.
+         */
         for (let point = 0; point < 24; point++) {
 
-            if (!pointBelongsToPlayer(point)) {
+            if (!playerOwns(point)) {
                 continue;
             }
 
-            for (const die of availableDice()) {
+            for (const die of dice) {
 
                 if (canPlayerMove(point, die.value)) {
                     return true;
@@ -1965,145 +736,124 @@ const Tavla = (() => {
     }
 
 
-    function checkPlayerMoves() {
+    /* =====================================================
+       TUR BİTİRME
+    ===================================================== */
 
-        if (state.turn !== "player") {
+    function finishPlayerTurnIfNeeded() {
+
+        if (state.gameOver) {
             return;
         }
 
-        if (availableDice().length === 0) {
+        if (state.usedDice.length >= state.dice.length) {
+
+            setTimeout(endPlayerTurn, 450);
+
             return;
         }
 
         if (!hasAnyPlayerMove()) {
 
             state.message =
-                "Yapılabilecek hamle yok. Sıra rakibe geçiyor.";
+                "Başka hamle yok. Rakibin sırası.";
 
             render();
 
-            setTimeout(endPlayerTurn, 1200);
-        }
-    }
-
-
-    function finishPlayerTurnIfNeeded() {
-
-        if (availableDice().length === 0) {
-
-            setTimeout(endPlayerTurn, 500);
+            setTimeout(endPlayerTurn, 900);
         }
     }
 
 
     function endPlayerTurn() {
 
-        if (state.gameOver) {
-            return;
-        }
+        if (state.gameOver) return;
 
         state.dice = [];
         state.usedDice = [];
         state.selectedPoint = null;
 
         state.turn = "bot";
+        state.botThinking = true;
 
         state.message =
-            "Rakip düşünüyor...";
+            "Rakip zar atıyor...";
 
         render();
 
-        setTimeout(botTurn, 900);
+        setTimeout(botRoll, 900);
     }
 
 
     /* =====================================================
-       BOT
+       BOT ZARI
     ===================================================== */
 
-    function botTurn() {
+    function botRoll() {
 
-        if (state.gameOver) {
-            return;
-        }
+        if (state.gameOver) return;
 
-        state.botThinking = true;
+        const d1 = randomInt(1, 6);
+        const d2 = randomInt(1, 6);
 
-        const first = Math.floor(Math.random() * 6) + 1;
-        const second = Math.floor(Math.random() * 6) + 1;
-
-        if (first === second) {
-
-            state.dice = [
-                first,
-                first,
-                first,
-                first
-            ];
-
-        } else {
-
-            state.dice = [
-                first,
-                second
-            ];
-        }
+        state.dice =
+            d1 === d2
+                ? [d1, d1, d1, d1]
+                : [d1, d2];
 
         state.usedDice = [];
 
+        state.message =
+            `Rakibin zarları: ${d1}-${d2}`;
+
         render();
 
-        setTimeout(botMakeMove, 700);
+        setTimeout(botPlayAvailableMoves, 700);
     }
 
 
-    function botMakeMove() {
+    /* =====================================================
+       BOT HAMLESİ
+    ===================================================== */
 
-        if (state.gameOver) {
-            return;
-        }
+    function botPlayAvailableMoves() {
 
-        const dice = availableDice();
+        if (state.gameOver) return;
+
+        const dice =
+            getAvailableDice();
 
         if (dice.length === 0) {
 
-            state.dice = [];
-            state.usedDice = [];
-
-            state.turn = "player";
-            state.botThinking = false;
-
-            state.message =
-                "Senin sıran. Zar at.";
-
-            render();
-
+            endBotTurn();
             return;
         }
 
+        /*
+         * Basit ama kurallı bot:
+         * 1. Bardaki pulu sok.
+         * 2. Rakibin tek pulunu kır.
+         * 3. Güvenli noktaya git.
+         * 4. Gerekirse toplar.
+         */
 
-        const dieObject = dice[0];
-
-        const die = dieObject.value;
+        const die =
+            chooseBotDie(dice);
 
 
         /*
-            Önce bardan gir
-        */
+         * Bardaki bot pulu.
+         */
+        if (botHasBar()) {
 
-        if (state.bar.bot > 0) {
+            const target =
+                botBarTarget(die.value);
 
-            const target = die - 1;
-
-            if (
-                target >= 0 &&
-                state.board[target] >= 0
-            ) {
+            if (botTargetOpen(target)) {
 
                 if (state.board[target] === 1) {
 
                     state.board[target] = -1;
-
                     state.bar.player++;
 
                 } else {
@@ -2113,77 +863,281 @@ const Tavla = (() => {
 
                 state.bar.bot--;
 
-                useDie(dieObject.index);
+                useDie(die.index);
+
+                state.message =
+                    "Rakip bardaki pulunu oyuna soktu.";
 
                 render();
 
-                setTimeout(botMakeMove, 450);
+                setTimeout(
+                    botPlayAvailableMoves,
+                    550
+                );
 
                 return;
             }
+
+
+            useDie(die.index);
+
+            setTimeout(
+                botPlayAvailableMoves,
+                350
+            );
+
+            return;
         }
 
 
         /*
-            Normal bot hamlesi
-        */
+         * Önce kırabileceği hamle.
+         */
+        const hitMove =
+            findBotHitMove(die.value);
 
-        let moved = false;
+        if (hitMove) {
 
+            executeBotMove(
+                hitMove.from,
+                hitMove.to,
+                die.index
+            );
+
+            setTimeout(
+                botPlayAvailableMoves,
+                550
+            );
+
+            return;
+        }
+
+
+        /*
+         * Toplayabiliyorsa toplama.
+         */
+        const bearMove =
+            findBotBearMove(die.value);
+
+        if (bearMove) {
+
+            state.board[bearMove.from]++;
+
+            state.borneOff.bot++;
+
+            useDie(die.index);
+
+            state.message =
+                "Rakip bir pulunu topladı.";
+
+            checkWinner();
+
+            render();
+
+            setTimeout(
+                botPlayAvailableMoves,
+                550
+            );
+
+            return;
+        }
+
+
+        /*
+         * Normal güvenli hamle.
+         */
+        const normalMove =
+            findBotNormalMove(die.value);
+
+        if (normalMove) {
+
+            executeBotMove(
+                normalMove.from,
+                normalMove.to,
+                die.index
+            );
+
+            setTimeout(
+                botPlayAvailableMoves,
+                550
+            );
+
+            return;
+        }
+
+
+        /*
+         * Hamle yok.
+         */
+        useDie(die.index);
+
+        setTimeout(
+            botPlayAvailableMoves,
+            350
+        );
+    }
+
+
+    function chooseBotDie(dice) {
+
+        /*
+         * Büyük zarı öncelikli kullan.
+         */
+        return [...dice]
+            .sort((a, b) => b.value - a.value)[0];
+    }
+
+
+    function findBotHitMove(die) {
 
         for (let from = 23; from >= 0; from--) {
 
-            if (state.board[from] >= 0) {
+            if (!botOwns(from)) {
                 continue;
             }
 
-            const target = from - die;
+            const to =
+                from - die;
 
-            if (target < 0) {
+            if (to < 0) {
                 continue;
             }
 
-            if (state.board[target] > 1) {
-                continue;
+            if (state.board[to] === 1) {
+
+                return {
+                    from,
+                    to
+                };
             }
-
-
-            state.board[from]++;
-
-
-            if (state.board[target] === 1) {
-
-                state.board[target] = -1;
-
-                state.bar.player++;
-
-            } else {
-
-                state.board[target]--;
-            }
-
-
-            useDie(dieObject.index);
-
-            moved = true;
-
-            break;
         }
 
+        return null;
+    }
 
-        if (!moved) {
-            useDie(dieObject.index);
+
+    function findBotBearMove(die) {
+
+        if (!botCanBearOff()) {
+            return null;
         }
 
+        for (let from = 0; from < 6; from++) {
+
+            if (!botOwns(from)) {
+                continue;
+            }
+
+            if (botCanBearFrom(from, die)) {
+
+                return {
+                    from
+                };
+            }
+        }
+
+        return null;
+    }
+
+
+    function findBotNormalMove(die) {
+
+        let best = null;
+
+        for (let from = 23; from >= 0; from--) {
+
+            if (!botOwns(from)) {
+                continue;
+            }
+
+            const to =
+                from - die;
+
+            if (to < 0) {
+                continue;
+            }
+
+            if (!botTargetOpen(to)) {
+                continue;
+            }
+
+
+            /*
+             * Güvenli nokta önceliği.
+             */
+            const targetCount =
+                Math.abs(state.board[to]);
+
+            let score = 0;
+
+            if (targetCount === 0) score += 5;
+            if (targetCount === 1) score += 8;
+            if (state.board[to] < 0) score += 10;
+
+            score += to / 10;
+
+            if (!best || score > best.score) {
+
+                best = {
+                    from,
+                    to,
+                    score
+                };
+            }
+        }
+
+        return best;
+    }
+
+
+    function executeBotMove(from, to, dieIndex) {
+
+        state.board[from]++;
+
+
+        if (state.board[to] === 1) {
+
+            state.board[to] = -1;
+            state.bar.player++;
+
+            state.message =
+                "Rakip senin pulunu kırdı.";
+
+        } else {
+
+            state.board[to]--;
+
+            state.message =
+                "Rakip pulunu hareket ettirdi.";
+        }
+
+        useDie(dieIndex);
+
+        checkWinner();
 
         render();
+    }
 
-        setTimeout(botMakeMove, 500);
+
+    function endBotTurn() {
+
+        if (state.gameOver) return;
+
+        state.dice = [];
+        state.usedDice = [];
+
+        state.turn = "player";
+        state.botThinking = false;
+
+        state.message =
+            "Senin sıran. Zar at.";
+
+        render();
     }
 
 
     /* =====================================================
-       KAZANMA
+       KAZANAN
     ===================================================== */
 
     function checkWinner() {
@@ -2191,20 +1145,21 @@ const Tavla = (() => {
         if (state.borneOff.player >= 15) {
 
             state.gameOver = true;
+
             state.message =
-                "🎉 Tebrikler! Tavlayı kazandın.";
+                "🎉 Tebrikler! Tavlayı kazandın!";
 
             render();
 
             return true;
         }
 
-
         if (state.borneOff.bot >= 15) {
 
             state.gameOver = true;
+
             state.message =
-                "Rakip oyunu kazandı.";
+                "Rakip tavlayı kazandı.";
 
             render();
 
@@ -2216,24 +1171,85 @@ const Tavla = (() => {
 
 
     /* =====================================================
-       TAHTA ÇİZİMİ
+       GÖRSEL ZAR
+    ===================================================== */
+
+    function diceSymbol(value) {
+
+        const symbols = [
+            "",
+            "⚀",
+            "⚁",
+            "⚂",
+            "⚃",
+            "⚄",
+            "⚅"
+        ];
+
+        return symbols[value] || "⚄";
+    }
+
+
+    function renderDice() {
+
+        const box =
+            $("#diceBox");
+
+        if (!box) return;
+
+        box.innerHTML = "";
+
+
+        if (state.dice.length === 0) {
+
+            const a =
+                document.createElement("span");
+
+            const b =
+                document.createElement("span");
+
+            a.textContent = "⚄";
+            b.textContent = "⚂";
+
+            box.appendChild(a);
+            box.appendChild(b);
+
+            return;
+        }
+
+
+        state.dice.forEach((value, index) => {
+
+            const die =
+                document.createElement("span");
+
+            die.textContent =
+                diceSymbol(value);
+
+            if (state.usedDice.includes(index)) {
+
+                die.style.opacity = "0.28";
+                die.style.transform = "scale(.88)";
+            }
+
+            box.appendChild(die);
+        });
+    }
+
+
+    /* =====================================================
+       TAHTA ÇİZ
     ===================================================== */
 
     function renderBoard() {
 
-        const boardElement =
+        const board =
             $("#backgammonBoard");
 
-        if (!boardElement) {
-            return;
-        }
+        if (!board) return;
 
-        boardElement.innerHTML = "";
+        board.innerHTML = "";
 
-
-        /*
-            24 hane
-        */
 
         for (let i = 0; i < 24; i++) {
 
@@ -2244,7 +1260,12 @@ const Tavla = (() => {
                 "tavla-point " +
                 (i < 12 ? "top" : "bottom");
 
-            point.dataset.point = i;
+            point.dataset.point = String(i);
+
+
+            if (state.selectedPoint === i) {
+                point.classList.add("selected");
+            }
 
 
             const triangle =
@@ -2264,13 +1285,16 @@ const Tavla = (() => {
             const count =
                 Math.abs(state.board[i]);
 
-
             const owner =
                 state.board[i] > 0
                     ? "player"
                     : "bot";
 
 
+            /*
+             * Görselde 5'ten fazlasını da göstermek yerine
+             * pul sayısını doğru tutuyoruz.
+             */
             for (let c = 0; c < count; c++) {
 
                 const checker =
@@ -2283,14 +1307,9 @@ const Tavla = (() => {
             }
 
 
-            if (state.selectedPoint === i) {
-
-                point.classList.add("selected");
-            }
-
-
             point.appendChild(triangle);
             point.appendChild(checkers);
+
 
             point.addEventListener(
                 "click",
@@ -2298,69 +1317,857 @@ const Tavla = (() => {
             );
 
 
-            boardElement.appendChild(point);
+            board.appendChild(point);
         }
     }
 
 
     /* =====================================================
-       ZAR GÖRÜNTÜSÜ
+       BİLGİLERİ GÜNCELLE
     ===================================================== */
 
-    function diceSymbol(number) {
+    function renderInfo() {
 
-        const symbols = [
-            "",
-            "⚀",
-            "⚁",
-            "⚂",
-            "⚃",
-            "⚄",
-            "⚅"
-        ];
+        const turnLabel =
+            $("#turnLabel");
 
-        return symbols[number] || "⚄";
+        if (turnLabel) {
+
+            if (state.gameOver) {
+
+                turnLabel.textContent =
+                    "Oyun Bitti";
+
+            } else if (state.botThinking) {
+
+                turnLabel.textContent =
+                    "Rakip düşünüyor...";
+
+            } else if (state.turn === "player") {
+
+                turnLabel.textContent =
+                    "Senin sıran";
+
+            } else {
+
+                turnLabel.textContent =
+                    "Rakibin sırası";
+            }
+        }
+
+
+        const message =
+            $("#gameMessage");
+
+        if (message) {
+            message.textContent =
+                state.message;
+        }
+
+
+        const barBot =
+            $("#barBot");
+
+        if (barBot) {
+            barBot.textContent =
+                state.bar.bot;
+        }
+
+
+        const barYou =
+            $("#barYou");
+
+        if (barYou) {
+            barYou.textContent =
+                state.bar.player;
+        }
+
+
+        const offYou =
+            $("#offYou");
+
+        if (offYou) {
+            offYou.textContent =
+                state.borneOff.player;
+        }
     }
 
 
-    function renderDice() {
+    /* =====================================================
+       GENEL RENDER
+    ===================================================== */
 
-        const diceBox =
-            $("#diceBox");
+    function render() {
 
-        if (!diceBox) {
+        renderBoard();
+        renderDice();
+        renderInfo();
+    }
+
+
+    /* =====================================================
+       DIŞARIDAN ERİŞİM
+    ===================================================== */
+
+    return {
+        init,
+        resetGame,
+        refresh: render,
+        rollDice,
+        getState: () => state
+    };
+
+})();
+
+
+/* =========================================================
+   BATAK
+========================================================= */
+
+const Batak = (() => {
+
+    const state = {
+        deck: [],
+        players: [
+            {
+                name: "Sen",
+                hand: [],
+                score: 0,
+                bid: 0
+            },
+            {
+                name: "Oyuncu 2",
+                hand: [],
+                score: 0,
+                bid: 0
+            },
+            {
+                name: "Oyuncu 3",
+                hand: [],
+                score: 0,
+                bid: 0
+            },
+            {
+                name: "Oyuncu 4",
+                hand: [],
+                score: 0,
+                bid: 0
+            }
+        ],
+
+        trump: null,
+        currentPlayer: 0,
+        bidding: true,
+        highestBid: 0,
+        highestBidder: null,
+
+        trick: [],
+        trickNumber: 0,
+
+        message: "İhaleye gir veya pas de."
+    };
+
+
+    /* =====================================================
+       DESTE
+    ===================================================== */
+
+    const suits = [
+        {
+            key: "S",
+            name: "Maça",
+            symbol: "♠",
+            red: false
+        },
+        {
+            key: "H",
+            name: "Kupa",
+            symbol: "♥",
+            red: true
+        },
+        {
+            key: "D",
+            name: "Karo",
+            symbol: "♦",
+            red: true
+        },
+        {
+            key: "C",
+            name: "Sinek",
+            symbol: "♣",
+            red: false
+        }
+    ];
+
+
+    function createDeck() {
+
+        const deck = [];
+
+        for (const suit of suits) {
+
+            for (let rank = 2; rank <= 14; rank++) {
+
+                deck.push({
+                    suit: suit.key,
+                    suitName: suit.name,
+                    symbol: suit.symbol,
+                    rank,
+                    red: suit.red
+                });
+            }
+        }
+
+        return deck;
+    }
+
+
+    function shuffle(deck) {
+
+        for (let i = deck.length - 1; i > 0; i--) {
+
+            const j =
+                Math.floor(Math.random() * (i + 1));
+
+            [deck[i], deck[j]] =
+                [deck[j], deck[i]];
+        }
+
+        return deck;
+    }
+
+
+    function cardText(card) {
+
+        const names = {
+            11: "J",
+            12: "Q",
+            13: "K",
+            14: "A"
+        };
+
+        return `${names[card.rank] || card.rank}${card.symbol}`;
+    }
+
+
+    /* =====================================================
+       YENİ BATAK
+    ===================================================== */
+
+    function resetGame() {
+
+        state.deck =
+            shuffle(createDeck());
+
+        state.players.forEach(player => {
+
+            player.hand = [];
+            player.score = 0;
+            player.bid = 0;
+        });
+
+        for (let i = 0; i < 13; i++) {
+
+            for (const player of state.players) {
+
+                player.hand.push(
+                    state.deck.pop()
+                );
+            }
+        }
+
+
+        state.trump = null;
+        state.currentPlayer = 0;
+        state.bidding = true;
+
+        state.highestBid = 0;
+        state.highestBidder = null;
+
+        state.trick = [];
+        state.trickNumber = 0;
+
+        state.message =
+            "İhaleye gir veya pas de.";
+
+        render();
+    }
+
+
+    /* =====================================================
+       İHALE
+    ===================================================== */
+
+    function playerBid() {
+
+        if (!state.bidding) return;
+
+        const bid =
+            randomInt(3, 5);
+
+        state.players[0].bid = bid;
+
+        state.highestBid = bid;
+        state.highestBidder = 0;
+
+        state.message =
+            `Sen ${bid} dedin. Rakipler düşünüyor...`;
+
+        render();
+
+        setTimeout(botBids, 900);
+    }
+
+
+    function playerPass() {
+
+        if (!state.bidding) return;
+
+        state.players[0].bid = 0;
+
+        state.message =
+            "Sen pas dedin. Rakipler ihaleye devam ediyor.";
+
+        render();
+
+        setTimeout(botBids, 800);
+    }
+
+
+    function botBids() {
+
+        if (!state.bidding) return;
+
+        /*
+         * Basit ihale sistemi.
+         */
+        for (let i = 1; i < 4; i++) {
+
+            const bid =
+                randomInt(0, 5);
+
+            state.players[i].bid = bid;
+
+            if (bid > state.highestBid) {
+
+                state.highestBid = bid;
+                state.highestBidder = i;
+            }
+        }
+
+
+        if (state.highestBidder === null) {
+
+            state.highestBidder = 0;
+            state.highestBid = 3;
+        }
+
+
+        const trumpIndex =
+            randomInt(0, 3);
+
+        state.trump =
+            suits[trumpIndex];
+
+
+        state.bidding = false;
+
+        state.currentPlayer =
+            state.highestBidder;
+
+        state.message =
+            `${state.players[state.highestBidder].name} ihaleyi ${state.highestBid} aldı. Koz: ${state.trump.symbol} ${state.trump.name}`;
+
+        render();
+
+        if (state.currentPlayer !== 0) {
+
+            setTimeout(playBotTrick, 900);
+        }
+    }
+
+
+    /* =====================================================
+       GEÇERLİ KARTLAR
+    ===================================================== */
+
+    function getLegalCards(playerIndex) {
+
+        const hand =
+            state.players[playerIndex].hand;
+
+        if (state.trick.length === 0) {
+            return hand;
+        }
+
+        const leadSuit =
+            state.trick[0].card.suit;
+
+        const sameSuit =
+            hand.filter(card =>
+                card.suit === leadSuit
+            );
+
+        if (sameSuit.length > 0) {
+            return sameSuit;
+        }
+
+        return hand;
+    }
+
+
+    /* =====================================================
+       KART OYNAMA
+    ===================================================== */
+
+    function playPlayerCard(index) {
+
+        if (state.bidding) {
+
+            state.message =
+                "Önce ihaleyi tamamla.";
+
+            render();
             return;
         }
 
-        diceBox.innerHTML = "";
+        if (state.currentPlayer !== 0) {
+            return;
+        }
+
+        const legal =
+            getLegalCards(0);
+
+        const card =
+            state.players[0].hand[index];
+
+        if (!card) return;
+
+        if (!legal.includes(card)) {
+
+            state.message =
+                "Bu kartı oynayamazsın.";
+
+            render();
+            return;
+        }
+
+        state.players[0].hand.splice(index, 1);
+
+        state.trick.push({
+            player: 0,
+            card
+        });
+
+        state.message =
+            "Kartını oynadın.";
+
+        render();
+
+        if (state.trick.length < 4) {
+
+            state.currentPlayer = 1;
+
+            setTimeout(playBotTrick, 650);
+        } else {
+
+            finishTrick();
+        }
+    }
 
 
-        if (state.dice.length === 0) {
+    function playBotTrick() {
 
-            const a =
-                document.createElement("span");
+        if (state.trick.length >= 4) {
+            finishTrick();
+            return;
+        }
 
-            const b =
-                document.createElement("span");
+        const playerIndex =
+            state.currentPlayer;
 
-            a.textContent = "⚄";
-            b.textContent = "⚂";
+        if (playerIndex === 0) {
+            return;
+        }
 
-            diceBox.appendChild(a);
-            diceBox.appendChild(b);
+        const legal =
+            getLegalCards(playerIndex);
+
+        if (!legal.length) return;
+
+        /*
+         * Basit bot:
+         * mümkünse düşük kart oynar.
+         */
+        const sorted =
+            [...legal].sort(
+                (a, b) => a.rank - b.rank
+            );
+
+        const card =
+            sorted[0];
+
+        const hand =
+            state.players[playerIndex].hand;
+
+        const index =
+            hand.indexOf(card);
+
+        if (index >= 0) {
+            hand.splice(index, 1);
+        }
+
+        state.trick.push({
+            player: playerIndex,
+            card
+        });
+
+        state.message =
+            `${state.players[playerIndex].name} kart oynadı.`;
+
+        render();
+
+        if (state.trick.length === 4) {
+
+            setTimeout(
+                finishTrick,
+                800
+            );
+
+        } else {
+
+            state.currentPlayer =
+                (playerIndex + 1) % 4;
+
+            if (state.currentPlayer === 0) {
+
+                state.message =
+                    "Sıra sende. Kartını seç.";
+
+                render();
+
+            } else {
+
+                setTimeout(
+                    playBotTrick,
+                    650
+                );
+            }
+        }
+    }
+
+
+    /* =====================================================
+       EL KAZANANI
+    ===================================================== */
+
+    function cardPower(card, leadSuit) {
+
+        let power = card.rank;
+
+        if (
+            state.trump &&
+            card.suit === state.trump.key
+        ) {
+            power += 100;
+        }
+
+        if (card.suit === leadSuit) {
+            power += 50;
+        }
+
+        return power;
+    }
+
+
+    function getTrickWinner() {
+
+        if (!state.trick.length) {
+            return null;
+        }
+
+        const leadSuit =
+            state.trick[0].card.suit;
+
+        let winner =
+            state.trick[0];
+
+        for (let i = 1; i < state.trick.length; i++) {
+
+            const current =
+                state.trick[i];
+
+            if (
+                cardPower(
+                    current.card,
+                    leadSuit
+                ) >
+                cardPower(
+                    winner.card,
+                    leadSuit
+                )
+            ) {
+                winner = current;
+            }
+        }
+
+        return winner.player;
+    }
+
+
+    function finishTrick() {
+
+        const winner =
+            getTrickWinner();
+
+        if (winner === null) {
+            return;
+        }
+
+        state.players[winner].score++;
+
+        state.trickNumber++;
+
+        state.message =
+            `${state.players[winner].name} eli aldı.`;
+
+        state.trick = [];
+
+        state.currentPlayer = winner;
+
+        render();
+
+        /*
+         * 13 el tamamlandı.
+         */
+        if (state.trickNumber >= 13) {
+
+            finishRound();
 
             return;
         }
 
 
-        state.dice.forEach((value, index) => {
+        if (state.currentPlayer === 0) {
 
-            const die =
-                document.createElement("span");
+            state.message =
+                "Sıra sende.";
 
-            die.textContent =
-                diceSymbol(value);
+            render();
+
+        } else {
+
+            setTimeout(
+                playBotTrick,
+                900
+            );
+        }
+    }
 
 
-            if (state.usedDice.includes(index)) {
+    function finishRound() {
 
+        state.message =
+            "🎉 Batak eli tamamlandı.";
+
+        render();
+    }
+
+
+    /* =====================================================
+       BATAK RENDER
+    ===================================================== */
+
+    function renderHand() {
+
+        const handElement =
+            $("#playerHand");
+
+        if (!handElement) return;
+
+        handElement.innerHTML = "";
+
+
+        state.players[0].hand.forEach(
+            (card, index) => {
+
+                const element =
+                    document.createElement("button");
+
+                element.className =
+                    "playing-card";
+
+                element.type = "button";
+
+                element.textContent =
+                    cardText(card);
+
+                if (card.red) {
+                    element.style.color =
+                        "#b32d36";
+                }
+
+                element.addEventListener(
+                    "click",
+                    () => playPlayerCard(index)
+                );
+
+                handElement.appendChild(element);
+            }
+        );
+    }
+
+
+    function renderTrick() {
+
+        const cards =
+            $$(".card-placeholder");
+
+        cards.forEach((element, index) => {
+
+            element.textContent =
+                "🂠";
+
+            if (
+                state.trick[index] &&
+                state.trick[index].card
+            ) {
+
+                const card =
+                    state.trick[index].card;
+
+                element.textContent =
+                    cardText(card);
+
+                element.style.color =
+                    card.red
+                        ? "#b32d36"
+                        : "#222";
+            }
+        });
+    }
+
+
+    function renderStatus() {
+
+        const status =
+            $(".batak-status");
+
+        if (!status) return;
+
+        const span =
+            status.querySelector("span");
+
+        const strong =
+            status.querySelector("strong");
+
+        if (span) {
+            span.textContent =
+                state.bidding
+                    ? "İhale"
+                    : "Durum";
+        }
+
+        if (strong) {
+            strong.textContent =
+                state.message;
+        }
+
+
+        const trump =
+            $(".trump");
+
+        if (trump) {
+
+            trump.textContent =
+                state.trump
+                    ? `Koz: ${state.trump.symbol} ${state.trump.name}`
+                    : "Koz: Henüz belirlenmedi";
+        }
+    }
+
+
+    function render() {
+
+        renderHand();
+        renderTrick();
+        renderStatus();
+    }
+
+
+    /* =====================================================
+       BATAK INIT
+    ===================================================== */
+
+    function init() {
+
+        const newButton =
+            $("#newBatak");
+
+        if (newButton) {
+
+            newButton.addEventListener(
+                "click",
+                resetGame
+            );
+        }
+
+
+        const bidButton =
+            $(".batak-controls button:nth-child(1)");
+
+        const passButton =
+            $(".batak-controls button:nth-child(2)");
+
+
+        if (bidButton) {
+
+            bidButton.addEventListener(
+                "click",
+                playerBid
+            );
+        }
+
+
+        if (passButton) {
+
+            passButton.addEventListener(
+                "click",
+                playerPass
+            );
+        }
+
+
+        resetGame();
+    }
+
+
+    return {
+        init,
+        resetGame
+    };
+
+})();
+
+
+/* =========================================================
+   SAYFA AÇILINCA
+========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+        Tavla.init();
+        Batak.init();
+
+    }
+);
+
+
+/* =========================================================
+   GLOBAL ERİŞİM
+========================================================= */
+
+window.Tavla = Tavla;
+window.Batak = Batak;
