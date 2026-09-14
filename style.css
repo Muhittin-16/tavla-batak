@@ -1,7 +1,3 @@
-/* =========================================================
-   TAVLA & BATAK - ANA TASARIM
-   ========================================================= */
-
 * {
     box-sizing: border-box;
     margin: 0;
@@ -9,19 +5,19 @@
 }
 
 :root {
-    --bg: #07111f;
-    --bg2: #0d1b2a;
-    --panel: #102338;
-    --panel2: #142d46;
-    --border: rgba(255,255,255,.10);
-    --text: #f4f7fb;
-    --muted: #9fb0c3;
-    --gold: #d7a94b;
-    --gold2: #f0c866;
-    --green: #2ec27e;
-    --red: #e05a5a;
-    --blue: #3b82f6;
-    --shadow: 0 18px 50px rgba(0,0,0,.30);
+    --bg: #0b0f16;
+    --bg2: #111722;
+    --panel: #151d29;
+    --panel2: #1b2533;
+    --border: rgba(255,255,255,.09);
+    --text: #f5f7fa;
+    --muted: #9da8b7;
+    --gold: #d9a441;
+    --gold2: #f0c766;
+    --green: #238b63;
+    --green2: #2fa977;
+    --red: #c84b4b;
+    --shadow: 0 20px 60px rgba(0,0,0,.35);
 }
 
 html {
@@ -30,950 +26,1338 @@ html {
 
 body {
     min-height: 100vh;
-    font-family: Arial, Helvetica, sans-serif;
     background:
-        radial-gradient(circle at top left, rgba(59,130,246,.12), transparent 35%),
-        radial-gradient(circle at bottom right, rgba(215,169,75,.10), transparent 35%),
+        radial-gradient(circle at 15% 10%, rgba(217,164,65,.08), transparent 30%),
+        radial-gradient(circle at 85% 20%, rgba(35,139,99,.08), transparent 30%),
         var(--bg);
     color: var(--text);
-}
-
-button,
-input,
-select {
-    font: inherit;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 button {
+    font: inherit;
     cursor: pointer;
 }
 
-.hidden {
-    display: none !important;
+button,
+a {
+    -webkit-tap-highlight-color: transparent;
 }
 
-/* =========================================================
-   ÜST MENÜ
-   ========================================================= */
 
-.topbar {
+/* =========================================================
+   HEADER
+========================================================= */
+
+.site-header {
     position: sticky;
     top: 0;
     z-index: 1000;
-    min-height: 70px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(11,15,22,.92);
+    backdrop-filter: blur(16px);
+}
+
+.header-inner {
+    width: min(1180px, calc(100% - 32px));
+    min-height: 76px;
+    margin: auto;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 20px;
-    padding: 12px 24px;
-    background: rgba(7,17,31,.94);
-    border-bottom: 1px solid var(--border);
-    backdrop-filter: blur(14px);
+    gap: 30px;
 }
 
-.brand {
+.logo {
     display: flex;
     align-items: center;
     gap: 12px;
-    font-weight: 800;
-    white-space: nowrap;
+    color: white;
+    text-decoration: none;
 }
 
-.brand-icon {
-    width: 42px;
-    height: 42px;
+.logo-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
     display: grid;
     place-items: center;
-    border-radius: 12px;
-    background: linear-gradient(135deg, var(--gold), #8e6522);
-    color: #111;
-    font-size: 21px;
+    background: linear-gradient(135deg, var(--gold), #8e6318);
+    font-size: 23px;
+    box-shadow: 0 8px 25px rgba(217,164,65,.2);
 }
 
-.brand-text {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
+.logo strong {
+    display: block;
+    font-size: 18px;
 }
 
-.brand-title {
-    font-size: 17px;
-}
-
-.brand-subtitle {
+.logo small {
+    display: block;
+    margin-top: 3px;
     color: var(--muted);
     font-size: 11px;
-    font-weight: 500;
 }
 
-.nav {
+.main-nav {
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 6px;
-    flex-wrap: wrap;
+    gap: 5px;
 }
 
-.nav button {
+.main-nav button {
     border: 0;
     background: transparent;
-    color: var(--muted);
-    padding: 10px 14px;
-    border-radius: 10px;
+    color: #c8d0db;
+    padding: 10px 13px;
+    border-radius: 9px;
     transition: .2s;
 }
 
-.nav button:hover,
-.nav button.active {
-    background: rgba(255,255,255,.08);
-    color: var(--text);
+.main-nav button:hover {
+    background: rgba(255,255,255,.06);
+    color: white;
 }
 
-.user-area {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.user-chip {
-    padding: 9px 12px;
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    color: var(--muted);
-    background: rgba(255,255,255,.04);
-}
 
 /* =========================================================
-   GENEL SAYFA
-   ========================================================= */
-
-main {
-    width: min(1400px, calc(100% - 32px));
-    margin: 0 auto;
-}
+   SCREENS
+========================================================= */
 
 .screen {
     display: none;
-    padding: 36px 0 50px;
 }
 
 .screen.active {
     display: block;
 }
 
+
 /* =========================================================
-   ANA SAYFA
-   ========================================================= */
+   HERO
+========================================================= */
 
 .hero {
-    min-height: 500px;
+    width: min(1180px, calc(100% - 32px));
+    min-height: 570px;
+    margin: auto;
     display: grid;
-    grid-template-columns: 1.2fr .8fr;
+    grid-template-columns: 1.05fr .95fr;
     align-items: center;
-    gap: 40px;
-    padding: 70px 0;
+    gap: 50px;
+    padding: 70px 0 55px;
 }
 
-.hero-content h1 {
-    max-width: 750px;
-    font-size: clamp(40px, 6vw, 76px);
-    line-height: 1.02;
-    letter-spacing: -2px;
+.hero-content {
+    max-width: 650px;
 }
 
-.hero-content h1 span {
+.hero-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 13px;
+    border: 1px solid rgba(217,164,65,.25);
+    border-radius: 999px;
+    background: rgba(217,164,65,.08);
+    color: var(--gold2);
+    font-size: 13px;
+    margin-bottom: 22px;
+}
+
+.hero h1 {
+    font-size: clamp(44px, 6vw, 76px);
+    line-height: .98;
+    letter-spacing: -3px;
+}
+
+.hero h1 span {
     color: var(--gold2);
 }
 
-.hero-content p {
-    max-width: 650px;
-    margin-top: 22px;
+.hero p {
+    max-width: 560px;
+    margin-top: 25px;
     color: var(--muted);
     font-size: 18px;
     line-height: 1.7;
 }
 
-.hero-actions {
+.hero-buttons {
     display: flex;
-    gap: 12px;
     flex-wrap: wrap;
-    margin-top: 28px;
+    gap: 12px;
+    margin-top: 32px;
 }
 
-.btn {
-    min-height: 46px;
-    padding: 0 18px;
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    background: var(--panel);
-    color: var(--text);
+.primary-button,
+.secondary-button,
+.game-button,
+.new-game-button,
+.back-button,
+.roll-button {
+    border: 0;
+    border-radius: 10px;
+    padding: 13px 19px;
     font-weight: 700;
-    transition: .2s;
+    transition: transform .2s, box-shadow .2s, background .2s;
 }
 
-.btn:hover {
-    transform: translateY(-1px);
-    border-color: rgba(255,255,255,.22);
-}
-
-.btn-primary {
+.primary-button {
     background: linear-gradient(135deg, var(--gold2), var(--gold));
-    border-color: transparent;
-    color: #111;
+    color: #171108;
+    box-shadow: 0 10px 30px rgba(217,164,65,.18);
 }
 
-.btn-success {
-    background: var(--green);
-    border-color: transparent;
-    color: #07150e;
+.primary-button:hover,
+.game-button:hover,
+.roll-button:hover {
+    transform: translateY(-2px);
 }
 
-.btn-danger {
-    background: var(--red);
-    border-color: transparent;
+.secondary-button {
     color: white;
-}
-
-.hero-card {
-    min-height: 360px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    background: rgba(255,255,255,.06);
     border: 1px solid var(--border);
-    border-radius: 26px;
-    background:
-        radial-gradient(circle at center, rgba(215,169,75,.18), transparent 50%),
-        var(--panel);
-    box-shadow: var(--shadow);
-    text-align: center;
 }
 
-.hero-card-icon {
-    font-size: 90px;
-    margin-bottom: 18px;
+.secondary-button:hover {
+    background: rgba(255,255,255,.1);
 }
 
-.hero-card h2 {
-    font-size: 28px;
-}
-
-.hero-card p {
-    color: var(--muted);
-    margin-top: 8px;
-}
 
 /* =========================================================
-   OYUN KARTLARI
-   ========================================================= */
+   HERO TAVLA GÖRSELİ
+========================================================= */
 
-.section-title {
-    margin-bottom: 20px;
+.hero-art {
+    min-height: 410px;
+    position: relative;
+    display: grid;
+    place-items: center;
 }
 
-.section-title h2 {
-    font-size: 30px;
+.table-preview {
+    width: min(470px, 90%);
+    aspect-ratio: 1.35;
+    padding: 22px;
+    border-radius: 22px;
+    background:
+        linear-gradient(135deg, #6f3f1e, #3a1e11);
+    border: 9px solid #24150d;
+    box-shadow:
+        0 30px 70px rgba(0,0,0,.45),
+        inset 0 0 0 2px rgba(255,210,120,.15);
+    transform: perspective(900px) rotateX(7deg) rotateZ(-2deg);
 }
 
-.section-title p {
+.preview-title {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    color: #f3cf8b;
+    font-weight: 800;
+    letter-spacing: 2px;
+    font-size: 13px;
+    margin-bottom: 14px;
+}
+
+.mini-board {
+    height: 250px;
+    border-radius: 10px;
+    background:
+        repeating-linear-gradient(
+            90deg,
+            #a66b34 0 32px,
+            #75421f 32px 64px
+        );
+    position: relative;
+    overflow: hidden;
+    border: 4px solid #2c180d;
+}
+
+.mini-board::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 16px;
+    transform: translateX(-50%);
+    background: #2a160b;
+}
+
+.mini-point {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-left: 22px solid transparent;
+    border-right: 22px solid transparent;
+    border-top: 110px solid rgba(45,20,10,.8);
+}
+
+.mini-point:nth-child(1) { left: 4%; top: 0; }
+.mini-point:nth-child(2) { left: 19%; top: 0; }
+.mini-point:nth-child(3) { left: 35%; top: 0; }
+.mini-point:nth-child(4) {
+    left: 55%;
+    bottom: 0;
+    border-top: 0;
+    border-bottom: 110px solid rgba(45,20,10,.8);
+}
+.mini-point:nth-child(5) {
+    left: 71%;
+    bottom: 0;
+    border-top: 0;
+    border-bottom: 110px solid rgba(45,20,10,.8);
+}
+.mini-point:nth-child(6) {
+    left: 87%;
+    bottom: 0;
+    border-top: 0;
+    border-bottom: 110px solid rgba(45,20,10,.8);
+}
+
+.mini-checkers {
+    position: absolute;
+    left: 10%;
+    bottom: 12px;
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 2px;
+    z-index: 3;
+}
+
+.mini-checkers i {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: #eee7d7;
+    border: 3px solid #bcae92;
+    box-shadow: 0 3px 5px rgba(0,0,0,.35);
+}
+
+.preview-dice {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: -20px;
+    position: relative;
+    z-index: 5;
+}
+
+.preview-dice span {
+    width: 45px;
+    height: 45px;
+    display: grid;
+    place-items: center;
+    background: white;
+    color: #111;
+    border-radius: 8px;
+    font-size: 25px;
+    box-shadow: 0 7px 15px rgba(0,0,0,.35);
+}
+
+.floating-dice {
+    position: absolute;
+    width: 62px;
+    height: 62px;
+    display: grid;
+    place-items: center;
+    border-radius: 14px;
+    background: white;
+    color: #111;
+    font-size: 34px;
+    box-shadow: 0 15px 35px rgba(0,0,0,.4);
+    z-index: 5;
+}
+
+.dice-one {
+    top: 45px;
+    right: 15px;
+    transform: rotate(13deg);
+}
+
+.dice-two {
+    bottom: 45px;
+    left: 10px;
+    transform: rotate(-15deg);
+}
+
+
+/* =========================================================
+   OYUNLAR
+========================================================= */
+
+.games-section {
+    width: min(1180px, calc(100% - 32px));
+    margin: auto;
+    padding: 65px 0 30px;
+}
+
+.section-heading {
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+.section-heading > span {
+    color: var(--gold2);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+.section-heading h2 {
+    margin-top: 8px;
+    font-size: 34px;
+}
+
+.section-heading p {
     color: var(--muted);
-    margin-top: 7px;
+    margin-top: 9px;
 }
 
 .game-grid {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
 }
 
 .game-card {
-    padding: 26px;
-    border: 1px solid var(--border);
+    overflow: hidden;
     border-radius: 20px;
-    background: linear-gradient(145deg, var(--panel), var(--bg2));
+    background: var(--panel);
+    border: 1px solid var(--border);
     box-shadow: var(--shadow);
 }
 
-.game-card-icon {
-    font-size: 48px;
-    margin-bottom: 15px;
+.game-image {
+    height: 235px;
+    position: relative;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+}
+
+.tavla-image {
+    background:
+        radial-gradient(circle at 50% 50%, rgba(220,160,70,.25), transparent 55%),
+        linear-gradient(135deg, #482414, #1d100a);
+}
+
+.batak-image {
+    background:
+        radial-gradient(circle at 50% 50%, rgba(35,139,99,.22), transparent 55%),
+        linear-gradient(135deg, #102d25, #071712);
+}
+
+.game-icon-large {
+    font-size: 76px;
+    filter: drop-shadow(0 15px 20px rgba(0,0,0,.45));
+}
+
+.card-dice {
+    position: absolute;
+    right: 28px;
+    top: 28px;
+    width: 58px;
+    height: 58px;
+    display: grid;
+    place-items: center;
+    border-radius: 12px;
+    background: white;
+    color: #111;
+    font-size: 30px;
+    transform: rotate(9deg);
+}
+
+.playing-cards {
+    position: absolute;
+    bottom: 22px;
+    right: 30px;
+    display: flex;
+}
+
+.playing-cards span {
+    width: 52px;
+    height: 72px;
+    display: grid;
+    place-items: center;
+    margin-left: -15px;
+    border-radius: 8px;
+    background: #f5f1e8;
+    color: #1b1b1b;
+    border: 2px solid white;
+    font-size: 25px;
+    box-shadow: 0 8px 15px rgba(0,0,0,.3);
+}
+
+.playing-cards span:nth-child(2) {
+    color: #b83c3c;
+    transform: rotate(7deg);
+}
+
+.playing-cards span:nth-child(3) {
+    color: #222;
+    transform: rotate(13deg);
+}
+
+.game-card-content {
+    padding: 27px;
+}
+
+.game-label {
+    color: var(--gold2);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
 }
 
 .game-card h3 {
-    font-size: 25px;
+    font-size: 29px;
+    margin-top: 7px;
 }
 
 .game-card p {
     color: var(--muted);
-    line-height: 1.6;
-    margin: 10px 0 20px;
+    line-height: 1.65;
+    margin-top: 9px;
+    min-height: 53px;
 }
 
-/* =========================================================
-   OYUN BAŞLIĞI
-   ========================================================= */
-
-.game-header {
+.game-button {
+    width: 100%;
+    margin-top: 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    background: rgba(217,164,65,.1);
+    color: var(--gold2);
+    border: 1px solid rgba(217,164,65,.2);
+}
+
+.batak-card .game-button {
+    background: rgba(35,139,99,.1);
+    color: #61d8a9;
+    border-color: rgba(35,139,99,.25);
+}
+
+
+/* =========================================================
+   ÖZELLİKLER
+========================================================= */
+
+.features {
+    width: min(1180px, calc(100% - 32px));
+    margin: 45px auto 70px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     gap: 15px;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
 }
 
-.game-header h2 {
-    font-size: 32px;
-}
-
-.game-header p {
-    color: var(--muted);
-    margin-top: 5px;
-}
-
-.game-controls {
+.feature {
     display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
+    align-items: center;
+    gap: 13px;
+    padding: 20px;
+    border-radius: 14px;
+    background: rgba(255,255,255,.025);
+    border: 1px solid var(--border);
 }
+
+.feature-icon {
+    width: 43px;
+    height: 43px;
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    border-radius: 10px;
+    background: rgba(217,164,65,.1);
+    font-size: 20px;
+}
+
+.feature strong {
+    display: block;
+    font-size: 14px;
+}
+
+.feature span {
+    display: block;
+    margin-top: 4px;
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+
+/* =========================================================
+   OYUN EKRANI
+========================================================= */
+
+.game-screen {
+    width: min(1250px, calc(100% - 28px));
+    margin: auto;
+    padding: 28px 0 70px;
+}
+
+.game-top {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.game-top > div {
+    text-align: center;
+}
+
+.game-top h2 {
+    display: inline;
+    font-size: 26px;
+    margin-left: 7px;
+}
+
+.game-top small {
+    display: block;
+    color: var(--muted);
+    margin-top: 4px;
+}
+
+.game-title-icon {
+    font-size: 25px;
+}
+
+.back-button {
+    justify-self: start;
+    background: rgba(255,255,255,.06);
+    color: white;
+    border: 1px solid var(--border);
+}
+
+.new-game-button {
+    justify-self: end;
+    background: var(--gold);
+    color: #171108;
+}
+
 
 /* =========================================================
    TAVLA MASASI
-   ========================================================= */
+========================================================= */
 
 .tavla-layout {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 290px;
-    gap: 20px;
-    align-items: start;
+    grid-template-columns: 170px minmax(500px, 850px) 170px;
+    justify-content: center;
+    align-items: center;
+    gap: 18px;
 }
 
-.tavla-area {
-    min-width: 0;
-}
-
-.tavla-board-wrap {
-    padding: 15px;
-    border-radius: 22px;
-    background: #24170f;
-    border: 1px solid rgba(255,255,255,.10);
-    box-shadow: var(--shadow);
-}
-
-#backgammonBoard {
-    position: relative;
-    width: 100%;
-    aspect-ratio: 1.75 / 1;
-    min-height: 480px;
-    overflow: hidden;
+.player-panel,
+.info-box {
+    padding: 17px;
     border-radius: 14px;
-    background:
-        linear-gradient(90deg,
-            #5a2d17 0 48%,
-            #24170f 48% 52%,
-            #5a2d17 52% 100%);
-    border: 5px solid #9a6a2c;
-    box-shadow:
-        inset 0 0 0 3px #3b2112,
-        inset 0 0 40px rgba(0,0,0,.4);
+    background: var(--panel);
+    border: 1px solid var(--border);
 }
 
-/* Tavla 24 hanesi */
+.player-panel {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+}
+
+.player-avatar {
+    width: 40px;
+    height: 40px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: rgba(217,164,65,.13);
+}
+
+.player-panel strong {
+    display: block;
+    font-size: 14px;
+}
+
+.player-panel span {
+    display: block;
+    color: var(--muted);
+    font-size: 11px;
+    margin-top: 2px;
+}
+
+.player-score {
+    width: 100%;
+    margin-top: 7px;
+    color: var(--gold2);
+    font-size: 25px;
+    font-weight: 800;
+}
+
+.tavla-table {
+    padding: 18px;
+    border-radius: 22px;
+    background: #21140c;
+    border: 8px solid #120b07;
+    box-shadow: 0 30px 60px rgba(0,0,0,.5);
+}
+
+.board-header {
+    display: flex;
+    justify-content: space-between;
+    color: #d6b27a;
+    font-size: 12px;
+    padding: 0 8px 12px;
+}
+
+.backgammon-board {
+    min-height: 470px;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 5px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 9px;
+    background:
+        linear-gradient(
+            90deg,
+            #713d1b 0 49%,
+            #2a150b 49% 51%,
+            #713d1b 51% 100%
+        );
+    border: 4px solid #8b5528;
+}
+
+.backgammon-board::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 20px;
+    transform: translateX(-50%);
+    background: #2b160c;
+    z-index: 1;
+}
 
 .tavla-point {
-    position: absolute;
-    width: 7%;
-    height: 46%;
+    min-width: 0;
+    position: relative;
     display: flex;
-    align-items: center;
-    justify-content: flex-start;
     flex-direction: column;
-    z-index: 5;
+    align-items: center;
+    z-index: 2;
 }
 
 .tavla-point.top {
-    top: 0;
+    justify-content: flex-start;
 }
 
 .tavla-point.bottom {
-    bottom: 0;
     justify-content: flex-end;
-    flex-direction: column-reverse;
 }
 
 .tavla-triangle {
     width: 0;
     height: 0;
-    border-left: 25px solid transparent;
-    border-right: 25px solid transparent;
+    border-left: 24px solid transparent;
+    border-right: 24px solid transparent;
 }
 
 .tavla-point.top .tavla-triangle {
-    border-top: 210px solid #b27a38;
+    border-top: 180px solid #a66532;
 }
 
 .tavla-point.bottom .tavla-triangle {
-    border-bottom: 210px solid #b27a38;
-}
-
-.tavla-point:nth-child(even) .tavla-triangle {
-    border-left-color: transparent;
-    border-right-color: transparent;
-}
-
-.tavla-point:nth-child(3n) .tavla-triangle {
-    filter: brightness(.78);
+    order: 2;
+    border-bottom: 180px solid #a66532;
 }
 
 .tavla-checkers {
     position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
     display: flex;
     flex-direction: column;
+    gap: 2px;
     align-items: center;
-    z-index: 10;
 }
 
 .tavla-point.top .tavla-checkers {
-    top: 28px;
+    top: 7px;
 }
 
 .tavla-point.bottom .tavla-checkers {
-    bottom: 28px;
+    bottom: 7px;
     flex-direction: column-reverse;
 }
 
 .tavla-checker {
-    width: 38px;
-    height: 38px;
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
     border-radius: 50%;
-    margin: -3px 0;
-    border: 3px solid rgba(0,0,0,.45);
+    border: 3px solid rgba(0,0,0,.28);
     box-shadow:
-        0 3px 6px rgba(0,0,0,.45),
-        inset 0 2px 2px rgba(255,255,255,.25);
-    display: grid;
-    place-items: center;
-    font-size: 9px;
-    font-weight: 900;
-    color: rgba(0,0,0,.55);
-    transition: .15s;
+        0 3px 5px rgba(0,0,0,.45),
+        inset 0 2px 2px rgba(255,255,255,.2);
 }
 
 .tavla-checker.player {
-    background: radial-gradient(circle at 35% 30%, #fff, #d9d9d9 50%, #969696);
+    background: #eee5d2;
+    border-color: #bcae92;
 }
 
 .tavla-checker.bot {
-    background: radial-gradient(circle at 35% 30%, #e8b857, #a86e17 55%, #5e390b);
-    color: #fff;
+    background: #292d35;
+    border-color: #0c0e12;
 }
 
-.tavla-point.selected .tavla-checker {
-    outline: 3px solid var(--gold2);
-    transform: translateY(-4px);
+.tavla-point.selected .tavla-triangle {
+    filter: brightness(1.35);
 }
 
-.tavla-point-number {
-    position: absolute;
-    font-size: 10px;
-    color: rgba(255,255,255,.65);
-    z-index: 20;
+.tavla-point.selected {
+    outline: 3px solid rgba(240,199,102,.7);
+    outline-offset: -3px;
+    border-radius: 5px;
 }
 
-.tavla-point.top .tavla-point-number {
-    top: 3px;
-}
-
-.tavla-point.bottom .tavla-point-number {
-    bottom: 3px;
-}
-
-/* =========================================================
-   ZAR
-   ========================================================= */
-
-.dice-panel {
-    padding: 20px;
-    border: 1px solid var(--border);
-    border-radius: 18px;
-    background: var(--panel);
-    box-shadow: var(--shadow);
-}
-
-.dice-panel h3 {
-    margin-bottom: 12px;
-}
-
-#diceBox {
-    min-height: 90px;
+.dice-area {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 12px;
-    margin: 15px 0;
+    gap: 15px;
+    padding: 18px 0 8px;
 }
 
-.die {
-    width: 60px;
-    height: 60px;
+.dice-box {
+    display: flex;
+    gap: 8px;
+}
+
+.dice-box span {
+    width: 48px;
+    height: 48px;
     display: grid;
     place-items: center;
-    border-radius: 13px;
-    background: #f5f5f5;
+    border-radius: 9px;
+    background: white;
     color: #111;
-    font-size: 25px;
-    font-weight: 900;
-    box-shadow: 0 6px 16px rgba(0,0,0,.35);
-}
-
-.die.rolling {
-    animation: diceRoll .55s ease;
-}
-
-.die.used {
-    opacity: .35;
-    transform: scale(.92);
-}
-
-@keyframes diceRoll {
-    0% {
-        transform: rotate(0deg) scale(.8);
-    }
-
-    40% {
-        transform: rotate(180deg) scale(1.15);
-    }
-
-    100% {
-        transform: rotate(360deg) scale(1);
-    }
-}
-
-/* =========================================================
-   TAVLA BİLGİ PANELİ
-   ========================================================= */
-
-.status-card {
-    margin-top: 15px;
-    padding: 18px;
-    border: 1px solid var(--border);
-    border-radius: 18px;
-    background: var(--panel);
-}
-
-.status-row {
-    display: flex;
-    justify-content: space-between;
-    gap: 12px;
-    padding: 9px 0;
-    border-bottom: 1px solid var(--border);
-}
-
-.status-row:last-child {
-    border-bottom: 0;
-}
-
-.status-label {
-    color: var(--muted);
-}
-
-.status-value {
+    font-size: 26px;
     font-weight: 800;
+    box-shadow: 0 7px 15px rgba(0,0,0,.3);
+}
+
+.roll-button {
+    background: var(--gold);
+    color: #171108;
 }
 
 .game-message {
-    min-height: 52px;
-    margin-top: 15px;
-    padding: 14px;
-    display: flex;
-    align-items: center;
-    border-radius: 13px;
-    background: rgba(255,255,255,.05);
-    color: var(--muted);
-    line-height: 1.45;
-}
-
-/* =========================================================
-   BAR / DIŞARI
-   ========================================================= */
-
-.bar-info {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-top: 15px;
-}
-
-.bar-box {
-    padding: 13px;
-    border-radius: 12px;
-    background: rgba(255,255,255,.05);
     text-align: center;
+    color: #e2c681;
+    font-size: 13px;
+    padding: 5px;
 }
 
-.bar-box strong {
-    display: block;
-    font-size: 22px;
-    margin-top: 4px;
+.side-info {
+    display: grid;
+    gap: 10px;
 }
+
+.info-box span {
+    display: block;
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.info-box strong {
+    display: block;
+    color: var(--gold2);
+    font-size: 23px;
+    margin-top: 5px;
+}
+
 
 /* =========================================================
    BATAK
-   ========================================================= */
+========================================================= */
 
-.batak-placeholder,
-.lobby-placeholder {
-    min-height: 450px;
+.batak-table {
+    min-height: 680px;
+    max-width: 1050px;
+    margin: auto;
+    position: relative;
+    border-radius: 28px;
+    border: 12px solid #21140c;
+    background:
+        radial-gradient(circle at center, rgba(39,166,119,.25), transparent 55%),
+        #14583f;
+    box-shadow: 0 30px 70px rgba(0,0,0,.5);
+}
+
+.batak-player {
+    position: absolute;
+    min-width: 130px;
+    padding: 12px;
+    border-radius: 13px;
+    background: rgba(5,25,19,.85);
+    border: 1px solid rgba(255,255,255,.1);
+    text-align: center;
+}
+
+.batak-player .avatar {
+    font-size: 25px;
+}
+
+.batak-player strong {
+    display: block;
+    font-size: 13px;
+    margin-top: 4px;
+}
+
+.batak-player span {
+    display: block;
+    color: #91b9a9;
+    font-size: 10px;
+    margin-top: 3px;
+}
+
+.player-top {
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.player-left {
+    top: 50%;
+    left: 20px;
+    transform: translateY(-50%);
+}
+
+.player-right {
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+}
+
+.player-bottom {
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.batak-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.batak-status {
+    margin-bottom: 18px;
+}
+
+.batak-status span {
+    display: block;
+    color: #9cc8b7;
+    font-size: 11px;
+}
+
+.batak-status strong {
+    display: block;
+    margin-top: 5px;
+}
+
+.played-cards {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+.card-placeholder {
+    width: 65px;
+    height: 90px;
     display: grid;
     place-items: center;
-    padding: 40px;
-    border: 1px solid var(--border);
-    border-radius: 22px;
-    background: var(--panel);
-    text-align: center;
+    background: #f4f0e7;
+    color: #222;
+    border-radius: 8px;
+    font-size: 27px;
+    box-shadow: 0 7px 15px rgba(0,0,0,.25);
 }
 
-.placeholder-icon {
-    font-size: 75px;
-    margin-bottom: 15px;
+.card-placeholder:nth-child(2) {
+    color: #b32d36;
 }
 
-.placeholder-content h2 {
-    font-size: 32px;
+.card-placeholder:nth-child(3) {
+    color: #b32d36;
 }
 
-.placeholder-content p {
-    max-width: 600px;
-    color: var(--muted);
-    line-height: 1.7;
-    margin: 12px auto 20px;
+.trump {
+    margin-top: 15px;
+    color: #cde4db;
 }
 
-/* =========================================================
-   LOBİ
-   ========================================================= */
+.player-hand {
+    display: flex;
+    justify-content: center;
+    margin-top: 12px;
+}
 
-.lobby-grid {
+.playing-card {
+    width: 55px;
+    height: 76px;
+    margin-left: -7px;
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
+    place-items: center;
+    border-radius: 7px;
+    background: #f5f1e8;
+    color: #222;
+    border: 2px solid white;
+    font-size: 14px;
+    box-shadow: 0 5px 12px rgba(0,0,0,.3);
 }
 
-.lobby-card {
-    padding: 25px;
-    border: 1px solid var(--border);
-    border-radius: 18px;
-    background: var(--panel);
-}
-
-.lobby-card h3 {
-    margin-bottom: 10px;
-}
-
-.lobby-card p {
-    color: var(--muted);
-    line-height: 1.6;
-}
-
-/* =========================================================
-   FORM
-   ========================================================= */
-
-.form-group {
-    margin-bottom: 15px;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 7px;
-    color: var(--muted);
-}
-
-.form-control {
-    width: 100%;
-    min-height: 45px;
-    padding: 0 12px;
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    background: #091727;
-    color: var(--text);
-    outline: none;
-}
-
-.form-control:focus {
-    border-color: var(--gold);
-}
-
-/* =========================================================
-   FOOTER
-   ========================================================= */
-
-footer {
-    padding: 30px 20px;
-    border-top: 1px solid var(--border);
-    color: var(--muted);
-    text-align: center;
+.batak-controls {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
     margin-top: 20px;
 }
 
+
+/* =========================================================
+   SALON
+========================================================= */
+
+.salon-page {
+    width: min(1000px, calc(100% - 32px));
+    margin: auto;
+    padding: 75px 0;
+}
+
+.empty-salon {
+    max-width: 600px;
+    margin: 45px auto;
+    padding: 55px 30px;
+    text-align: center;
+    border-radius: 20px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+}
+
+.empty-icon {
+    font-size: 55px;
+}
+
+.empty-salon h3 {
+    margin-top: 15px;
+    font-size: 24px;
+}
+
+.empty-salon p {
+    color: var(--muted);
+    line-height: 1.6;
+    margin: 10px 0 25px;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.site-footer {
+    width: min(1180px, calc(100% - 32px));
+    margin: auto;
+    padding: 25px 0;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.site-footer strong {
+    display: block;
+    color: white;
+}
+
+.site-footer span {
+    display: block;
+    margin-top: 3px;
+}
+
+
 /* =========================================================
    MOBİL
-   ========================================================= */
+========================================================= */
 
-@media (max-width: 1100px) {
+@media (max-width: 950px) {
+
+    .main-nav button:nth-child(4) {
+        display: none;
+    }
 
     .hero {
         grid-template-columns: 1fr;
+        text-align: center;
+        padding-top: 45px;
     }
 
-    .hero-card {
-        min-height: 280px;
+    .hero-content {
+        margin: auto;
+    }
+
+    .hero p {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .hero-buttons {
+        justify-content: center;
+    }
+
+    .hero-art {
+        min-height: 350px;
+    }
+
+    .game-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .features {
+        grid-template-columns: 1fr;
     }
 
     .tavla-layout {
         grid-template-columns: 1fr;
     }
 
-    #backgammonBoard {
-        min-height: 430px;
+    .player-panel {
+        max-width: 400px;
+        margin: auto;
     }
+
+    .side-info {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .backgammon-board {
+        min-height: 420px;
+    }
+
 }
 
-@media (max-width: 800px) {
 
-    .topbar {
-        padding: 10px 14px;
-        flex-wrap: wrap;
+@media (max-width: 650px) {
+
+    .header-inner {
+        min-height: 68px;
     }
 
-    .nav {
-        order: 3;
-        width: 100%;
-        overflow-x: auto;
-        justify-content: flex-start;
+    .logo small {
+        display: none;
     }
 
-    .nav button {
-        white-space: nowrap;
-    }
-
-    main {
-        width: min(100% - 20px, 1400px);
-    }
-
-    .screen {
-        padding-top: 22px;
-    }
-
-    .hero {
-        padding: 35px 0;
-        min-height: auto;
-    }
-
-    .hero-content h1 {
-        font-size: 43px;
-        letter-spacing: -1px;
-    }
-
-    .game-grid,
-    .lobby-grid {
-        grid-template-columns: 1fr;
-    }
-
-    #backgammonBoard {
-        min-height: 350px;
-        border-width: 3px;
-    }
-
-    .tavla-point.top .tavla-triangle {
-        border-top-width: 150px;
-        border-left-width: 17px;
-        border-right-width: 17px;
-    }
-
-    .tavla-point.bottom .tavla-triangle {
-        border-bottom-width: 150px;
-        border-left-width: 17px;
-        border-right-width: 17px;
-    }
-
-    .tavla-checker {
-        width: 30px;
-        height: 30px;
-        border-width: 2px;
-    }
-
-    .tavla-point.top .tavla-checkers {
-        top: 22px;
-    }
-
-    .tavla-point.bottom .tavla-checkers {
-        bottom: 22px;
-    }
-
-    .die {
-        width: 52px;
-        height: 52px;
-    }
-}
-
-@media (max-width: 520px) {
-
-    .brand-title {
+    .logo strong {
         font-size: 15px;
     }
 
-    .brand-subtitle {
-        display: none;
+    .logo-icon {
+        width: 38px;
+        height: 38px;
+        font-size: 19px;
     }
 
-    .user-area {
-        display: none;
+    .main-nav {
+        gap: 0;
     }
 
-    .hero-content h1 {
-        font-size: 36px;
+    .main-nav button {
+        padding: 8px;
+        font-size: 11px;
     }
 
-    .hero-content p {
-        font-size: 16px;
+    .hero {
+        width: min(100% - 22px, 1180px);
+        min-height: auto;
+        padding: 40px 0;
     }
 
-    .game-header h2 {
-        font-size: 26px;
+    .hero h1 {
+        font-size: 43px;
+        letter-spacing: -2px;
     }
 
-    .tavla-board-wrap {
-        padding: 7px;
+    .hero p {
+        font-size: 15px;
     }
 
-    #backgammonBoard {
-        min-height: 270px;
-        aspect-ratio: 1.4 / 1;
+    .hero-art {
+        min-height: 280px;
     }
 
-    .tavla-checker {
-        width: 23px;
-        height: 23px;
-        margin: -2px 0;
+    .table-preview {
+        width: 92%;
+        padding: 12px;
     }
 
-    .tavla-point.top .tavla-checkers {
-        top: 17px;
+    .mini-board {
+        height: 190px;
     }
 
-    .tavla-point.bottom .tavla-checkers {
-        bottom: 17px;
+    .mini-point {
+        border-left-width: 15px;
+        border-right-width: 15px;
+    }
+
+    .mini-point:nth-child(1),
+    .mini-point:nth-child(2),
+    .mini-point:nth-child(3) {
+        border-top-width: 85px;
+    }
+
+    .mini-point:nth-child(4),
+    .mini-point:nth-child(5),
+    .mini-point:nth-child(6) {
+        border-bottom-width: 85px;
+    }
+
+    .mini-checkers i {
+        width: 30px;
+        height: 30px;
+    }
+
+    .floating-dice {
+        width: 48px;
+        height: 48px;
+        font-size: 25px;
+    }
+
+    .games-section {
+        width: min(100% - 22px, 1180px);
+        padding-top: 30px;
+    }
+
+    .section-heading h2 {
+        font-size: 27px;
+    }
+
+    .game-image {
+        height: 200px;
+    }
+
+    .game-card-content {
+        padding: 22px;
+    }
+
+    .game-screen {
+        width: min(100% - 18px, 1250px);
+        padding-top: 18px;
+    }
+
+    .game-top {
+        grid-template-columns: auto 1fr auto;
+    }
+
+    .game-top h2 {
+        font-size: 20px;
+    }
+
+    .game-title-icon {
+        font-size: 19px;
+    }
+
+    .new-game-button,
+    .back-button {
+        padding: 9px 10px;
+        font-size: 11px;
+    }
+
+    .tavla-table {
+        padding: 8px;
+        border-width: 5px;
+    }
+
+    .backgammon-board {
+        min-height: 330px;
+        padding: 10px;
+        gap: 2px;
+    }
+
+    .tavla-triangle {
+        border-left-width: 14px;
+        border-right-width: 14px;
     }
 
     .tavla-point.top .tavla-triangle {
-        border-top-width: 115px;
-        border-left-width: 12px;
-        border-right-width: 12px;
+        border-top-width: 125px;
     }
 
     .tavla-point.bottom .tavla-triangle {
-        border-bottom-width: 115px;
-        border-left-width: 12px;
-        border-right-width: 12px;
+        border-bottom-width: 125px;
     }
 
-    .tavla-point-number {
-        font-size: 8px;
+    .tavla-checker {
+        width: 25px;
+        height: 25px;
+        border-width: 2px;
     }
 
-    .btn {
-        width: 100%;
+    .side-info {
+        grid-template-columns: repeat(3, 1fr);
     }
 
-    .hero-actions {
+    .info-box {
+        padding: 10px;
+        text-align: center;
+    }
+
+    .info-box strong {
+        font-size: 18px;
+    }
+
+    .batak-table {
+        min-height: 610px;
+        border-width: 6px;
+    }
+
+    .batak-player {
+        min-width: 92px;
+        padding: 8px;
+    }
+
+    .player-left {
+        left: 7px;
+    }
+
+    .player-right {
+        right: 7px;
+    }
+
+    .card-placeholder {
+        width: 48px;
+        height: 70px;
+        font-size: 21px;
+    }
+
+    .playing-card {
+        width: 43px;
+        height: 63px;
+        font-size: 11px;
+    }
+
+    .site-footer {
         flex-direction: column;
+        gap: 15px;
+        text-align: center;
     }
 
-    .bar-info {
-        grid-template-columns: 1fr 1fr;
-    }
-}
-
-/* =========================================================
-   REKLAM ALANLARI İÇİN HAZIR YAPI
-   ========================================================= */
-
-.ad-slot {
-    min-height: 90px;
-    margin: 20px 0;
-    display: grid;
-    place-items: center;
-    border: 1px dashed rgba(255,255,255,.12);
-    border-radius: 14px;
-    color: rgba(255,255,255,.28);
-    font-size: 12px;
-}
-
-/* =========================================================
-   TABLO / LİSTE
-   ========================================================= */
-
-.table-wrap {
-    width: 100%;
-    overflow-x: auto;
-}
-
-.data-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.data-table th,
-.data-table td {
-    padding: 12px;
-    border-bottom: 1px solid var(--border);
-    text-align: left;
-}
-
-.data-table th {
-    color: var(--muted);
-    font-size: 13px;
-}
-
-/* =========================================================
-   DURUM ROZETLERİ
-   ========================================================= */
-
-.badge {
-    display: inline-flex;
-    align-items: center;
-    min-height: 26px;
-    padding: 0 9px;
-    border-radius: 999px;
-    font-size: 12px;
-    font-weight: 800;
-}
-
-.badge-online {
-    background: rgba(46,194,126,.15);
-    color: #65e3a4;
-}
-
-.badge-waiting {
-    background: rgba(215,169,75,.15);
-    color: var(--gold2);
-}
-
-.badge-offline {
-    background: rgba(224,90,90,.15);
-    color: #ff8a8a;
-}
-
-/* =========================================================
-   ERİŞİLEBİLİRLİK
-   ========================================================= */
-
-button:focus-visible,
-input:focus-visible,
-select:focus-visible {
-    outline: 2px solid var(--gold2);
-    outline-offset: 2px;
 }
